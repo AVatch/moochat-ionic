@@ -9,6 +9,7 @@ angular.module('moo', ['ionic'])
 // Setup Initialization Logic
 
 .run(function($ionicPlatform) {
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -32,50 +33,40 @@ angular.module('moo', ['ionic'])
     //
     // Set the states
     $stateProvider
-      .state('app', {
-        abstract: true,
-        controller: 'BaseController'
-      })
-
-      .state('app.authentication', {
+      .state('authentication', {
         url: '/authentication',  
-        templateUrl: '/templates/authentication_partials/authentication.tmpl.html',
+        templateUrl: 'js/authentication/templates/authentication.tmpl.html',
         controller: 'AuthenticationController'
       })
 
-      .state('app.threads', {
+      .state('threads', {
         url: '/threads',  
-        templateUrl: 'threads/templates/threads.tmpl.html',
+        templateUrl: 'js/threads/templates/threads.tmpl.html',
         controller: 'ThreadsController'
       })
 
-      .state('app.thread', {
+      .state('thread', {
         url: '/thread/:pk',
-        templateUrl: '/thread/templates/thread.tmpl.html',
+        templateUrl: 'js/threads/templates/thread.tmpl.html',
         controller: 'ThreadController' 
       });
   }])
   
-  // Setup Services
+// Setup Services
   
-  // Setup Controllers
-
-.controller('BaseController', ['$scope',
-  function($scope){
-    console.log("I am in the core");
-}])
+// Setup Controllers
 
 .controller('AuthenticationController', ['$scope',
   function($scope){
-    console.log("I am in the core");
+    console.log("I am in the authentication");
 }])
 
 .controller('ThreadsController', ['$scope',
   function($scope){
-    console.log("I am in the core");
+    console.log("I am in the threads");
 }])
 
 .controller('ThreadController', ['$scope',
   function($scope){
-    console.log("I am in the core");
+    console.log("I am in the thread");
 }]);
