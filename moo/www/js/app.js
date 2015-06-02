@@ -1,6 +1,6 @@
 // MooChat
 
-angular.module('moo', ['ionic'])
+angular.module('moo', ['ionic', 'LocalStorageModule'])
 
 // Setup Constants
 
@@ -53,6 +53,157 @@ angular.module('moo', ['ionic'])
   }])
   
 // Setup Services
+
+.factory('Authentication', ['$http', 'localStorageService','DOMAIN',
+  function($http, localStorageService, DOMAIN){
+    
+    var authenticateUser = function(credentials){
+      var response = $http({
+        url: DOMAIN + '/api/v1/api-token-auth/',
+        method: 'POST',
+        contentType: "application/json; charset=UTF-8",
+        data: credentials
+      });
+      return response;
+    };
+
+    var registerUser = function(user){
+      var response = $http({
+        url: DOMAIN + '/api/v1/accounts/create/',
+        method: 'POST',
+        contentType: "application/json; charset=UTF-8",
+        data: user
+      });
+      return response;
+    };
+
+    var getToken = function(){
+      return localStorageService.get('token');
+    };
+
+    var cacheToken = function(token){
+      return localStorageService.set('token', token);
+    };
+
+    return{
+      authenticateUser: authenticateUser,
+      registerUser: registerUser,
+
+      getToken: getToken,
+      cacheToken: cacheToken
+    };
+}])
+
+.factory('Account', ['$http', 'Authentication', 'DOMAIN',
+  function($http, Authentication, DOMAIN){
+    
+    var me = function(){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/me/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        data: ''
+                      });
+      return response;
+    };
+
+    var getFriendList = function(pk){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/accounts/' + pk + '/friends/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        data: ''
+                      });
+      return response;
+    };
+    
+    var friendAccount = function(pk){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/accounts/' + pk + '/friends/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        data: ''
+                      });
+      return response;
+    };
+
+    return{
+      me: me,
+      getFriendList: getFriendList,
+      friendAccount: friendAccount    
+    };
+}])
+
+.factory('Thread', ['$http', 'Authentication', 'DOMAIN',
+  function($http, Authentication, DOMAIN){
+    
+    var pullThreadList = function(){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/threads/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        data: ''
+                      });
+      return response;
+    };
+
+    var startThread = function(thread){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/threads/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        contentType: "application/json; charset=UTF-8",
+                        data: thread
+                      });
+      return response;
+    };
+
+    var getThread = function(pk){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/threads/' + pk + '/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                      });
+      return response;
+    };
+
+    var getNotes = function(pk){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/threads/' + pk + '/notes/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                      });
+      return response;
+    };
+
+    return{
+      pullThreadList: pullThreadList,
+      startThread: startThread,
+      getThread: getThread,
+      getNotes: getNotes
+    };
+}])
   
 // Setup Controllers
 
