@@ -1,6 +1,15 @@
 <ion-header-bar class="bar-stable">
-    <h1 class="title">Thread</h1>
+    <button ng-click="back()" class="button button-icon icon ion-ios-arrow-left"></button>
+    <h1 class="title"></h1>
+    <button class="button button-icon icon ion-ios-more-outline"></button>
 </ion-header-bar>
+
 <ion-content>
     <p>Hi there</p>
 </ion-content>
+
+<div class="bar bar-footer">
+    <button ng-click="openGifSearch($event)" class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-photos-outline">GIF </button>
+    <input class="text-input" type="text" placeholder="Enter Message"></input>
+    <button class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-arrow-right">GIF </button>
+</div>
