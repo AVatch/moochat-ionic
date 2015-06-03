@@ -212,9 +212,50 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     console.log("I am in the authentication");
 }])
 
-.controller('ThreadsController', ['$scope',
-  function($scope){
+.controller('ThreadsController', ['$scope', '$ionicModal',
+  function($scope, $ionicModal){
     console.log("I am in the threads");
+    
+    // Accounts modal
+    $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openAccountModal = function() {
+      $scope.modal.show();
+    };
+    $scope.closeAccountModal = function() {
+      $scope.modal.hide();
+    };
+    
+    // Start a thread modal
+    $ionicModal.fromTemplateUrl('js/accounts/templates/newthread.modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openNewThreadModal = function() {
+      $scope.modal.show();
+    };
+    $scope.closeNewThreadModal = function() {
+      $scope.modal.hide();
+    };
+    
+    //Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+    // Execute action on hide modal
+    $scope.$on('modal.hidden', function() {
+      // Execute action
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+      // Execute action
+    });
 }])
 
 .controller('ThreadController', ['$scope', '$ionicPopover', '$window',
