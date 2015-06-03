@@ -221,13 +221,13 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
-      $scope.modal = modal;
+      $scope.AccountModal = modal;
     });
     $scope.openAccountModal = function() {
-      $scope.modal.show();
+      $scope.AccountModal.show();
     };
     $scope.closeAccountModal = function() {
-      $scope.modal.hide();
+      $scope.AccountModal.hide();
     };
     
     // Start a thread modal
@@ -235,26 +235,19 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
-      $scope.modal = modal;
+      $scope.NewThreadModal = modal;
     });
     $scope.openNewThreadModal = function() {
-      $scope.modal.show();
+      $scope.NewThreadModal.show();
     };
     $scope.closeNewThreadModal = function() {
-      $scope.modal.hide();
+      $scope.NewThreadModal.hide();
     };
     
     //Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function() {
-      // Execute action
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-      // Execute action
+      $scope.NewThreadModal.remove();
+      $scope.AccountModal.remove();
     });
 }])
 
