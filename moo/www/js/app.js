@@ -42,8 +42,16 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
         $state.go('authentication');
      }
    });
-  
+
 })
+
+// Setup localstorage
+
+.config(['localStorageServiceProvider',
+  function(localStorageServiceProvider) {
+    localStorageServiceProvider
+      .setPrefix('moo');
+}])
 
 // Setup Routes
 
@@ -117,8 +125,8 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     };
 }])
 
-.factory('Account', ['$http', 'Authentication', 'DOMAIN',
-  function($http, Authentication, DOMAIN){
+.factory('Account', ['$http', 'Authentication', 'localStorageService', 'DOMAIN',
+  function($http, Authentication, localStorageService, DOMAIN){
     
     var me = function(){
       var token = Authentication.getToken();
@@ -158,11 +166,16 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
                       });
       return response;
     };
+    
+    var cacheMe = function(me){
+      return localStorageService.set('me', me);
+    };
 
     return{
       me: me,
       getFriendList: getFriendList,
-      friendAccount: friendAccount    
+      friendAccount: friendAccount,
+      cacheMe: cacheMe    
     };
 }])
 
@@ -230,14 +243,47 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
   
 // Setup Controllers
 
-.controller('AuthenticationController', ['$scope',
-  function($scope){
-    console.log("I am in the authentication");
+.controller('AuthenticationController', ['$scope', '$state', 'Authentication',
+  function($scope, $state, Authentication){
+    
+    $scope.login = function(user){
+      Authentication.authenticateUser(user).then(function(s){
+        if(s.status == 200){
+          Authentication.cacheToken(s.data);
+          $state.go('threads');
+        }else if(s.status == 400){
+          console.log("Bad Credentials");
+          $scope.authError = true;
+        }else{
+          console.log("Unkown Error");
+        }
+      }, function(e){console.log(e);$scope.authError = true;});
+    };
+    
+    $scope.register = function(user){
+      
+    };
+
 }])
 
-.controller('ThreadsController', ['$scope', '$ionicModal',
-  function($scope, $ionicModal){
-    console.log("I am in the threads");
+.controller('ThreadsController', ['$scope', '$ionicModal', 'Thread',
+  function($scope, $ionicModal, Thread){
+    
+    // Pull the threads
+    $scope.threads = [];
+    
+    var pullThreads = function(){
+      Thread.pullThreadList().then(function(s){
+        if(s.status == 200){
+          console.log(s.data.results);
+          $scope.threads = s.data.results; 
+        }else if(s.status == 400){
+          
+        }else{
+          console.log("Unkown Error");
+        }
+      }, function(e){console.log(e);});
+    }; pullThreads();
     
     // Accounts modal
     $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
