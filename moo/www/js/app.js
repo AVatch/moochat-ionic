@@ -8,7 +8,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 
 // Setup Initialization Logic
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $state, $urlRouter, Authentication, Account) {
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -19,7 +19,30 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    
+    // fetch and cache the user object
+    var sessionToken = Authentication.getToken();
+    if(sessionToken){
+        Account.me().then(function(s){
+          Account.cacheMe(s.data);
+        }, function(e){console.log(e);});
+    }
   });
+  
+  // check if the user is authenticated
+  $rootScope.$on('$locationChangeSuccess', function(evt) {
+     // Halt state change from even starting
+     evt.preventDefault();
+     // Verify the user has a session token
+     var sessionToken = Authentication.getToken();
+     // Continue with the update and state transition if logic allows
+     if(sessionToken){
+        $urlRouter.sync();
+     }else{
+        $state.go('authentication');
+     }
+   });
+  
 })
 
 // Setup Routes
@@ -29,7 +52,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 
     //
     // For any unmatched url, redirect to /stream
-    $urlRouterProvider.otherwise('/authentication')
+    $urlRouterProvider.otherwise('/threads')
     //
     // Set the states
     $stateProvider
