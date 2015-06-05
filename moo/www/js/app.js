@@ -4,7 +4,8 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 
 // Setup Constants
 
-.constant('DOMAIN', 'http://127.0.0.1:8000')
+//.constant('DOMAIN', 'http://127.0.0.1:8000')
+.constant('DOMAIN', 'https://5a558a9c.ngrok.com')
 
 // Setup Initialization Logic
 
@@ -301,11 +302,11 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     $scope.me = Account.getMe();
     
     // Pull the threads
-    $scope.threads = [];
-    
+    $scope.threads = []; 
     var pullThreads = function(){
       Thread.pullThreadList().then(function(s){
         if(s.status == 200){
+          console.log(s.data);
           $scope.threads = s.data.results; 
         }else if(s.status == 400){
           
@@ -317,14 +318,14 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     
     // Pull the friend list
     $scope.friends = [];
-    
-    var pullFriends = function(){
-      Account.getFriendList($scope.me.id).then(function(s){
-        if(s.status==200){
-          $scope.friends = s.data.results;
-        }
-      }, function(e){console.log(e);});
-    }; pullFriends();
+//    var pullFriends = function(){
+//      Account.getFriendList(Account.getMe().id).then(function(s){
+//        if(s.status==200){
+//          console.log(s.data);
+//          $scope.friends = s.data.results;
+//        }
+//      }, function(e){console.log(e);});
+//    }; pullFriends();
     
     // Accounts modal
     $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
@@ -334,6 +335,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       $scope.AccountModal = modal;
     });
     $scope.openAccountModal = function() {
+      console.log('opening account modal');
       $scope.AccountModal.show();
     };
     $scope.closeAccountModal = function() {
