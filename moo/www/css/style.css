@@ -14,3 +14,28 @@
     margin-left: 15px;
     width: 100%;
 }
+
+.note-gif{
+   
+   border-radius: 10px;
+   width: 50%;
+}
+
+.note-content-me img{
+    float: right;
+    margin-left: 15px;
+}
+.note-content-me .note-content{
+    float: right;
+}
+.note-content-me .note-content .note-gif{
+    float: right;
+}
+
+.note-content img{
+    float: left;
+    margin-right: 15px;
+}
+.note-content .note-gif{
+    margin-left: 60px;
+}

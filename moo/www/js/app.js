@@ -170,12 +170,17 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     var cacheMe = function(me){
       return localStorageService.set('me', me);
     };
+    
+    var getMe = function(){
+      return localStorageService.get('me');
+    };
 
     return{
       me: me,
       getFriendList: getFriendList,
       friendAccount: friendAccount,
-      cacheMe: cacheMe    
+      cacheMe: cacheMe,
+      getMe: getMe    
     };
 }])
 
@@ -238,6 +243,29 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       startThread: startThread,
       getThread: getThread,
       getNotes: getNotes
+    };
+}])
+
+.factory('Note', ['$http', 'Authentication', 'DOMAIN',
+  function($http, Authentication, DOMAIN){
+    
+    var createNote = function(note){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/notes/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        contentType: "application/json; charset=UTF-8",
+                        data: note
+                      });
+      return response;
+    };
+
+
+    return{
+      createNote: createNote
     };
 }])
   
@@ -320,10 +348,38 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     });
 }])
 
-.controller('ThreadController', ['$scope', '$ionicPopover', '$window',
-  function($scope, $ionicPopover, $window){
-    console.log("I am in the thread");
+.controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', 'Account', 'Thread', 'Note',
+  function($scope, $ionicPopover, $window, $stateParams, Account, Thread, Note){
     
+    // Get me
+    $scope.me = Account.getMe();
+    
+    // pull the notes in the thread
+    $scope.notes = [];
+    var threadID = $stateParams.pk;
+    Thread.getNotes(threadID).then(function(s){
+      if(s.status == 200){
+           $scope.notes = s.data.results;
+        }else if(s.status == 400){
+        }else{
+          console.log("Unkown Error");
+        }
+    }, function(e){console.log(e);});
+    
+    // send note to thread
+    $scope.createNote = function(msg){
+      var note = {};
+      note.content = msg;
+      note.is_gif = false;
+      note.thread = threadID;
+      
+      Note.createNote(note).then(function(s){
+        if(s.status==201){
+          $scope.notes.push(s.data);
+          $scope.msg = "";  
+        }        
+      }, function(e){console.log(e);});
+    };
     
     // Gif-search popover
     

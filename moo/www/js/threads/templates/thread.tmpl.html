@@ -5,11 +5,39 @@
 </ion-header-bar>
 
 <ion-content>
-    <p>Hi there</p>
+
+    <p ng-if="note.length==0">Be the first to moo!</p>
+
+    <ion-list>
+        <ion-item ng-repeat="note in notes" class="note">
+            
+            <div ng-class="{'note-content-me':me.id==note.author.id, 'note-content':me.id!=note.author.id}">
+
+                <img class="avatar note-sender" ng-src="{{note.author.profile_picture_url}}"></img>
+                    
+                <div class="note-content">
+                    <div ng-if="!note.is_gif" class="note-text">
+                        {{note.content}}    
+                    </div>
+                    <div ng-if="note.is_gif" class="note-gif" 
+                        style="background-image: url({{note.content}});
+                                background-repeat: no-repeat;
+                                background-position: 50% 50%;
+                                background-size: cover;
+                                width:200px;
+                                height:200px;";>
+                    </div>
+                </div>
+            
+            </div>
+            
+        </ion-item>
+    </ion-list>
+    <span style="width:100%; height: 43px; display:block;"></span>
 </ion-content>
 
 <div class="bar bar-footer">
     <button ng-click="openGifSearch($event)" class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-photos-outline">GIF </button>
-    <input class="text-input" type="text" placeholder="Enter Message"></input>
-    <button class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-arrow-right">GIF </button>
+    <input class="text-input" type="text" placeholder="Moo" ng-model="msg"></input>
+    <button ng-click="createNote(msg)" class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-arrow-right">GIF </button>
 </div>
