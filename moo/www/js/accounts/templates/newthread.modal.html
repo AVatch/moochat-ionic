@@ -2,16 +2,16 @@
     <ion-header-bar>
         <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-close-empty"></button>
         <h1 class="title">Moo at Someone</h1>
-        <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-arrow-right"></button>
+        <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button>
     </ion-header-bar>
     
     <ion-content>
-        
+    
         <ion-list>
-            <ion-item class="item item-avatar" href="#">
-              <img src="http://placehold.it/50x150">
-              <h2>Adrian</h2>
-            </ion-item>
+            <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
+                {{friend.username}}
+            </ion-checkbox>
+            
         </ion-list>
         
     </ion-content>

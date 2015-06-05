@@ -203,7 +203,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     var startThread = function(thread){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/threads/',
+                        url: DOMAIN + '/api/v1/threads/create/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -294,8 +294,11 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 
 }])
 
-.controller('ThreadsController', ['$scope', '$ionicModal', 'Thread',
-  function($scope, $ionicModal, Thread){
+.controller('ThreadsController', ['$scope', '$state', '$ionicModal', 'Account', 'Thread',
+  function($scope, $state, $ionicModal, Account, Thread){
+    
+    // Get me
+    $scope.me = Account.getMe();
     
     // Pull the threads
     $scope.threads = [];
@@ -303,7 +306,6 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     var pullThreads = function(){
       Thread.pullThreadList().then(function(s){
         if(s.status == 200){
-          console.log(s.data.results);
           $scope.threads = s.data.results; 
         }else if(s.status == 400){
           
@@ -312,6 +314,17 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
         }
       }, function(e){console.log(e);});
     }; pullThreads();
+    
+    // Pull the friend list
+    $scope.friends = [];
+    
+    var pullFriends = function(){
+      Account.getFriendList($scope.me.id).then(function(s){
+        if(s.status==200){
+          $scope.friends = s.data.results;
+        }
+      }, function(e){console.log(e);});
+    }; pullFriends();
     
     // Accounts modal
     $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
@@ -325,6 +338,25 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     };
     $scope.closeAccountModal = function() {
       $scope.AccountModal.hide();
+    };
+    
+    // Start a new thread
+    $scope.startNewThread = function(){
+      var recipients = [];
+      for(var i=0; i<$scope.friends.length; i++){
+        if($scope.friends[i].sendTo){
+          recipients.push($scope.friends[i].id);
+        }
+      }
+     
+     var thread = {};
+     thread.participants = recipients;
+     Thread.startThread(thread).then(function(s){
+       if(s.status==201){
+         $state.go('thread', {'pk': s.data.id});
+       }
+     }, function(e){console.log(e);});
+     
     };
     
     // Start a thread modal
@@ -348,8 +380,8 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     });
 }])
 
-.controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', 'Account', 'Thread', 'Note',
-  function($scope, $ionicPopover, $window, $stateParams, Account, Thread, Note){
+.controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', '$timeout', '$ionicScrollDelegate', 'Account', 'Thread', 'Note',
+  function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicScrollDelegate, Account, Thread, Note){
     
     // Get me
     $scope.me = Account.getMe();
@@ -357,9 +389,11 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     // pull the notes in the thread
     $scope.notes = [];
     var threadID = $stateParams.pk;
+    
     Thread.getNotes(threadID).then(function(s){
       if(s.status == 200){
            $scope.notes = s.data.results;
+           $ionicScrollDelegate.scrollBottom();
         }else if(s.status == 400){
         }else{
           console.log("Unkown Error");
@@ -376,7 +410,8 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       Note.createNote(note).then(function(s){
         if(s.status==201){
           $scope.notes.push(s.data);
-          $scope.msg = "";  
+          $scope.msg = "";
+          $ionicScrollDelegate.scrollBottom(true);  
         }        
       }, function(e){console.log(e);});
     };
