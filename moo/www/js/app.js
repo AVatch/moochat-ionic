@@ -76,6 +76,14 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       });
   }])
   
+  
+// Setup Filters
+.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+})
+  
 // Setup Services
 
 .factory('Authentication', ['$http', 'localStorageService','DOMAIN',
@@ -256,9 +264,30 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       return response;
     };
 
-
     return{
       createNote: createNote
+    };
+}])
+
+.factory('Gif', ['$http', 'Authentication', 'DOMAIN',
+  function($http, Authentication, DOMAIN){
+    
+    var searchGif = function(q){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/gif/search/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        contentType: "application/json; charset=UTF-8",
+                        data: q
+                      });
+      return response;
+    };
+
+    return{
+      searchGif: searchGif
     };
 }])
   
@@ -299,8 +328,10 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     
     // Pull the threads
     $scope.threads = []; 
+    $scope.loading = true;
     var pullThreads = function(){
       Thread.pullThreadList().then(function(s){
+        $scope.loading = false;
         if(s.status == 200){
           console.log(s.data);
           $scope.threads = s.data.results; 
@@ -378,8 +409,8 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     });
 }])
 
-.controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', '$timeout', '$ionicScrollDelegate', 'Account', 'Thread', 'Note',
-  function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicScrollDelegate, Account, Thread, Note){
+.controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', '$timeout', '$ionicScrollDelegate', 'Account', 'Thread', 'Note', 'Gif',
+  function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicScrollDelegate, Account, Thread, Note, Gif){
     
     // Get me
     $scope.me = Account.getMe();
@@ -407,10 +438,36 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       
       Note.createNote(note).then(function(s){
         if(s.status==201){
-          $scope.notes.push(s.data);
+          $scope.notes.unshift(s.data);
           $scope.msg = "";
           $ionicScrollDelegate.scrollBottom(true);  
         }        
+      }, function(e){console.log(e);});
+    };
+    
+    $scope.sendGif = function(msg){
+      var gif = {};
+      gif.content = msg;
+      gif.is_gif = true;
+      gif.thread = threadID;
+      
+      Note.createNote(gif).then(function(s){
+        if(s.status==201){
+          $scope.notes.unshift(s.data);
+          $scope.msg = "";  
+          $scope.closeGifSearch();
+        }        
+      }, function(e){console.log(e);});
+    }
+    
+    
+    // Search gif
+    $scope.searchGifs = function(q){
+      $scope.results = [];
+      q = {"query": q};
+      Gif.searchGif(q).then(function(s){
+        console.log(s);
+        $scope.results = s.data.results;
       }, function(e){console.log(e);});
     };
     

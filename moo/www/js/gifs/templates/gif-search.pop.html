@@ -1,15 +1,31 @@
 <ion-popover-view style="width:97%;">
     <ion-header-bar>
-        <h1 class="title pull-left">
+        <button ng-click="searchGifs(q)" class="button button-icon icon ion-ios-bolt-outline"></button>
+        <h1 class="title">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" ng-model="q">
             </label>
         </h1>
         <button ng-click="closeGifSearch($event)" class="button button-icon icon ion-ios-arrow-down"></button>
     </ion-header-bar>
     
     <ion-content>
+        
+        <ion-scroll direction="x">
+            <div ng-repeat="gif in results"
+                 ng-click="sendGif(gif.url)"
+                 class="animated bounceIn"
+                         style="background-image: url({{gif.url}});
+                                background-repeat: no-repeat;
+                                background-position: 50% 50%;
+                                background-size: cover;
+                                
+                                width:33%;
+                                height:120px;
+                                
+                                float: left;"></div>
+        </ion-scroll>
         
     </ion-content>
 

@@ -7,12 +7,25 @@
     
     <ion-content>
     
-        <ion-list>
-            <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
-                {{friend.username}}
-            </ion-checkbox>
-            
-        </ion-list>
+        <ion-tabs class="tabs-positive">
+
+          <ion-tab title="New Thread" icon-on="ion-ios-filing" icon-off="ion-ios-filing-outline">
+            <!-- Tab 1 content -->
+            <ion-content>
+                <ion-list>
+                    <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
+                        {{friend.username}}
+                    </ion-checkbox>
+                    
+                </ion-list>
+            </ion-content>
+          </ion-tab>
+        
+          <ion-tab title="Add Friend" icon-on="ion-ios-clock" icon-off="ion-ios-clock-outline">
+            <!-- Tab 2 content -->
+          </ion-tab>
+        
+        </ion-tabs>
         
     </ion-content>
     

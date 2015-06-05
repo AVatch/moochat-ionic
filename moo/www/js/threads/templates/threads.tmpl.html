@@ -13,6 +13,9 @@
         icon="ripple">
     </ion-refresher>
     
+    <!-- loading spinner -->
+    <ion-spinner ng-if="loading" icon="spiral"></ion-spinner>
+    
     <!-- list of threads -->
     <ion-list>
         <ion-item ng-repeat="thread in threads" ui-sref='thread({pk: thread.id})'>
