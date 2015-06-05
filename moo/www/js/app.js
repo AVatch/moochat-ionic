@@ -20,14 +20,6 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
-    
-    // fetch and cache the user object
-    var sessionToken = Authentication.getToken();
-    if(sessionToken){
-        Account.me().then(function(s){
-          Account.cacheMe(s.data);
-        }, function(e){console.log(e);});
-    }
   });
   
   // check if the user is authenticated
@@ -299,7 +291,11 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
   function($scope, $state, $ionicModal, Account, Thread){
     
     // Get me
-    $scope.me = Account.getMe();
+    Account.me().then(function(s){
+      Account.cacheMe(s.data);
+      $scope.me = s.data;
+      pullFriendList($scope.me.id);
+    }, function(e){console.log(e);});
     
     // Pull the threads
     $scope.threads = []; 
@@ -318,14 +314,14 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     
     // Pull the friend list
     $scope.friends = [];
-//    var pullFriends = function(){
-//      Account.getFriendList(Account.getMe().id).then(function(s){
-//        if(s.status==200){
-//          console.log(s.data);
-//          $scope.friends = s.data.results;
-//        }
-//      }, function(e){console.log(e);});
-//    }; pullFriends();
+    var pullFriendList = function(pk){
+      Account.getFriendList(pk).then(function(s){
+        if(s.status==200){
+          console.log(s.data);
+          $scope.friends = s.data.results;
+        }
+      }, function(e){console.log(e);});
+    }; 
     
     // Accounts modal
     $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
