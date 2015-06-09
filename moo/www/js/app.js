@@ -380,6 +380,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
         if(s.status == 200){
           Authentication.cacheToken(s.data);
           $scope.closeLoginModal();
+          $scope.closeSignupModal();
           $state.go('threads');
         }else if(s.status == 400){
           console.log("Bad Credentials");
@@ -393,6 +394,9 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     $scope.register = function(user){
       
       if(user.password == user.confirm_password){
+        
+        delete user.confirm_password
+        
         user.is_admin = false;
         user.is_manager = false;
         user.friends = [];
