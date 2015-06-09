@@ -313,16 +313,28 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
                       });
       return response;
     };
+    
+    var randomGif = function(){
+      var response = $http({
+                        url: DOMAIN + '/api/v1/gif/random/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json'},
+                        contentType: "application/json; charset=UTF-8",
+                      });
+      return response;
+    };
 
     return{
-      searchGif: searchGif
+      searchGif: searchGif,
+      randomGif: randomGif
     };
 }])
   
 // Setup Controllers
 
-.controller('AuthenticationController', ['$scope', '$state', '$ionicModal', 'Authentication',
-  function($scope, $state, $ionicModal, Authentication){
+.controller('AuthenticationController', ['$scope', '$state', '$ionicModal', 'Authentication', 'Gif',
+  function($scope, $state, $ionicModal, Authentication, Gif){
   	
     // Init Auth Modals + Handle Event Triggers
     $ionicModal.fromTemplateUrl('js/authentication/templates/login.modal.tmpl.html', {
@@ -352,7 +364,13 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     };
 
 
-
+    // Pull Random Gif
+    Gif.randomGif().then(function(s){
+      if(s.status==200){
+        console.log(s.data)
+        $scope.randomGif = s.data.results;  
+      }
+    }, function(e){console.log(e);});
 
 
         
