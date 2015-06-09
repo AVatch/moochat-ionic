@@ -1,29 +1,18 @@
-<ion-header-bar class="bar-stable">
-    <h1 class="title">Signup</h1>
-</ion-header-bar>
 
-<ion-content>
-
-    <div class="card">
-        <ion-list>
-          <label class="item item-input">
-            <input type="text" placeholder="Username" ng-model="user.username">
-          </label>
-          <label class="item item-input">
-            <input type="password" placeholder="Password" ng-model="user.password">
-          </label>
-        </ion-list>
-        
-        <div class="button-bar">
-            <button class="button button-block button-positive" style="margin:5px;">
-              Register
-            </button>
-            
-            <button ng-click="login(user)" class="button button-block button-positive" style="margin:5px;">
-              Login
-            </button>
-        </div>
-                
+<!--Logo / Branding-->
+<div style="position: absolute; top: 30%; width: 100%;">
+    <div style="text-align: center;">
+        <h1>MooChat</h1>
+        <small>BETA v1.0</small>
     </div>
+</div>
 
-</ion-content>
+<!--Button Action Bar-->
+<div style="position: absolute; bottom: 15px; width: 100%;">
+    <div style="text-align: center;">
+        <div class="button-bar">
+            <a ng-click="openSignupModal()" class="button button-clear button-positive" style="border-right: 1px solid;">Sign Up</a>
+            <a ng-click="openLoginModal()" class="button button-clear button-positive">Log In</a>
+        </div>
+    </div>
+</div>

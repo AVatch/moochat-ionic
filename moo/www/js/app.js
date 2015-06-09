@@ -5,7 +5,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 // Setup Constants
 
 //.constant('DOMAIN', 'http://127.0.0.1:8000')
-.constant('DOMAIN', 'https://5a558a9c.ngrok.com')
+.constant('DOMAIN', 'https://6c35ae39.ngrok.com')
 
 // Setup Initialization Logic
 
@@ -88,7 +88,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 
 .factory('Authentication', ['$http', 'localStorageService','DOMAIN',
   function($http, localStorageService, DOMAIN){
-    
+  
     var authenticateUser = function(credentials){
       var response = $http({
         url: DOMAIN + '/api/v1/api-token-auth/',
@@ -155,6 +155,32 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       return response;
     };
     
+    var getAccountist = function(){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/accounts/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        data: ''
+                      });
+      return response;
+    };
+    
+    var getThreadList = function(pk){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/accounts/' + pk + '/threads/',
+                        method: 'GET',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        data: ''
+                      });
+      return response;
+    };
+    
     var friendAccount = function(pk){
       var token = Authentication.getToken();
       var response = $http({
@@ -180,6 +206,8 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       me: me,
       getFriendList: getFriendList,
       friendAccount: friendAccount,
+      getAccountist: getAccountist,
+      getThreadList: getThreadList,
       cacheMe: cacheMe,
       getMe: getMe    
     };
@@ -188,7 +216,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 .factory('Thread', ['$http', 'Authentication', 'DOMAIN',
   function($http, Authentication, DOMAIN){
     
-    var pullThreadList = function(){
+    var pullThreadList = function(pk){
       var token = Authentication.getToken();
       var response = $http({
                         url: DOMAIN + '/api/v1/threads/',
@@ -293,9 +321,41 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
   
 // Setup Controllers
 
-.controller('AuthenticationController', ['$scope', '$state', 'Authentication',
-  function($scope, $state, Authentication){
+.controller('AuthenticationController', ['$scope', '$state', '$ionicModal', 'Authentication',
+  function($scope, $state, $ionicModal, Authentication){
+  	
+    // Init Auth Modals + Handle Event Triggers
+    $ionicModal.fromTemplateUrl('js/authentication/templates/login.modal.tmpl.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.loginModal = modal;
+    });
+    $scope.openLoginModal = function() {
+      $scope.loginModal.show();
+    };
+    $scope.closeLoginModal = function() {
+      $scope.loginModal.hide();
+    };
     
+    $ionicModal.fromTemplateUrl('js/authentication/templates/signup.modal.tmpl.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.signupModal = modal;
+    });
+    $scope.openSignupModal = function() {
+      $scope.signupModal.show();
+    };
+    $scope.closeSignupModal = function() {
+      $scope.signupModal.hide();
+    };
+
+
+
+
+
+        
     $scope.login = function(user){
       Authentication.authenticateUser(user).then(function(s){
         if(s.status == 200){
@@ -311,7 +371,22 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     };
     
     $scope.register = function(user){
+      user.first_name = "";
+      user.last_name = "";
+      user.is_admin = false;
+      user.is_manager = false;
+      user.friends = [];
+      user.phonenumber = "";
       
+      Authentication.registerUser(user).then(function(s){
+        console.log(s);
+        if(s.status==201){
+          var auth = {};
+          auth.username = user.username;
+          auth.password = user.password;
+          $scope.login(auth);
+        }
+      }, function(e){console.log(e);});
     };
 
 }])
@@ -323,17 +398,17 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
     Account.me().then(function(s){
       Account.cacheMe(s.data);
       $scope.me = s.data;
+      pullThreads($scope.me.id);
       pullFriendList($scope.me.id);
     }, function(e){console.log(e);});
     
     // Pull the threads
     $scope.threads = []; 
     $scope.loading = true;
-    var pullThreads = function(){
-      Thread.pullThreadList().then(function(s){
+    var pullThreads = function(pk){
+      Account.getThreadList(pk).then(function(s){
         $scope.loading = false;
         if(s.status == 200){
-          console.log(s.data);
           $scope.threads = s.data.results; 
         }else if(s.status == 400){
           
@@ -341,12 +416,12 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
           console.log("Unkown Error");
         }
       }, function(e){console.log(e);});
-    }; pullThreads();
+    };
     
     // Pull the friend list
     $scope.friends = [];
     var pullFriendList = function(pk){
-      Account.getFriendList(pk).then(function(s){
+      Account.getAccountist().then(function(s){
         if(s.status==200){
           console.log(s.data);
           $scope.friends = s.data.results;
