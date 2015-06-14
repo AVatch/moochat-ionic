@@ -439,8 +439,10 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
         $scope.loading = false;
       }, 1000);
       
-
-    }, function(e){console.log(e);});
+    }, function(e){
+      $scope.error = "Something went wrong :(";
+      $scope.loading = false;  
+    });
     
     var pullThreads = function(pk){
       Account.getThreadList(pk).then(function(s){
