@@ -63,7 +63,7 @@ angular.module('moo.services.accounts', [])
     var friendAccount = function(pk){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/accounts/' + pk + '/add/friends/',
+                        url: DOMAIN + '/api/v1/accounts/' + pk + '/add/friend/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',

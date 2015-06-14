@@ -25,25 +25,42 @@
           <ion-tab title="Add a friend" icon-on="ion-ios-personadd" icon-off="ion-ios-personadd-outline">
             <!-- Tab 2 content -->
             <ion-content>
-                <div class="list list-inset">
-                  <label class="item item-input">
-                    <i class="icon ion-search placeholder-icon"></i>
-                    <input type="text" placeholder="Add a friend" ng-model="query">
-                  </label>
+                <div class="row">
+                    <div class="col col-75">
+                        <div class="list list-inset">
+                          <label class="item item-input">
+                            <i class="icon ion-search placeholder-icon"></i>
+                            <input type="text" placeholder="Add a friend" ng-model="query">
+                          </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button ng-click="searchAccounts(query)" class="button button-clear button-positive" style="margin-top:20px;">
+                          Search
+                        </button>
+                    </div>
                 </div>
-                <button ng-click="searchAccounts(query)" class="button button-clear button-positive">
-                  Search
-                </button>
 
-                <ion-list ng-if="results.length!=0"
-                          ng-repeat="result in results">
-                    <ion-checkbox>
-                        {{result.username}}
-                    </ion-checkbox>
+                <ion-list ng-if="results.length!=0">
+                    <ion-item ng-repeat="result in results">
+                        <div class="row">
+                            <div class="col col-75">
+                                {{result.username}}      
+                            </div>
+                            <div class="col">
+                                <button 
+                                    ng-click="addFriend(result)"
+                                    style="float:right;" 
+                                    class="button button-icon icon ion-ios-plus-outline"></button>
+    
+                            </div>
+                        </div>
+                    </ion-item>
                 </ion-list>
 
+
                 <div ng-if="results.length==0" class="row">
-                    No results found :'(
+                    <p style="position:absolute">No results found :'(</p>
                 </div>
 
             </ion-content>

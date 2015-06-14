@@ -45,7 +45,7 @@ angular.module('moo.controllers.threads', [])
     // Pull the friend list
     $scope.friends = [];
     var pullFriendList = function(pk){
-      Account.getAccountList().then(function(s){
+      Account.getFriendList(pk).then(function(s){
         if(s.status==200){
           console.log(s.data);
           $scope.friends = s.data.results;
@@ -66,6 +66,17 @@ angular.module('moo.controllers.threads', [])
             $scope.results = [];
           }
         });
+    };
+
+    // Add a friend
+    $scope.addFriend = function(account){
+      Account.friendAccount(account.id)
+        .then(function(s){
+          if(s.status==200){
+            console.log(s)
+            $scope.friends.push(s.data)  
+          }
+        }, function(e){console.log(e);});
     };
 
     // Accounts modal
