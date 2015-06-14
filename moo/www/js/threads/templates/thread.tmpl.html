@@ -15,6 +15,10 @@
 
                 <img class="avatar note-sender" ng-src="{{note.author.profile_picture_url}}"></img>
 
+                <!-- <div class="thread username">
+                    {{note.author.username}}
+                </div> -->
+
                 <div class="thread timeStamp">
                     {{dateFormatter(note.time_updated)}}
                 </div>
@@ -24,7 +28,8 @@
                         {{note.content}}    
                     </div>
                     <div ng-if="note.is_gif" class="note-gif" 
-                        style="background-image: url({{note.content}});
+                        style="
+                                background-image: url({{note.content}});
                                 background-repeat: no-repeat;
                                 background-position: 50% 50%;
                                 background-size: cover;

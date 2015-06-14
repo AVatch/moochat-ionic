@@ -4,13 +4,41 @@
     right: 15px;
     color: #bbbbbb;
 }
-
 .thread.timeStamp{
   font-size: 75%;
 }
 .note-content-me .thread.timeStamp{
   left: 15px;
 }
+
+
+
+.username{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #bbbbbb;
+}
+.thread.username{
+  font-size: 75%;
+}
+.note-content-me .thread.username{
+  left: 15px;
+}
+
+
+.note-container{
+  background-color:red;
+}
+
+
+
+
+
+
+
+
+
 
 .loading-spinner{
     

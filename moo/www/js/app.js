@@ -45,6 +45,7 @@ angular.module('moo', ['ionic',
      }else{
         $state.go('authentication');
      }
+
    });
 
 })

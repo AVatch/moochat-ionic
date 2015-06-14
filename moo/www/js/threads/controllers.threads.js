@@ -186,8 +186,6 @@ angular.module('moo.controllers.threads', [])
       $timeout(poll, 5000);
     }; poll();
 
-    
-
     // send note to thread
     $scope.createNote = function(msg){
       var note = {};
