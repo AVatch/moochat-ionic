@@ -4,8 +4,8 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 
 // Setup Constants
 
-//.constant('DOMAIN', 'http://127.0.0.1:8000')
-.constant('DOMAIN', 'https://6c35ae39.ngrok.com')
+.constant('DOMAIN', 'http://127.0.0.1:8000')
+//.constant('DOMAIN', 'https://6c35ae39.ngrok.com')
 
 // Setup Initialization Logic
 
@@ -439,6 +439,7 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
         $scope.loading = false;
         if(s.status == 200){
           $scope.threads = s.data.results; 
+          console.log($scope.threads);
         }else if(s.status == 400){
           
         }else{
@@ -511,6 +512,19 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
       $scope.NewThreadModal.remove();
       $scope.AccountModal.remove();
     });
+
+    $scope.dateFormatter = function(d){
+      var d = new Date(d);
+      var now = new Date();
+
+      var diff = now.getTime() - d.getTime();
+      var day = 1000*60*60*24;
+      if(diff > day){
+        return d.toLocaleDateString();
+      }else{
+        return d.toLocaleTimeString();
+      }      
+    }
 }])
 
 .controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', '$timeout', '$ionicScrollDelegate', 'Account', 'Thread', 'Note', 'Gif',
