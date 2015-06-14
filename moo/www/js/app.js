@@ -420,23 +420,30 @@ angular.module('moo', ['ionic', 'LocalStorageModule'])
 
 }])
 
-.controller('ThreadsController', ['$scope', '$state', '$ionicModal', 'Account', 'Thread',
-  function($scope, $state, $ionicModal, Account, Thread){
+.controller('ThreadsController', ['$scope', '$state', '$timeout', '$ionicModal', 'Account', 'Thread',
+  function($scope, $state, $timeout, $ionicModal, Account, Thread){
     
+    // Pull the threads
+    $scope.threads = []; 
+    $scope.loading = true;
+
     // Get me
     Account.me().then(function(s){
       Account.cacheMe(s.data);
       $scope.me = s.data;
       pullThreads($scope.me.id);
       pullFriendList($scope.me.id);
+      
+      // done loading
+      $timeout(function() {
+        $scope.loading = false;
+      }, 1000);
+      
+
     }, function(e){console.log(e);});
     
-    // Pull the threads
-    $scope.threads = []; 
-    $scope.loading = true;
     var pullThreads = function(pk){
       Account.getThreadList(pk).then(function(s){
-        $scope.loading = false;
         if(s.status == 200){
           $scope.threads = s.data.results; 
           console.log($scope.threads);

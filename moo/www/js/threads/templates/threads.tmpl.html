@@ -14,10 +14,12 @@
     </ion-refresher>
     
     <!-- loading spinner -->
-    <ion-spinner ng-if="loading" icon="spiral"></ion-spinner>
+    <div class="row">
+        <ion-spinner class="loading-spinner" ng-if="loading" icon="spiral"></ion-spinner>
+    </div>
     
     <!-- list of threads -->
-    <ion-list>
+    <ion-list ng-if="!loading">
         <ion-item ng-repeat="thread in threads" 
                   ui-sref='thread({pk: thread.id})'>
             
@@ -25,7 +27,7 @@
                 <div class="col">
                     <img ng-repeat="user in thread.participants" class="avatar" ng-src="{{user.profile_picture_url}}" style="margin-right:5px;">
                 </div>
-                <div class="col">
+                <div class="timeStamp">
                     {{dateFormatter(thread.time_updated)}}
                 </div>
             </div>
