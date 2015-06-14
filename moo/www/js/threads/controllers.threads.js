@@ -144,8 +144,11 @@ angular.module('moo.controllers.threads', [])
       }else{
         return d.toLocaleTimeString();
       }      
-    }
+    };
 }])
+
+
+
 
 .controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', '$timeout', '$ionicScrollDelegate', 'Account', 'Thread', 'Note', 'Gif',
   function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicScrollDelegate, Account, Thread, Note, Gif){
@@ -155,18 +158,36 @@ angular.module('moo.controllers.threads', [])
     
     // pull the notes in the thread
     $scope.notes = [];
+    var initPoll = false;
     var threadID = $stateParams.pk;
     
-    Thread.getNotes(threadID).then(function(s){
-      if(s.status == 200){
-           $scope.notes = s.data.results;
-           $ionicScrollDelegate.scrollBottom();
-        }else if(s.status == 400){
-        }else{
-          console.log("Unkown Error");
-        }
-    }, function(e){console.log(e);});
+    var pullNotes = function(){
+      Thread.getNotes(threadID).then(function(s){
+        if(s.status == 200){
+          // if($scope.notes.length!=0 && s.data.results[s.data.results.length-1].id == $scope.notes[$scope.notes.length-1].id){
+          //   $ionicScrollDelegate.scrollBottom();
+          // }
+            if(!initPoll){
+              $ionicScrollDelegate.scrollBottom();
+              initPoll = true;
+            }
+            $scope.notes = s.data.results;
+
+          }else if(s.status == 400){
+          }else{
+            console.log("Unkown Error");
+          }
+      }, function(e){console.log(e);});
+    };
+
+    // poll the server for notes
+    var poll = function() {
+      pullNotes();
+      $timeout(poll, 5000);
+    }; poll();
+
     
+
     // send note to thread
     $scope.createNote = function(msg){
       var note = {};
@@ -199,6 +220,7 @@ angular.module('moo.controllers.threads', [])
     }
     
     
+
     // Search gif
     $scope.searchGifs = function(q){
       $scope.results = [];
@@ -210,7 +232,6 @@ angular.module('moo.controllers.threads', [])
     };
     
     // Gif-search popover
-    
     $ionicPopover.fromTemplateUrl('js/gifs/templates/gif-search.pop.html', {
       scope: $scope
     }).then(function(popover) {
@@ -241,5 +262,18 @@ angular.module('moo.controllers.threads', [])
     $scope.back = function(){
       $window.history.back();
     }; 
+
+    $scope.dateFormatter = function(d){
+      var d = new Date(d);
+      var now = new Date();
+
+      var diff = now.getTime() - d.getTime();
+      var day = 1000*60*60*24;
+      if(diff > day){
+        return d.toLocaleDateString();
+      }else{
+        return d.toLocaleTimeString();
+      }      
+    };
 
 }]);

@@ -9,12 +9,16 @@
     <p ng-if="note.length==0">Be the first to moo!</p>
 
     <ion-list>
-        <ion-item ng-repeat="note in notes | reverse" class="note">
+        <ion-item ng-repeat="note in notes | reverse" class="note" style="border: 0px;">
             
             <div ng-class="{'note-content-me':me.id==note.author.id, 'note-content':me.id!=note.author.id}">
 
                 <img class="avatar note-sender" ng-src="{{note.author.profile_picture_url}}"></img>
-                    
+
+                <div class="thread timeStamp">
+                    {{dateFormatter(note.time_updated)}}
+                </div>
+
                 <div class="note-content">
                     <div ng-if="!note.is_gif" class="note-text">
                         {{note.content}}    

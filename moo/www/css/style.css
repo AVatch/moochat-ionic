@@ -5,6 +5,13 @@
     color: #bbbbbb;
 }
 
+.thread.timeStamp{
+  font-size: 75%;
+}
+.note-content-me .thread.timeStamp{
+  left: 15px;
+}
+
 .loading-spinner{
     
     display: block;
