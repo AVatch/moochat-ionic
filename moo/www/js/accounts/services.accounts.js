@@ -34,7 +34,7 @@ angular.module('moo.services.accounts', [])
       return response;
     };
     
-    var getAccountist = function(){
+    var getAccountList = function(){
       var token = Authentication.getToken();
       var response = $http({
                         url: DOMAIN + '/api/v1/accounts/',
@@ -63,7 +63,7 @@ angular.module('moo.services.accounts', [])
     var friendAccount = function(pk){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/accounts/' + pk + '/friends/',
+                        url: DOMAIN + '/api/v1/accounts/' + pk + '/add/friends/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -72,6 +72,19 @@ angular.module('moo.services.accounts', [])
                       });
       return response;
     };
+
+    var searchAccount = function(q){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/v1/accounts/search/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        data: q
+                      });
+      return response;
+    }
     
     var cacheMe = function(me){
       return localStorageService.set('me', me);
@@ -85,8 +98,9 @@ angular.module('moo.services.accounts', [])
       me: me,
       getFriendList: getFriendList,
       friendAccount: friendAccount,
-      getAccountist: getAccountist,
+      getAccountList: getAccountList,
       getThreadList: getThreadList,
+      searchAccount: searchAccount,
       cacheMe: cacheMe,
       getMe: getMe    
     };

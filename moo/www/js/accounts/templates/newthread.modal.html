@@ -5,15 +5,52 @@
         <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button>
     </ion-header-bar>
     
-    <ion-content>
-    
-        <ion-list>
-            <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
-                {{friend.username}}
-            </ion-checkbox>
+    <ion-content scroll="false">
+
+        <ion-tabs class="tabs-positive tabs-icon-only">
+
+          <ion-tab title="New Message" icon-on="ion-ios-person" icon-off="ion-ios-person-outline">
+            <!-- Tab 1 content -->
             
-        </ion-list>
-        
+            <ion-content>
+                <ion-list>
+                    <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
+                        {{friend.username}}
+                    </ion-checkbox>
+                    
+                </ion-list>
+            </ion-content>
+          </ion-tab>
+
+          <ion-tab title="Add a friend" icon-on="ion-ios-personadd" icon-off="ion-ios-personadd-outline">
+            <!-- Tab 2 content -->
+            <ion-content>
+                <div class="list list-inset">
+                  <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text" placeholder="Add a friend" ng-model="query">
+                  </label>
+                </div>
+                <button ng-click="searchAccounts(query)" class="button button-clear button-positive">
+                  Search
+                </button>
+
+                <ion-list ng-if="results.length!=0"
+                          ng-repeat="result in results">
+                    <ion-checkbox>
+                        {{result.username}}
+                    </ion-checkbox>
+                </ion-list>
+
+                <div ng-if="results.length==0" class="row">
+                    No results found :'(
+                </div>
+
+            </ion-content>
+          </ion-tab>
+
+        </ion-tabs>
+
     </ion-content>
     
 </ion-modal-view>

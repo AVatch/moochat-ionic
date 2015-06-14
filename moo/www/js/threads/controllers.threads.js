@@ -45,14 +45,29 @@ angular.module('moo.controllers.threads', [])
     // Pull the friend list
     $scope.friends = [];
     var pullFriendList = function(pk){
-      Account.getAccountist().then(function(s){
+      Account.getAccountList().then(function(s){
         if(s.status==200){
           console.log(s.data);
           $scope.friends = s.data.results;
         }
       }, function(e){console.log(e);});
     }; 
-    
+
+    // Search for a friend
+    $scope.searchAccounts = function(q){
+      q = {"query": q}
+      Account.searchAccount(q)
+        .then(function(s){
+          if(s.status==200){
+            $scope.results = [s.data];
+          }
+        }, function(e){
+          if(e.status==404){
+            $scope.results = [];
+          }
+        });
+    };
+
     // Accounts modal
     $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
       scope: $scope,
