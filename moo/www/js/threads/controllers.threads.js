@@ -10,7 +10,8 @@ angular.module('moo.controllers.threads', [])
   function($scope, $state, $timeout, $ionicModal, Account, Thread){
     
     //
-    // Initialize variables
+    //
+    // Initialize Variables
     $scope.loading = true;
     $scope.warning = false;
     $scope.me = {};
@@ -21,19 +22,20 @@ angular.module('moo.controllers.threads', [])
     $scope.friends = [];
 
     //
-    // service helpers
+    //
+    // Sync
     var sync = function(){
       Account.me()
         // pull latest me object
         .then(function(s){
           $scope.me = s.data;
           return $scope.me;
-        }, function(e){console.log(e);})
+        }, function(e){raiseWarning(e);})
         // cache it
         .then(function(s){
           Account.cacheMe(s);
           return s;
-        }, function(e){console.log(e);})
+        }, function(e){raiseWarning(e);})
         // pull account threads
         .then(function(s){
           Account.getThreadList(s.id)
@@ -43,20 +45,75 @@ angular.module('moo.controllers.threads', [])
               $scope.threadsNextPage = s.data.next;
               $scope.threadsPreviousPage = s.data.previous;
               $scope.threads = s.data.results;
-            }, function(e){console.log(e);});
+
+              $scope.threads = applyColorsToThreadAuthors($scope.threads);
+              console.log($scope.threads);
+
+            }, function(e){raiseWarning(e);});
             return s;
-        }, function(e){console.log(e);})
+        }, function(e){raiseWarning(e);})
         // pull account friends
         .then(function(s){
           Account.getFriendList(s.id)
             .then(function(s){
               $scope.friends = s.data.results;
-            }, function(e){console.log(e);});
-        }, function(e){console.log(e);});
+            }, function(e){raiseWarning(e);});
+        }, function(e){raiseWarning(e);});
     };
 
+
     //
-    // helpers
+    //
+    // Helpers
+    $scope.dateFormatter = function(d){
+      /*
+       * Format the time stamp to be readable
+       */ 
+      var d = new Date(d);
+      var now = new Date();
+
+      var diff = now.getTime() - d.getTime();
+      var day = 1000*60*60*24;
+      if(diff > day){
+        return d.toLocaleDateString();
+      }else{
+        return d.toLocaleTimeString();
+      }      
+    };
+
+    var randomColor = function(){
+      /*
+       * Pick a random color for avators
+       */ 
+      var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588"];
+      var color = colors[Math.floor(Math.random()*colors.length)];
+      return {'background-color': color};
+    };
+
+    var applyColorsToThreadAuthors = function(arr){
+      /*
+       * Apply a random color style to each thread
+       * participant
+       */ 
+      for(var i=0; i<arr.length; i++){
+        for(var j=0; j<arr[i].participants.length; j++){
+          arr[i].participants[j].background = randomColor();
+        }
+      }
+      return arr;
+    };
+
+    $scope.getInitials = function(a){
+      /*
+       * Parse capitalized initials from first and last name
+       */ 
+      return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
+    };
+
+    var raiseWarning = function(err){
+      $scope.warning = true;
+      console.log(err);
+    };
 
 
     //
