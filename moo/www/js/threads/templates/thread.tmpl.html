@@ -13,7 +13,11 @@
             
             <div ng-class="{'note-content-me':me.id==note.author.id, 'note-content':me.id!=note.author.id}">
 
-                <img class="avatar note-sender" ng-src="{{note.author.profile_picture_url}}"></img>
+                <!-- <img class="avatar note-sender" ng-src="{{note.author.profile_picture_url}}"></img> -->
+                <div class="threads avatar note-sender"
+                     ng-style="note.author.background">
+                     <span>{{getInitials(note.author)}}</span>
+                </div>
                     
                 <div class="note-content">
                     <div ng-if="!note.is_gif" class="note-text">
