@@ -1,29 +1,36 @@
 <ion-modal-view>
-    <ion-header-bar>
-        <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-close-empty"></button>
-        <h1 class="title">Moo at Someone</h1>
-        <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button>
-    </ion-header-bar>
-    
-    <ion-content scroll="false">
 
-        <ion-tabs class="tabs-icon-only">
+    <!-- NEED TO FIX THIS HARD CODED HIEGHT-->
+    <ion-slide-box style="height:667px;">
+        
+        <ion-slide>
+            <!-- select friends to message -->
+            <ion-header-bar>
+                <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-close-empty"></button>
+                <h1 class="title">Moo at Someone</h1>
+                <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button>
+            </ion-header-bar>
 
-          <ion-tab title="New Message" icon-on="ion-ios-person" icon-off="ion-ios-person-outline">
-            <!-- Tab 1 content -->
-            
+            <!-- list of selected friends -->
+
             <ion-content>
+                <!-- list of friends -->
                 <ion-list>
                     <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
                         {{friend.username}}
                     </ion-checkbox>
-                    
                 </ion-list>
-            </ion-content>
-          </ion-tab>
 
-          <ion-tab title="Add a friend" icon-on="ion-ios-personadd" icon-off="ion-ios-personadd-outline">
-            <!-- Tab 2 content -->
+            </ion-content>
+        </ion-slide>
+
+        <ion-slide>
+            <!-- select friends to message -->
+            <ion-header-bar>
+                <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-close-empty"></button>
+                <h1 class="title">Add a Friend</h1>
+            </ion-header-bar>
+
             <ion-content>
                 <div class="row">
                     <div class="col col-75">
@@ -64,10 +71,8 @@
                 </div>
 
             </ion-content>
-          </ion-tab>
-
-        </ion-tabs>
-
-    </ion-content>
+            
+        </ion-slide>
+    </ion-slide-box>
     
 </ion-modal-view>
