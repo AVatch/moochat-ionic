@@ -6,8 +6,9 @@
 angular.module('moo.controllers.threads', [])
 
 .controller('ThreadsController', ['$scope', '$state', '$timeout', 
-  '$ionicModal', 'Account', 'Thread',
-  function($scope, $state, $timeout, $ionicModal, Account, Thread){
+  '$ionicModal', '$ionicSlideBoxDelegate', 'Account', 'Thread',
+  function($scope, $state, $timeout, $ionicModal, $ionicSlideBoxDelegate, 
+    Account, Thread){
     
     /*
      * Initialize Variables
@@ -95,6 +96,8 @@ angular.module('moo.controllers.threads', [])
         .then(function(s){
           if(s.status==200){
             $scope.friends.push(s.data);
+            console.log("HI HERE");
+            $ionicSlideBoxDelegate.previous();
           }
         }, function(e){console.log(e);});
     };
