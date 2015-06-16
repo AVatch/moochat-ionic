@@ -263,6 +263,9 @@ angular.module('moo.controllers.threads', [])
      */
     var sync = function(){
       $scope.me = Account.getMe();
+
+      console.log($scope.me)
+
       Thread.getThread($stateParams.pk)
         // get the thread object with the participants
         .then(function(s){
@@ -277,7 +280,7 @@ angular.module('moo.controllers.threads', [])
               $scope.notesCount = s.data.count;
               $scope.notesNextPage = s.data.next;
               $scope.notesPreviousPage = s.data.previous;
-              $scope.notes = s.data.results;
+              $scope.notes = s.data.results.reverse();
               $scope.notes = updateNoteAuthors($scope.notes);
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(s);})
@@ -299,8 +302,6 @@ angular.module('moo.controllers.threads', [])
       note.content = msg;
       note.is_gif = false;
       note.thread = $scope.thread.id;
-      
-      console.log(note)
 
       Note.createNote(note).then(function(s){
         if(s.status==201){
@@ -366,6 +367,9 @@ angular.module('moo.controllers.threads', [])
        */ 
       for(var i=0; i<arr.length; i++){
         for(var j=0; j<$scope.thread.participants.length; j++){
+          if($scope.thread.participants[j].id == $scope.me.id){
+            $scope.me.background = $scope.thread.participants[j].background;
+          }
           if($scope.thread.participants[j].id == arr[i].author.id){
             arr[i].author = $scope.thread.participants[j];
           }

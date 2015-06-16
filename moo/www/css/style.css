@@ -58,20 +58,29 @@
     width: 100%;
 }
 
-.note-gif{
-   
-   border-radius: 10px;
-   width: 50%;
+
+
+
+.note{
+  border: 0px;
+}
+.note-gif{   
+  border-radius: 10px;
+  width: 50%;
+}
+.note-text{
+  padding-left: 60px;
 }
 
-.note-content-me img{
+
+.authored .avatar{
     float: right;
     margin-left: 15px;
 }
-.note-content-me .note-content{
+.authored .note-content{
     float: right;
 }
-.note-content-me .note-content .note-gif{
+.authored .note-content .note-gif{
     float: right;
 }
 
