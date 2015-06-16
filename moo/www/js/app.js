@@ -85,12 +85,12 @@ angular.module('moo', ['ionic',
         templateUrl: 'js/threads/templates/thread.tmpl.html',
         controller: 'ThreadController' 
       });
-  }])
+}]);
   
   
-// Setup Filters
-.filter('reverse', function() {
-  return function(items) {
-    return items.slice().reverse();
-  };
-});
+// // Setup Filters
+// .filter('reverse', function() {
+//   return function(items) {
+//     return items.slice().reverse();
+//   };
+// });
