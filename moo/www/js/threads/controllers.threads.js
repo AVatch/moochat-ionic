@@ -33,6 +33,14 @@ angular.module('moo.controllers.threads', [])
       Account.getThreadList(pk).then(function(s){
         if(s.status == 200){
           $scope.threads = s.data.results; 
+
+          for(var i=0; i < $scope.threads.length; i++){
+            for(var j=0; j < $scope.threads[i].participants.length; j++){
+              $scope.threads[i].participants[j].background = randomColor();
+            }
+          }
+          console.log($scope.threads);
+
         }else if(s.status == 400){
           
         }else{
@@ -144,10 +152,9 @@ angular.module('moo.controllers.threads', [])
       }      
     };
 
-    $scope.randomColor = function(){
+    var randomColor = function(){
       var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588"];
       var color = colors[Math.floor(Math.random()*colors.length)];
-
       return {'background-color': color};
     };
 
