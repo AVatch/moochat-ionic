@@ -8,19 +8,6 @@ angular.module('moo.services.threads', [])
 .factory('Thread', ['$http', 'Authentication', 'DOMAIN',
   function($http, Authentication, DOMAIN){
     
-    var pullThreadList = function(pk){
-      var token = Authentication.getToken();
-      var response = $http({
-                        url: DOMAIN + '/api/v1/threads/',
-                        method: 'GET',
-                        headers: { 
-                          'Content-Type': 'application/json',
-                          'Authorization': 'Token ' + token.token },
-                        data: ''
-                      });
-      return response;
-    };
-
     var startThread = function(thread){
       var token = Authentication.getToken();
       var response = $http({
@@ -60,7 +47,6 @@ angular.module('moo.services.threads', [])
     };
 
     return{
-      pullThreadList: pullThreadList,
       startThread: startThread,
       getThread: getThread,
       getNotes: getNotes

@@ -34,19 +34,6 @@ angular.module('moo.services.accounts', [])
       return response;
     };
     
-    var getAccountList = function(){
-      var token = Authentication.getToken();
-      var response = $http({
-                        url: DOMAIN + '/api/v1/accounts/',
-                        method: 'GET',
-                        headers: { 
-                          'Content-Type': 'application/json',
-                          'Authorization': 'Token ' + token.token },
-                        data: ''
-                      });
-      return response;
-    };
-    
     var getThreadList = function(pk){
       var token = Authentication.getToken();
       var response = $http({
@@ -98,7 +85,6 @@ angular.module('moo.services.accounts', [])
       me: me,
       getFriendList: getFriendList,
       friendAccount: friendAccount,
-      getAccountList: getAccountList,
       getThreadList: getThreadList,
       searchAccount: searchAccount,
       cacheMe: cacheMe,
