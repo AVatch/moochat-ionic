@@ -24,7 +24,7 @@
                   ui-sref='thread({pk: thread.id})'>
             
             <div class="row">
-                <div class="threads avatar"
+                <div class="threads avatar animated bounceInLeft"
                      ng-repeat="user in thread.participants"
                      ng-if="user.id!=me.id"
                      ng-style="user.background">
