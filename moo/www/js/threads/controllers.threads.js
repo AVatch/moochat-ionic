@@ -48,7 +48,6 @@ angular.module('moo.controllers.threads', [])
               $scope.threads = s.data.results;
 
               $scope.threads = applyColorsToThreadAuthors($scope.threads);
-              console.log($scope.threads);
 
             }, function(e){raiseWarning(e);});
             return s;
@@ -110,6 +109,12 @@ angular.module('moo.controllers.threads', [])
           recipients.push($scope.friends[i].id);
         }
       }
+
+      if(recipients.length == 0){
+        console.log("not enough recipients");
+        return;
+      }
+
       var thread = {};
       thread.participants = recipients;
       Thread.startThread(thread).then(function(s){
@@ -188,7 +193,6 @@ angular.module('moo.controllers.threads', [])
        * Logic for when sync is done
        */ 
       $scope.loading = false;
-      console.log("DONE");
       $scope.$broadcast('scroll.refreshComplete');
     };
 

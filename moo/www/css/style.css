@@ -40,7 +40,13 @@
   float: left;
 }
 
-
+.pill{
+  padding: 5px;
+  border-radius: 15px;
+  background-color: #387ef5;
+  color: white;
+  float:left;
+}
 
 
 

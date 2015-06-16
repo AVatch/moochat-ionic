@@ -11,45 +11,42 @@
                 <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button>
             </ion-header-bar>
 
-            <!-- list of selected friends -->
-
             <ion-content>
+                <!-- list of selected friends -->
+                <div class="row">
+                    <span class="pill"
+                          ng-repeat="user in friends" 
+                          ng-if="user.sendTo">
+                          {{user.username}}
+                    </span>
+                </div>
+
                 <!-- list of friends -->
                 <ion-list>
                     <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
                         {{friend.username}}
                     </ion-checkbox>
                 </ion-list>
-
+                
             </ion-content>
         </ion-slide>
 
         <ion-slide>
-            <!-- select friends to message -->
-            <ion-header-bar>
-                <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-close-empty"></button>
-                <h1 class="title">Add a Friend</h1>
+            <!-- add a friend -->
+            <ion-header-bar class="item-input-inset">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" placeholder="Find a Friend" ng-model="query">
+                  </label>
+                  <button class="button button-clear" ng-click="searchAccounts(query)">
+                    Search
+                  </button>
             </ion-header-bar>
 
             <ion-content>
-                <div class="row">
-                    <div class="col col-75">
-                        <div class="list list-inset">
-                          <label class="item item-input" style="border-top:0px; border-left:0px; border-right:0px;">
-                            <i class="icon ion-search placeholder-icon"></i>
-                            <input type="text" placeholder="Username" ng-model="query">
-                          </label>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <button ng-click="searchAccounts(query)" class="button button-clear button-positive" style="margin-top:20px;">
-                          Search
-                        </button>
-                    </div>
-                </div>
 
-                <ion-list ng-if="results.length!=0">
-                    <ion-item ng-repeat="result in results">
+                <ion-list ng-if="friendsResults.length!=0">
+                    <ion-item ng-repeat="result in friendsResults">
                         <div class="row">
                             <div class="col col-75">
                                 {{result.username}}      
@@ -64,11 +61,6 @@
                         </div>
                     </ion-item>
                 </ion-list>
-
-
-                <div ng-if="results.length==0" class="row">
-                    <p style="position:absolute">No results found :'(</p>
-                </div>
 
             </ion-content>
             
