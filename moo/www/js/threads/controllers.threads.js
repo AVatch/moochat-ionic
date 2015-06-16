@@ -9,9 +9,9 @@ angular.module('moo.controllers.threads', [])
   '$ionicModal', 'Account', 'Thread',
   function($scope, $state, $timeout, $ionicModal, Account, Thread){
     
-    //
-    //
-    // Initialize Variables
+    /*
+     * Initialize Variables
+     */
     $scope.loading = true;
     $scope.warning = false;
     $scope.me = {};
@@ -22,10 +22,10 @@ angular.module('moo.controllers.threads', [])
     $scope.friendsResults = [];
     $scope.friends = [];
 
-    //
-    //
-    // Sync
-    var sync = function(){
+    /*
+     * Sync
+     */
+    $scope.sync = function(){
       Account.me()
         // pull latest me object
         .then(function(s){
@@ -67,9 +67,9 @@ angular.module('moo.controllers.threads', [])
     };
 
 
-    //
-    //
-    // API Calls
+    /*
+     * API Calls
+     */
     $scope.searchAccounts = function(q){
       /*
        * Search for accounts
@@ -119,9 +119,17 @@ angular.module('moo.controllers.threads', [])
       }, function(e){console.log(e);});
     };
 
-    //
-    //
-    // Helpers
+    /*
+     * Initialize Application
+     */
+    var init = function(){
+      $scope.sync();
+    }; init();
+
+
+    /*
+     * Helpers
+     */
     $scope.dateFormatter = function(d){
       /*
        * Format the time stamp to be readable
@@ -180,21 +188,15 @@ angular.module('moo.controllers.threads', [])
        * Logic for when sync is done
        */ 
       $scope.loading = false;
+      console.log("DONE");
+      $scope.$broadcast('scroll.refreshComplete');
     };
 
-
-
-    //
-    //
-    // initialize application
-    var init = function(){
-      sync()
-    }; init();
 
     //
     //
     // View Components
-    // Accounts modal
+    // Account modal
     $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
       scope: $scope,
       animation: 'slide-in-up'

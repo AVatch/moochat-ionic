@@ -9,7 +9,7 @@
     <!-- refresh threads -->
     <ion-refresher
         pulling-text="Pull to refresh..."
-        on-refresh="doRefresh()"
+        on-refresh="sync()"
         icon="ripple">
     </ion-refresher>
     
@@ -20,28 +20,20 @@
     
     <!-- list of threads -->
     <ion-list ng-if="!loading">
-        <ion-item ng-repeat="thread in threads" 
+        <ion-item ng-repeat="thread in threads"
                   ui-sref='thread({pk: thread.id})'>
-
             
             <div class="row">
-                
-                <!-- <img ng-repeat="user in thread.participants" class="avatar" ng-src="{{user.profile_picture_url}}" style="margin-right:5px;"> -->
-                
                 <div class="threads avatar"
                      ng-repeat="user in thread.participants"
                      ng-style="user.background">
                      <span>{{getInitials(user)}}</span>
                 </div>
-                
                 <div class="timeStamp">
                     {{dateFormatter(thread.time_updated)}}
                 </div>
             </div>
 
-            <!-- <ion-scroll direction="x">
-                <img ng-repeat="user in thread.participants" class="avatar" ng-src="{{user.profile_picture_url}}" style="margin-right: 5px;">
-            </ion-scroll> -->
         </ion-item>
     </ion-list>
 
