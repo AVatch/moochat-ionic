@@ -278,6 +278,7 @@ angular.module('moo.controllers.threads', [])
               $scope.notesNextPage = s.data.next;
               $scope.notesPreviousPage = s.data.previous;
               $scope.notes = s.data.results;
+              $scope.notes = updateNoteAuthors($scope.notes);
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(s);})
         // sync done
@@ -354,6 +355,20 @@ angular.module('moo.controllers.threads', [])
       for(var i=0; i<arr.length; i++){
         for(var j=0; j<arr[i].participants.length; j++){
           arr[i].participants[j].background = randomColor();
+        }
+      }
+      return arr;
+    };
+
+    var updateNoteAuthors = function(arr){
+      /*
+       * Match note author to thread participant
+       */ 
+      for(var i=0; i<arr.length; i++){
+        for(var j=0; j<$scope.thread.participants.length; j++){
+          if($scope.thread.participants[j].id == arr[i].author.id){
+            arr[i].author = $scope.thread.participants[j];
+          }
         }
       }
       return arr;
