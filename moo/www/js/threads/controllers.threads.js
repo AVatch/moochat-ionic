@@ -305,6 +305,7 @@ angular.module('moo.controllers.threads', [])
 
       Note.createNote(note).then(function(s){
         if(s.status==201){
+          s.data.author.background = $scope.me.background;
           $scope.notes.push(s.data);
           $scope.msg = "";
           $ionicScrollDelegate.scrollBottom(true);  
