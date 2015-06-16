@@ -267,8 +267,8 @@ angular.module('moo.controllers.threads', [])
         // get the thread object with the participants
         .then(function(s){
           $scope.thread = s.data;
-          $scope.thread = applyColorsToThreadAuthors([$scope.thread]);
-          return $scope.thread[0];
+          $scope.thread = applyColorsToThreadAuthors([$scope.thread])[0];
+          return $scope.thread;
         }, function(e){raiseWarning(e);})
         // pull the notes in the thread object
         .then(function(s){
@@ -284,6 +284,30 @@ angular.module('moo.controllers.threads', [])
         .then(function(s){
           syncDone();
         }, function(e){raiseWarning(e);});
+    };
+
+    /*
+     * API Calls
+     */
+
+    $scope.createNote = function(msg){
+      /*
+       * Create a text note
+       */
+      var note = {};
+      note.content = msg;
+      note.is_gif = false;
+      note.thread = $scope.thread.id;
+      
+      console.log(note)
+
+      Note.createNote(note).then(function(s){
+        if(s.status==201){
+          $scope.notes.push(s.data);
+          $scope.msg = "";
+          $ionicScrollDelegate.scrollBottom(true);  
+        }        
+      }, function(e){console.log(e);});
     };
 
     /*
@@ -355,7 +379,8 @@ angular.module('moo.controllers.threads', [])
        * Logic for when sync is done
        */ 
       $scope.loading = false;
-      $scope.$broadcast('scroll.refreshComplete');
+      // $scope.$broadcast('scroll.refreshComplete');
+      
     };
 
     $scope.back = function(){
