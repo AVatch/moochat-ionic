@@ -96,8 +96,8 @@ angular.module('moo.controllers.threads', [])
         .then(function(s){
           if(s.status==200){
             $scope.friends.push(s.data);
-            console.log("HI HERE");
             $ionicSlideBoxDelegate.previous();
+            $scope.friendsResults = [];
           }
         }, function(e){console.log(e);});
     };
