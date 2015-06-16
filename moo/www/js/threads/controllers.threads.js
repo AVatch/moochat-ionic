@@ -33,7 +33,6 @@ angular.module('moo.controllers.threads', [])
       Account.getThreadList(pk).then(function(s){
         if(s.status == 200){
           $scope.threads = s.data.results; 
-          console.log($scope.threads);
         }else if(s.status == 400){
           
         }else{
@@ -47,7 +46,6 @@ angular.module('moo.controllers.threads', [])
     var pullFriendList = function(pk){
       Account.getFriendList(pk).then(function(s){
         if(s.status==200){
-          console.log(s.data);
           $scope.friends = s.data.results;
         }
       }, function(e){console.log(e);});
@@ -144,8 +142,34 @@ angular.module('moo.controllers.threads', [])
       }else{
         return d.toLocaleTimeString();
       }      
-    }
+    };
+
+    $scope.randomColor = function(){
+      var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588"];
+      var color = colors[Math.floor(Math.random()*colors.length)];
+
+      return {'background-color': color};
+    };
+
+    $scope.getInitials = function(a){
+      return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
+    };
+
 }])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .controller('ThreadController', ['$scope', '$ionicPopover', '$window', '$stateParams', '$timeout', '$ionicScrollDelegate', 'Account', 'Thread', 'Note', 'Gif',
   function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicScrollDelegate, Account, Thread, Note, Gif){
