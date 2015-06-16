@@ -18,7 +18,8 @@ angular.module('moo.controllers.threads', [])
     $scope.threadsCount = 0;
     $scope.threadsNextPage = "";
     $scope.threadsPreviousPage = "";
-    $scope.threads = []; 
+    $scope.threads = [];
+    $scope.friendsResults = [];
     $scope.friends = [];
 
     //
@@ -58,9 +59,65 @@ angular.module('moo.controllers.threads', [])
             .then(function(s){
               $scope.friends = s.data.results;
             }, function(e){raiseWarning(e);});
+        }, function(e){raiseWarning(e);})
+        // sync done
+        .then(function(s){
+          syncDone();
         }, function(e){raiseWarning(e);});
     };
 
+
+    //
+    //
+    // API Calls
+    $scope.searchAccounts = function(q){
+      /*
+       * Search for accounts
+       * only by username for now
+       */ 
+      q = {"query": q}
+      Account.searchAccount(q)
+        .then(function(s){
+          if(s.status==200){
+            $scope.friendsResults = [s.data];
+          }
+        }, function(e){
+          if(e.status==404){
+            $scope.friendsResults = [];
+          }
+        });
+    };
+
+    $scope.addFriend = function(account){
+      /*
+       * Add a friend       
+       */
+      Account.friendAccount(account.id)
+        .then(function(s){
+          if(s.status==200){
+            $scope.friends.push(s.data);
+          }
+        }, function(e){console.log(e);});
+    };
+
+    $scope.startNewThread = function(){
+      /*
+       * Start a new thread
+       */
+      var recipients = [];
+      for(var i=0; i<$scope.friends.length; i++){
+        if($scope.friends[i].sendTo){
+          recipients.push($scope.friends[i].id);
+        }
+      }
+      var thread = {};
+      thread.participants = recipients;
+      Thread.startThread(thread).then(function(s){
+        if(s.status==201){
+          $state.go('thread', {'pk': s.data.id});
+        }
+      }, function(e){console.log(e);});
+    };
 
     //
     //
@@ -111,169 +168,65 @@ angular.module('moo.controllers.threads', [])
     };
 
     var raiseWarning = function(err){
+      /*
+       * Raise a warning flag and print it out
+       */ 
       $scope.warning = true;
       console.log(err);
     };
 
+    var syncDone = function(){
+      /*
+       * Logic for when sync is done
+       */ 
+      $scope.loading = false;
+    };
 
+
+
+    //
     //
     // initialize application
     var init = function(){
       sync()
     }; init();
 
-
-
-    // // Get me
-    // Account.me().then(function(s){
-    //   Account.cacheMe(s.data);
-    //   $scope.me = s.data;
-    //   pullThreads($scope.me.id);
-    //   pullFriendList($scope.me.id);
-      
-    //   // done loading
-    //   $timeout(function() {
-    //     $scope.loading = false;
-    //   }, 1000);
-      
-    // }, function(e){
-    //   $scope.error = "Something went wrong :(";
-    //   $scope.loading = false;  
-    // });
+    //
+    //
+    // View Components
+    // Accounts modal
+    $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.AccountModal = modal;
+    });
+    $scope.openAccountModal = function() {
+      $scope.AccountModal.show();
+    };
+    $scope.closeAccountModal = function() {
+      $scope.AccountModal.hide();
+    };
+        
+    // Start a thread modal
+    $ionicModal.fromTemplateUrl('js/accounts/templates/newthread.modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.NewThreadModal = modal;
+    });
+    $scope.openNewThreadModal = function() {
+      $scope.NewThreadModal.show();
+    };
+    $scope.closeNewThreadModal = function() {
+      $scope.NewThreadModal.hide();
+    };
     
-    // var pullThreads = function(pk){
-    //   Account.getThreadList(pk).then(function(s){
-    //     if(s.status == 200){
-    //       $scope.threads = s.data.results; 
-
-    //       for(var i=0; i < $scope.threads.length; i++){
-    //         for(var j=0; j < $scope.threads[i].participants.length; j++){
-    //           $scope.threads[i].participants[j].background = randomColor();
-    //         }
-    //       }
-    //       console.log($scope.threads);
-
-    //     }else if(s.status == 400){
-          
-    //     }else{
-    //       console.log("Unkown Error");
-    //     }
-    //   }, function(e){console.log(e);});
-    // };
-    
-    // // Pull the friend list
-    // $scope.friends = [];
-    // var pullFriendList = function(pk){
-    //   Account.getFriendList(pk).then(function(s){
-    //     if(s.status==200){
-    //       $scope.friends = s.data.results;
-    //     }
-    //   }, function(e){console.log(e);});
-    // }; 
-
-    // // Search for a friend
-    // $scope.searchAccounts = function(q){
-    //   q = {"query": q}
-    //   Account.searchAccount(q)
-    //     .then(function(s){
-    //       if(s.status==200){
-    //         $scope.results = [s.data];
-    //       }
-    //     }, function(e){
-    //       if(e.status==404){
-    //         $scope.results = [];
-    //       }
-    //     });
-    // };
-
-    // // Add a friend
-    // $scope.addFriend = function(account){
-    //   Account.friendAccount(account.id)
-    //     .then(function(s){
-    //       if(s.status==200){
-    //         console.log(s)
-    //         $scope.friends.push(s.data)  
-    //       }
-    //     }, function(e){console.log(e);});
-    // };
-
-    // // Accounts modal
-    // $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
-    //   scope: $scope,
-    //   animation: 'slide-in-up'
-    // }).then(function(modal) {
-    //   $scope.AccountModal = modal;
-    // });
-    // $scope.openAccountModal = function() {
-    //   console.log('opening account modal');
-    //   $scope.AccountModal.show();
-    // };
-    // $scope.closeAccountModal = function() {
-    //   $scope.AccountModal.hide();
-    // };
-    
-    // // Start a new thread
-    // $scope.startNewThread = function(){
-    //   var recipients = [];
-    //   for(var i=0; i<$scope.friends.length; i++){
-    //     if($scope.friends[i].sendTo){
-    //       recipients.push($scope.friends[i].id);
-    //     }
-    //   }
-     
-    //  var thread = {};
-    //  thread.participants = recipients;
-    //  Thread.startThread(thread).then(function(s){
-    //    if(s.status==201){
-    //      $state.go('thread', {'pk': s.data.id});
-    //    }
-    //  }, function(e){console.log(e);});
-     
-    // };
-    
-    // // Start a thread modal
-    // $ionicModal.fromTemplateUrl('js/accounts/templates/newthread.modal.html', {
-    //   scope: $scope,
-    //   animation: 'slide-in-up'
-    // }).then(function(modal) {
-    //   $scope.NewThreadModal = modal;
-    // });
-    // $scope.openNewThreadModal = function() {
-    //   $scope.NewThreadModal.show();
-    // };
-    // $scope.closeNewThreadModal = function() {
-    //   $scope.NewThreadModal.hide();
-    // };
-    
-    // //Cleanup the modal when we're done with it!
-    // $scope.$on('$destroy', function() {
-    //   $scope.NewThreadModal.remove();
-    //   $scope.AccountModal.remove();
-    // });
-
-    // $scope.dateFormatter = function(d){
-    //   var d = new Date(d);
-    //   var now = new Date();
-
-    //   var diff = now.getTime() - d.getTime();
-    //   var day = 1000*60*60*24;
-    //   if(diff > day){
-    //     return d.toLocaleDateString();
-    //   }else{
-    //     return d.toLocaleTimeString();
-    //   }      
-    // };
-
-    // var randomColor = function(){
-    //   var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588"];
-    //   var color = colors[Math.floor(Math.random()*colors.length)];
-    //   return {'background-color': color};
-    // };
-
-    // $scope.getInitials = function(a){
-    //   return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
-    // };
-
+    //Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.NewThreadModal.remove();
+      $scope.AccountModal.remove();
+    });
 }])
 
 
