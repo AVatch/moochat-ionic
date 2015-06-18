@@ -323,6 +323,7 @@ angular.module('moo.controllers.threads', [])
       
       Note.createNote(gif).then(function(s){
         if(s.status==201){
+          s.data.author.background = $scope.me.background;
           $scope.notes.push(s.data);
           $scope.msg = "";  
           $scope.closeGifSearch();
