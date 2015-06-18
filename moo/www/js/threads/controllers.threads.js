@@ -375,7 +375,7 @@ angular.module('moo.controllers.threads', [])
       }      
     };
 
-    var searchPaneWidth = 0;
+    var searchPaneWidth = 370;
     var updateWidth = function(arr){
       searchPaneWidth = (arr.length / 2) * 120;
       searchPaneWidth = searchPaneWidth + 'px';
