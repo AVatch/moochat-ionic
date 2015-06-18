@@ -293,6 +293,23 @@ angular.module('moo.controllers.threads', [])
      * API Calls
      */
 
+    $scope.searchGifs = function(q){
+      /*
+       * Search for gifs
+       */
+      $scope.searchingForGifs = true;
+      $scope.results = [];
+      q = {"query": q};
+      Gif.searchGif(q)
+        .then(function(s){
+          $scope.results = s.data.results;
+          updateWidth($scope.results);
+        }, function(e){console.log(e);})
+        .finally(function(){
+          $scope.searchingForGifs = false;
+        });
+    };
+
     $scope.createNote = function(msg){
       /*
        * Create a text note
@@ -342,15 +359,6 @@ angular.module('moo.controllers.threads', [])
     /*
      * Helpers
      */
-
-    $scope.searchGifs = function(q){
-      $scope.results = [];
-      q = {"query": q};
-      Gif.searchGif(q).then(function(s){
-        $scope.results = s.data.results;
-      }, function(e){console.log(e);});
-    };
-
     $scope.dateFormatter = function(d){
       /*
        * Format the time stamp to be readable
@@ -365,6 +373,16 @@ angular.module('moo.controllers.threads', [])
       }else{
         return d.toLocaleTimeString();
       }      
+    };
+
+    var searchPaneWidth = 0;
+    var updateWidth = function(arr){
+      searchPaneWidth = (arr.length / 2) * 120;
+      searchPaneWidth = searchPaneWidth + 'px';
+    };
+
+    $scope.getWidth = function(){
+      return {'width': searchPaneWidth};
     };
 
     var randomColor = function(){
