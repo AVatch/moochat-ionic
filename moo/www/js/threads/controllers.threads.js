@@ -312,6 +312,24 @@ angular.module('moo.controllers.threads', [])
       }, function(e){console.log(e);});
     };
 
+    $scope.sendGif = function(msg){
+      /*
+       * Create a gif note
+       */
+      var gif = {};
+      gif.content = msg;
+      gif.is_gif = true;
+      gif.thread = $scope.thread.id;
+      
+      Note.createNote(gif).then(function(s){
+        if(s.status==201){
+          $scope.notes.push(s.data);
+          $scope.msg = "";  
+          $scope.closeGifSearch();
+        }        
+      }, function(e){console.log(e);});
+    }
+
     /*
      * Initialize Application
      */
@@ -320,19 +338,18 @@ angular.module('moo.controllers.threads', [])
       sync();
     }; init();
 
-    // POlling
-    // (function tick() {
-    //     $scope.data = Data.query(function(){
-    //         $timeout(tick, 1000);
-    //     });
-    // })();
-
-
-
-
     /*
      * Helpers
      */
+
+    $scope.searchGifs = function(q){
+      $scope.results = [];
+      q = {"query": q};
+      Gif.searchGif(q).then(function(s){
+        $scope.results = s.data.results;
+      }, function(e){console.log(e);});
+    };
+
     $scope.dateFormatter = function(d){
       /*
        * Format the time stamp to be readable
@@ -504,17 +521,6 @@ angular.module('moo.controllers.threads', [])
     //     }        
     //   }, function(e){console.log(e);});
     // }
-    
-    
-    // // Search gif
-    // $scope.searchGifs = function(q){
-    //   $scope.results = [];
-    //   q = {"query": q};
-    //   Gif.searchGif(q).then(function(s){
-    //     console.log(s);
-    //     $scope.results = s.data.results;
-    //   }, function(e){console.log(e);});
-    // };
     
     // // Gif-search popover
     
