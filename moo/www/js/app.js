@@ -16,7 +16,7 @@ angular.module('moo', ['ionic',
 
 // Setup Constants
 
-.constant('DOMAIN', 'http://127.0.0.1:8000')
+.constant('DOMAIN', 'http://moochat-api-dev.elasticbeanstalk.com')
 
 // Setup Initialization Logic
 
@@ -86,11 +86,3 @@ angular.module('moo', ['ionic',
         controller: 'ThreadController' 
       });
 }]);
-  
-  
-// // Setup Filters
-// .filter('reverse', function() {
-//   return function(items) {
-//     return items.slice().reverse();
-//   };
-// });

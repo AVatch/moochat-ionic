@@ -44,7 +44,6 @@
             </ion-header-bar>
 
             <ion-content>
-
                 <ion-list ng-if="friendsResults.length!=0">
                     <ion-item ng-repeat="result in friendsResults">
                         <div class="row">
@@ -55,8 +54,8 @@
                                 <button 
                                     ng-click="addFriend(result)"
                                     style="float:right;" 
-                                    class="button button-icon icon ion-ios-plus-outline"></button>
-    
+                                    class="button button-icon icon ion-ios-plus-outline">
+                                </button>
                             </div>
                         </div>
                     </ion-item>

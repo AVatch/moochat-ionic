@@ -265,9 +265,6 @@ angular.module('moo.controllers.threads', [])
      */
     var sync = function(){
       $scope.me = Account.getMe();
-
-      console.log($scope.me)
-
       Thread.getThread($stateParams.pk)
         // get the thread object with the participants
         .then(function(s){
@@ -318,9 +315,19 @@ angular.module('moo.controllers.threads', [])
     /*
      * Initialize Application
      */
+
     var init = function(){
       sync();
     }; init();
+
+    // POlling
+    // (function tick() {
+    //     $scope.data = Data.query(function(){
+    //         $timeout(tick, 1000);
+    //     });
+    // })();
+
+
 
 
     /*
