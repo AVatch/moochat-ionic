@@ -22,9 +22,11 @@ angular.module('moo', ['ionic',
 
 // Setup Initialization Logic
 
-.run(function($ionicPlatform, $rootScope, $state, $urlRouter, $ionicAppProvider, Authentication, Account) {
+.run(function($ionicPlatform, $rootScope, $state, $urlRouter, $ionicAnalytics, Authentication, Account) {
 
   $ionicPlatform.ready(function() {
+    $ionicAnalytics.register();
+    
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -61,8 +63,14 @@ angular.module('moo', ['ionic',
 
 // Setup Routes
 
-.config(['$stateProvider', '$urlRouterProvider',
-  function($stateProvider, $urlRouterProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$ionicAppProvider',
+  function($stateProvider, $urlRouterProvider, $ionicAppProvider) {
+
+    // Identify app
+    $ionicAppProvider.identify({
+      app_id: 'c1ce80f9',
+      api_key: '8a5a069708c38a020b7b686fd611190d5d60ec75ed6bb4a2'
+    });
 
     //
     // For any unmatched url, redirect to /stream
