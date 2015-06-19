@@ -1,0 +1,13 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Thread Members</h1>
+      <button ng-click="closeModal()" class="button button-icon icon ion-ios-close-empty"></button>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+          <ion-item ng-repeat="user in thread.participants">
+            {{user.first_name}} {{user.last_name}}
+          </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

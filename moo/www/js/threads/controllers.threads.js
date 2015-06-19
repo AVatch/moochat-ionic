@@ -243,9 +243,9 @@ angular.module('moo.controllers.threads', [])
 
 
 .controller('ThreadController', ['$scope', '$ionicPopover', '$window', 
-  '$stateParams', '$timeout', '$ionicScrollDelegate', 'Account', 'Thread', 
-  'Note', 'Gif',
-  function($scope, $ionicPopover, $window, $stateParams, $timeout,
+  '$stateParams', '$timeout', '$ionicModal', '$ionicScrollDelegate',
+  'Account', 'Thread', 'Note', 'Gif',
+  function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicModal,
     $ionicScrollDelegate, Account, Thread, Note, Gif){
     
     /*
@@ -485,6 +485,20 @@ angular.module('moo.controllers.threads', [])
     $scope.$on('popover.removed', function() {
       // Execute action
     });
-    
+
+
+    // Thread participants
+    $ionicModal.fromTemplateUrl('js/threads/templates/threadParticipants.modal.tmpl.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openModal = function() {
+      $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };  
 
 }]);
