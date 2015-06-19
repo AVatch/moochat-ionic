@@ -446,6 +446,7 @@ angular.module('moo.controllers.threads', [])
        * Logic for when sync is done
        */ 
       $scope.loading = false;
+      $ionicScrollDelegate.$getByHandle('threadContainer').scrollBottom(true);
       // $scope.$broadcast('scroll.refreshComplete');
       
     };
@@ -486,102 +487,6 @@ angular.module('moo.controllers.threads', [])
     $scope.$on('popover.removed', function() {
       // Execute action
     });
-
-
-    // // Get me
-    // $scope.me = Account.getMe();
     
-    // // pull the notes in the thread
-    // $scope.notes = [];
-    // var threadID = $stateParams.pk;
-    
-    // Thread.getNotes(threadID).then(function(s){
-    //   if(s.status == 200){
-    //        $scope.notes = s.data.results;
-
-    //        for(var i=0; i<$scope.notes.length; i++){
-    //           $scope.notes[i].author.background = randomColor()
-    //        }
-
-    //        $ionicScrollDelegate.scrollBottom();
-    //     }else if(s.status == 400){
-    //     }else{
-    //       console.log("Unkown Error");
-    //     }
-    // }, function(e){console.log(e);});
-    
-    // // send note to thread
-    // $scope.createNote = function(msg){
-    //   var note = {};
-    //   note.content = msg;
-    //   note.is_gif = false;
-    //   note.thread = threadID;
-      
-    //   Note.createNote(note).then(function(s){
-    //     if(s.status==201){
-    //       $scope.notes.unshift(s.data);
-    //       $scope.msg = "";
-    //       $ionicScrollDelegate.scrollBottom(true);  
-    //     }        
-    //   }, function(e){console.log(e);});
-    // };
-    
-    // $scope.sendGif = function(msg){
-    //   var gif = {};
-    //   gif.content = msg;
-    //   gif.is_gif = true;
-    //   gif.thread = threadID;
-      
-    //   Note.createNote(gif).then(function(s){
-    //     if(s.status==201){
-    //       $scope.notes.unshift(s.data);
-    //       $scope.msg = "";  
-    //       $scope.closeGifSearch();
-    //     }        
-    //   }, function(e){console.log(e);});
-    // }
-    
-    // // Gif-search popover
-    
-    // $ionicPopover.fromTemplateUrl('js/gifs/templates/gif-search.pop.html', {
-    //   scope: $scope
-    // }).then(function(popover) {
-    //   $scope.popover = popover;
-    // });
-    
-    // $scope.openGifSearch = function($event) {
-    //   $scope.popover.show($event);
-    // };
-    // $scope.closeGifSearch = function() {
-    //   $scope.popover.hide();
-    // };
-    // //Cleanup the popover when we're done with it!
-    // $scope.$on('$destroy', function() {
-    //   $scope.popover.remove();
-    // });
-    // // Execute action on hide popover
-    // $scope.$on('popover.hidden', function() {
-    //   // Execute action
-    // });
-    // // Execute action on remove popover
-    // $scope.$on('popover.removed', function() {
-    //   // Execute action
-    // });
-
-    // // Helper functions
-    
-    // $scope.back = function(){
-    //   $window.history.back();
-    // }; 
-
-    // var randomColor = function(){
-    //   var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588"];
-    //   var color = colors[Math.floor(Math.random()*colors.length)];
-    //   return {'background-color': color};
-    // };
-
-    // $scope.getInitials = function(a){
-    //   return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
-    // };
 
 }]);

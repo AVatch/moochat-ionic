@@ -4,9 +4,14 @@
     <button class="button button-icon icon ion-ios-more-outline"></button>
 </ion-header-bar>
 
-<ion-content>
+<ion-content delegate-handle="threadContainer">
 
-    <ion-list>
+    <!-- loading spinner -->
+    <div class="row">
+        <ion-spinner class="loading-spinner" ng-if="loading" icon="spiral"></ion-spinner>
+    </div>
+
+    <ion-list ng-if="!loading">
         <ion-item class="note"
                   ng-repeat="note in notes">
             
