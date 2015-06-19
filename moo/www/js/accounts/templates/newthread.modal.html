@@ -13,10 +13,11 @@
 
             <ion-content>
                 <!-- list of selected friends -->
-                <div class="row">
+                <div class="row" style="padding-bottom:0px; padding-top:0px;">
                     <span class="pill animated bounceIn"
                           ng-repeat="user in friends" 
-                          ng-if="user.sendTo">
+                          ng-if="user.sendTo"
+                          style="margin-top:3px; margin-bottom:3px;">
                           {{user.username}}
                     </span>
                 </div>
