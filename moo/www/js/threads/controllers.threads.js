@@ -344,6 +344,7 @@ angular.module('moo.controllers.threads', [])
           $scope.notes.push(s.data);
           $scope.msg = "";  
           $scope.closeGifSearch();
+          $ionicScrollDelegate.scrollBottom(true);
         }        
       }, function(e){console.log(e);});
     }
