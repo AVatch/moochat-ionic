@@ -67,12 +67,6 @@
   border-radius: 10px;
   width: 50%;
 }
-.note-text{
-  padding-left: 60px;
-}
-.note-text{
-  width: 250px;
-}
 
 
 
@@ -80,21 +74,4 @@
     float: right;
     margin-left: 15px;
 }
-.authored .note-content{
-    float: right;
-}
-.authored .note-content .note-gif{
-    float: right;
-}
-.authored .note-text{
-  padding-left: 0px;
-  text-align: right;
-}
 
-.note-content img{
-    float: left;
-    margin-right: 15px;
-}
-.note-content .note-gif{
-    margin-left: 60px;
-}

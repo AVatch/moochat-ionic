@@ -433,6 +433,14 @@ angular.module('moo.controllers.threads', [])
       return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
     };
 
+    $scope.isNoteAuthorMe = function(note){
+      if(note.author.id == $scope.me.id){
+        return true;
+      }else{
+        return false;
+      }
+    };
+
     var raiseWarning = function(err){
       /*
        * Raise a warning flag and print it out
