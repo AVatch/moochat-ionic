@@ -446,9 +446,7 @@ angular.module('moo.controllers.threads', [])
        * Logic for when sync is done
        */ 
       $scope.loading = false;
-      $ionicScrollDelegate.$getByHandle('threadContainer').scrollBottom(true);
-      // $scope.$broadcast('scroll.refreshComplete');
-      
+      $timeout(function(){$ionicScrollDelegate.scrollBottom(true);}, 500);
     };
 
     $scope.back = function(){
