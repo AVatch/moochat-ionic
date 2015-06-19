@@ -1,6 +1,8 @@
 // MooChat
 
 angular.module('moo', ['ionic', 
+                       'ionic.service.core', 
+                       'ionic.service.analytics',
                        'LocalStorageModule',
 
                        'moo.controllers.accounts',
@@ -20,7 +22,7 @@ angular.module('moo', ['ionic',
 
 // Setup Initialization Logic
 
-.run(function($ionicPlatform, $rootScope, $state, $urlRouter, Authentication, Account) {
+.run(function($ionicPlatform, $rootScope, $state, $urlRouter, $ionicAppProvider, Authentication, Account) {
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
