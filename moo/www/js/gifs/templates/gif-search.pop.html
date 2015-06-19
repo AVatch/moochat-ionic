@@ -1,6 +1,6 @@
 <ion-popover-view style="width:97%;">
-    <ion-header-bar>
-        <div class="bar bar-header item-input-inset">
+    <ion-header-bar class="item-input-inset">
+        
           <label class="item-input-wrapper">
             <i class="icon ion-ios-search placeholder-icon"></i>
             <input type="search" placeholder="Search" ng-model="q" ng-enter="searchGifs(q)">
@@ -8,7 +8,9 @@
           <button class="button button-clear" ng-click="closeGifSearch($event)">
             Cancel
           </button>
-        </div>
+        
+
+
     </ion-header-bar>
     
     <ion-content direction="x">
@@ -16,7 +18,7 @@
         <div class="gif-results-wrapper" ng-style="getWidth()">
         <!-- loading spinner -->
         <div class="row">
-            <ion-spinner class="loading-spinner loading-spinner-custom" style="margin-top:25%;" ng-if="searchingForGifs" icon="spiral"></ion-spinner>
+            <ion-spinner class="loading-spinner" style="margin-top:25%;" ng-if="searchingForGifs" icon="spiral"></ion-spinner>
         </div>
 
         <!-- results -->
