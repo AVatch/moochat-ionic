@@ -19,6 +19,7 @@ angular.module('moo', ['ionic',
 // Setup Constants
 
 .constant('DOMAIN', 'http://moochat-api-dev.elasticbeanstalk.com')
+// .constant('DOMAIN', 'localhost:8000')
 
 // Setup Initialization Logic
 

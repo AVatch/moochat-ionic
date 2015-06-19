@@ -44,7 +44,7 @@
 
             <div ng-if="isNoteAuthorMe(note)" class="row">
                 <div class="col">
-                    <div class="note-content" style="display:inline;">
+                    <div class="note-content">
                         <div ng-if="!note.is_gif" class="note-text item-text-wrap" style="float:right;">
                             <p>{{note.content}}</p>
                         </div>
@@ -62,7 +62,8 @@
                 </div>
                 <div class="col col-20">
                     <div class="threads avatar note-sender"
-                         ng-style="note.author.background">
+                         ng-style="note.author.background"
+                         style="float:right;">
                          <span>{{getInitials(note.author)}}</span>
                     </div>
                 </div>

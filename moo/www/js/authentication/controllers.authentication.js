@@ -5,8 +5,8 @@
 */
 angular.module('moo.controllers.authentication', [])
 
-.controller('AuthenticationController', ['$scope', '$state', '$ionicModal', 'Authentication', 'Gif',
-  function($scope, $state, $ionicModal, Authentication, Gif){
+.controller('AuthenticationController', ['$scope', '$state', '$ionicModal', '$ionicUser', 'Authentication', 'Gif',
+  function($scope, $state, $ionicModal, $ionicUser, Authentication, Gif){
     
     // Init Auth Modals + Handle Event Triggers
     $ionicModal.fromTemplateUrl('js/authentication/templates/login.modal.tmpl.html', {
@@ -51,6 +51,13 @@ angular.module('moo.controllers.authentication', [])
       Authentication.authenticateUser(user).then(function(s){
         if(s.status == 200){
           Authentication.cacheToken(s.data);
+          var d = new Date();
+          // push the user to ionic
+           $ionicUser.identify({
+            user_id: s.data,
+            name: user.username
+          });
+
           $scope.closeLoginModal();
           $scope.closeSignupModal();
           $state.go('threads');
