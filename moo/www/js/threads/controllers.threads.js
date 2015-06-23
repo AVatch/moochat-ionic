@@ -48,8 +48,6 @@ angular.module('moo.controllers.threads', [])
               $scope.threadsPreviousPage = s.data.previous;
               $scope.threads = s.data.results;
 
-              $scope.threads = applyColorsToThreadAuthors($scope.threads);
-
             }, function(e){raiseWarning(e);});
             return s;
         }, function(e){raiseWarning(e);})
@@ -157,37 +155,6 @@ angular.module('moo.controllers.threads', [])
       }else{
         return d.toLocaleTimeString();
       }      
-    };
-
-    var randomColor = function(){
-      /*
-       * Pick a random color for avators
-       */ 
-      var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588", 
-      "#35d7dc", "#48babb", "#4627a2", "#4f616c", "#dc7a6d", 
-      "#da4368", "#fcc569"];
-      var color = colors[Math.floor(Math.random()*colors.length)];
-      return {'background-color': color};
-    };
-
-    var applyColorsToThreadAuthors = function(arr){
-      /*
-       * Apply a random color style to each thread
-       * participant
-       */ 
-      for(var i=0; i<arr.length; i++){
-        for(var j=0; j<arr[i].participants.length; j++){
-          arr[i].participants[j].background = randomColor();
-        }
-      }
-      return arr;
-    };
-
-    $scope.getInitials = function(a){
-      /*
-       * Parse capitalized initials from first and last name
-       */ 
-      return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
     };
 
     $scope.getAccount = function(id){

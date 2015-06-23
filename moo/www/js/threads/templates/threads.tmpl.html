@@ -27,8 +27,7 @@
                 <div class="threads avatar animated bounceInLeft"
                      ng-repeat="user in thread.participants"
                      ng-if="user.id!=me.id"
-                     ng-style="user.background">
-                     <!-- <span>{{getInitials(user)}}</span> -->
+                     ng-style="{{getAccount(user.id).avatarColor}}">
                      <span>{{getAccount(user.id).initials}}</span>
                 </div>
                 <div class="timeStamp">
