@@ -15,11 +15,11 @@
         <ion-item class="note" style="padding:0px"
                   ng-repeat="note in notes">
 
-            <div ng-if="!isNoteAuthorMe(note)" class="row">
+            <div ng-if="!getAccount(note.author.id).me" class="row">
                 <div class="col col-20">
                     <div class="threads avatar note-sender"
-                         ng-style="note.author.background">
-                         <span>{{getInitials(note.author)}}</span>
+                         ng-style="{{getAccount(note.author.id).avatarColor}}">
+                         <span>{{getAccount(note.author.id).initials}}</span>
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
 
 
 
-            <div ng-if="isNoteAuthorMe(note)" class="row">
+            <div ng-if="getAccount(note.author.id).me" class="row">
                 <div class="col">
                     <div class="note-content">
                         <div ng-if="!note.is_gif" class="note-text item-text-wrap" style="float:right;">
@@ -62,43 +62,13 @@
                 </div>
                 <div class="col col-20">
                     <div class="threads avatar note-sender"
-                         ng-style="note.author.background"
+                         ng-style="{{getAccount(note.author.id).avatarColor}}"
                          style="float:right;">
-                         <span>{{getInitials(note.author)}}</span>
+                         <span>{{getAccount(note.author.id).initials}}</span>
                     </div>
                 </div>
             </div>
 
-            
-            <!-- <div ng-class="{'authored':me.id==note.author.id, 'note-content':me.id!=note.author.id}">
-
-                <div class="threads avatar note-sender"
-                     ng-style="note.author.background"
-                     style="display:inline;">
-                     <span>{{getInitials(note.author)}}</span>
-                </div>
-                    
-                <div class="note-content" style="display:inline;">
-                    
-                    <div ng-if="!note.is_gif" class="note-text item-text-wrap">
-                    
-                        <p>{{note.content}}</p>
-                    </div>
-                    
-                    <div ng-if="note.is_gif" class="note-gif"
-                        style="background-image: url({{note.content}});
-                                background-repeat: no-repeat;
-                                background-position: 50% 50%;
-                                background-size: cover;
-                                width:190px;
-                                height:190px;
-
-                                display:inline;">
-                    </div>  
-
-                </div>
-            
-            </div> -->
             
         </ion-item>
     </ion-list>

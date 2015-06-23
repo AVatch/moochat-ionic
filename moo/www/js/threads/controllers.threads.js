@@ -60,6 +60,7 @@ angular.module('moo.controllers.threads', [])
               for(var i=0; i<accounts.length; i++){
                 AccountManager.pushAccount(accounts[i]);
               }
+              console.log(AccountManager.getAccounts());
               $scope.friends = AccountManager.getAccounts();
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(e);})
@@ -141,6 +142,11 @@ angular.module('moo.controllers.threads', [])
     /*
      * Helpers
      */
+
+    $scope.getAccount = function(id){
+      return AccountManager.getAccount(id);
+    };
+
     $scope.dateFormatter = function(d){
       /*
        * Format the time stamp to be readable
@@ -155,10 +161,6 @@ angular.module('moo.controllers.threads', [])
       }else{
         return d.toLocaleTimeString();
       }      
-    };
-
-    $scope.getAccount = function(id){
-      return AccountManager.getAccount(id);
     };
 
     var raiseWarning = function(err){
@@ -220,9 +222,9 @@ angular.module('moo.controllers.threads', [])
 
 .controller('ThreadController', ['$scope', '$ionicPopover', '$window', 
   '$stateParams', '$timeout', '$ionicModal', '$ionicScrollDelegate',
-  'Account', 'Thread', 'Note', 'Gif',
+  'Account', 'AccountManager', 'Thread', 'Note', 'Gif',
   function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicModal,
-    $ionicScrollDelegate, Account, Thread, Note, Gif){
+    $ionicScrollDelegate, Account, AccountManager, Thread, Note, Gif){
     
     /*
      * Initialize Variables
@@ -241,11 +243,14 @@ angular.module('moo.controllers.threads', [])
      */
     var sync = function(){
       $scope.me = Account.getMe();
+      AccountManager.clearAccounts();
       Thread.getThread($stateParams.pk)
         // get the thread object with the participants
         .then(function(s){
           $scope.thread = s.data;
-          $scope.thread = applyColorsToThreadAuthors([$scope.thread])[0];
+          for(var i=0; i<$scope.thread.participants.length; i++){
+            AccountManager.pushAccount($scope.thread.participants[i]);
+          }
           return $scope.thread;
         }, function(e){raiseWarning(e);})
         // pull the notes in the thread object
@@ -256,7 +261,6 @@ angular.module('moo.controllers.threads', [])
               $scope.notesNextPage = s.data.next;
               $scope.notesPreviousPage = s.data.previous;
               $scope.notes = s.data.results.reverse();
-              $scope.notes = updateNoteAuthors($scope.notes);
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(s);})
         // sync done
@@ -336,6 +340,11 @@ angular.module('moo.controllers.threads', [])
     /*
      * Helpers
      */
+
+    $scope.getAccount = function(id){
+      return AccountManager.getAccount(id);
+    };
+
     $scope.dateFormatter = function(d){
       /*
        * Format the time stamp to be readable
@@ -360,62 +369,6 @@ angular.module('moo.controllers.threads', [])
 
     $scope.getWidth = function(){
       return {'width': searchPaneWidth};
-    };
-
-    var randomColor = function(){
-      /*
-       * Pick a random color for avators
-       */ 
-      var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588", 
-      "#35d7dc", "#48babb", "#4627a2", "#4f616c", "#dc7a6d", 
-      "#da4368", "#fcc569"];
-      var color = colors[Math.floor(Math.random()*colors.length)];
-      return {'background-color': color};
-    };
-
-    var applyColorsToThreadAuthors = function(arr){
-      /*
-       * Apply a random color style to each thread
-       * participant
-       */ 
-      for(var i=0; i<arr.length; i++){
-        for(var j=0; j<arr[i].participants.length; j++){
-          arr[i].participants[j].background = randomColor();
-        }
-      }
-      return arr;
-    };
-
-    var updateNoteAuthors = function(arr){
-      /*
-       * Match note author to thread participant
-       */ 
-      for(var i=0; i<arr.length; i++){
-        for(var j=0; j<$scope.thread.participants.length; j++){
-          if($scope.thread.participants[j].id == $scope.me.id){
-            $scope.me.background = $scope.thread.participants[j].background;
-          }
-          if($scope.thread.participants[j].id == arr[i].author.id){
-            arr[i].author = $scope.thread.participants[j];
-          }
-        }
-      }
-      return arr;
-    };
-
-    $scope.getInitials = function(a){
-      /*
-       * Parse capitalized initials from first and last name
-       */ 
-      return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
-    };
-
-    $scope.isNoteAuthorMe = function(note){
-      if(note.author.id == $scope.me.id){
-        return true;
-      }else{
-        return false;
-      }
     };
 
     var raiseWarning = function(err){

@@ -94,7 +94,8 @@ angular.module('moo.services.accounts', [])
 
 .factory('AccountManager', ['Account', function(Account){
   
-    var accounts = [];
+    var accounts = {};
+    accounts[Account.getMe().id] = Account.getMe();
 
     var isMe = function(a){
       /*
@@ -157,7 +158,7 @@ angular.module('moo.services.accounts', [])
       applyInitials(a);
 
       // push it
-      accounts.push(a);
+      accounts[a.id] = a;
 
     };
 
@@ -165,17 +166,25 @@ angular.module('moo.services.accounts', [])
       /*
        * Get an account
        */
-      for(var i=0; i<accounts.length; i++){
-        if(accounts[i].id==id){
-          return accounts[i];
-        }
-      }
-      return {};
+      return accounts[id];
     };
+
+    var removeAccount = function(id){
+      /*
+       * Remove an account
+       */
+       delete accounts[id];
+    };
+
+    var clearAccounts = function(){
+      accounts = {};
+    }
+
 
     return{
       getAccounts: getAccounts,
       pushAccount: pushAccount,
-      getAccount: getAccount
+      getAccount: getAccount,
+      clearAccounts: clearAccounts
     };
 }]);
