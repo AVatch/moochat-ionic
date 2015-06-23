@@ -97,6 +97,10 @@ angular.module('moo.services.threads', [])
   };
 
   return {
-
+    getThreads: getThreads,
+    pushThread: pushThread,
+    getThread: getThread,
+    removeThread: removeThread,
+    clearThreads: clearThreads
   };
 }]);
