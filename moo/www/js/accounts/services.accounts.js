@@ -95,7 +95,6 @@ angular.module('moo.services.accounts', [])
 .factory('AccountManager', ['Account', function(Account){
   
     var accounts = {};
-    accounts[Account.getMe().id] = Account.getMe();
 
     var isMe = function(a){
       /*
