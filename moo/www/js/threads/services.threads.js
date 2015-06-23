@@ -51,4 +51,52 @@ angular.module('moo.services.threads', [])
       getThread: getThread,
       getNotes: getNotes
     };
+}])
+
+.factory('ThreadManager', ['', function(){
+  
+  var threads = {};
+
+  var formatDate = function(t){
+    /*
+     * Format the time stamp to be readable
+     */ 
+    var d = new Date(t.time_updated);
+    var now = new Date();
+
+    var diff = now.getTime() - d.getTime();
+    var day = 1000*60*60*24;
+    if(diff > day){
+      return d.toLocaleDateString();
+    }else{
+      return d.toLocaleTimeString();
+    }
+  };
+
+  var getThreads = function(){
+    return threads;
+  };
+
+  var pushThread = function(t){
+    // process thread
+    t.formattedDate = formatDate(t);
+    // add it to the threads
+    threads[t.id] = t;
+  };
+
+  var getThread = function(id){
+    return threads[id];
+  };
+
+  var removeThread = function(id){
+    delete threads[id];
+  };
+
+  var clearThreads = function(){
+    threads = {};
+  };
+
+  return {
+
+  };
 }]);

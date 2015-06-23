@@ -16,14 +16,14 @@
                   ng-repeat="note in notes">
 
             <div ng-if="!getAccount(note.author.id).me" class="row">
-                <div class="col col-20">
+                <div class="col col-10">
                     <div class="threads avatar note-sender"
                          ng-style="{{getAccount(note.author.id).avatarColor}}">
                          <span>{{getAccount(note.author.id).initials}}</span>
                     </div>
                 </div>
 
-                <div class="col">
+                <div class="col" style="padding-left:17px;">
                     <div class="note-content" style="display:inline;">
                         <div ng-if="!note.is_gif" class="note-text item-text-wrap">
                             <p>{{note.content}}</p>
@@ -43,7 +43,7 @@
 
 
             <div ng-if="getAccount(note.author.id).me" class="row">
-                <div class="col">
+                <div class="col" style="padding-right:17px;">
                     <div class="note-content">
                         <div ng-if="!note.is_gif" class="note-text item-text-wrap" style="float:right;">
                             <p>{{note.content}}</p>
@@ -60,7 +60,7 @@
                         </div>  
                     </div>
                 </div>
-                <div class="col col-20">
+                <div class="col col-10">
                     <div class="threads avatar note-sender"
                          ng-style="{{getAccount(note.author.id).avatarColor}}"
                          style="float:right;">
