@@ -6,9 +6,9 @@
 angular.module('moo.controllers.threads', [])
 
 .controller('ThreadsController', ['$scope', '$state', '$timeout', 
-  '$ionicModal', '$ionicSlideBoxDelegate', 'Account', 'Thread',
+  '$ionicModal', '$ionicSlideBoxDelegate', 'Account', 'AccountManager', 'Thread',
   function($scope, $state, $timeout, $ionicModal, $ionicSlideBoxDelegate, 
-    Account, Thread){
+    Account, AccountManager, Thread){
     
     /*
      * Initialize Variables
@@ -57,7 +57,12 @@ angular.module('moo.controllers.threads', [])
         .then(function(s){
           Account.getFriendList(s.id)
             .then(function(s){
-              $scope.friends = s.data.results;
+              // process the accounts with the AccountManager
+              var accounts = s.data.results;
+              for(var i=0; i<accounts.length; i++){
+                AccountManager.pushAccount(accounts[i]);
+              }
+              $scope.friends = AccountManager.getAccounts();
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(e);})
         // sync done
@@ -183,6 +188,10 @@ angular.module('moo.controllers.threads', [])
        * Parse capitalized initials from first and last name
        */ 
       return a.first_name.charAt(0).toUpperCase() + a.last_name.charAt(0).toUpperCase()
+    };
+
+    $scope.getAccount = function(id){
+      return AccountManager.getAccount(id);
     };
 
     var raiseWarning = function(err){
