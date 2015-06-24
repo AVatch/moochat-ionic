@@ -146,6 +146,12 @@ angular.module('moo.controllers.threads', [])
       }, function(e){console.log(e);});
     };
 
+
+    $scope.leave = function(thread){
+      console.log("leaving thread");
+      console.log(thread);
+    };
+
     /*
      * Initialize Application
      */
