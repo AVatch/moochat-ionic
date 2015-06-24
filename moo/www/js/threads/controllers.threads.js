@@ -231,9 +231,9 @@ angular.module('moo.controllers.threads', [])
 
 .controller('ThreadController', ['$scope', '$ionicPopover', '$window', 
   '$stateParams', '$timeout', '$ionicModal', '$ionicScrollDelegate',
-  'Account', 'AccountManager', 'Thread', 'Note', 'Gif',
+  'Account', 'AccountManager', 'Thread', 'Note', 'NoteManager', 'Gif',
   function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicModal,
-    $ionicScrollDelegate, Account, AccountManager, Thread, Note, Gif){
+    $ionicScrollDelegate, Account, AccountManager, Thread, Note, NoteManager, Gif){
     
     /*
      * Initialize Variables
@@ -252,24 +252,38 @@ angular.module('moo.controllers.threads', [])
      */
     var sync = function(){
       $scope.me = Account.getMe();
+      
+      // clear accounts
       AccountManager.clearAccounts();
+      
       Thread.getThread($stateParams.pk)
-        // get the thread object with the participants
+        
         .then(function(s){
+          // get the thread object
           $scope.thread = s.data;
           for(var i=0; i<$scope.thread.participants.length; i++){
             AccountManager.pushAccount($scope.thread.participants[i]);
           }
           return $scope.thread;
         }, function(e){raiseWarning(e);})
-        // pull the notes in the thread object
+        
         .then(function(s){
+          // get the notes in the thread
           Thread.getNotes(s.id)
             .then(function(s){
               $scope.notesCount = s.data.count;
               $scope.notesNextPage = s.data.next;
               $scope.notesPreviousPage = s.data.previous;
               $scope.notes = s.data.results.reverse();
+
+              var notes = s.data.results.reverse();
+              for(var i=0; i<notes.length; i++){
+                NoteManager.pushNote(notes[i]);
+              }
+
+              console.log(NoteManager.getNotes());
+
+
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(s);})
         // sync done
