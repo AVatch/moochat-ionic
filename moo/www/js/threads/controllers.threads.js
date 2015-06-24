@@ -26,24 +26,19 @@ angular.module('moo.controllers.threads', [])
      */
     $scope.sync = function(){
       Account.me()
-        
         .then(function(s){
           // get the user profile
           $scope.me = s.data;
           return $scope.me;
         }, function(e){raiseWarning(e);})
-        
         .then(function(s){
           // cache the user profile
           Account.cacheMe(s);
           return s;
         }, function(e){raiseWarning(e);})
-        
-        
         .then(function(s){
           // get the user threads
-          Account.getThreadList(s.id)
-            
+          Account.getThreadList($scope.me.id)
             .then(function(s){
               // initialize the ThreadManager
               ThreadManager.setNextPageURL(s.data.next);
@@ -52,34 +47,43 @@ angular.module('moo.controllers.threads', [])
               for(var i=0; i<threads.length; i++){
                 ThreadManager.pushThread(s.data.results[i]);
               }
-              $scope.threads = ThreadManager.getThreads();
-
-            }, function(e){raiseWarning(e);});
-            return s;
-        }, function(e){raiseWarning(e);})
-        
-
-        .then(function(s){
-          // get the user's friend list
-          Account.getFriendList(s.id)
-            
+            }, function(e){raiseWarning(e);})
             .then(function(s){
-              // initialize the AccountManager
-              var accounts = s.data.results;
-              for(var i=0; i<accounts.length; i++){
-                AccountManager.pushAccount(accounts[i]);
-              }
-              $scope.friends = AccountManager.getAccounts();
+              Account.getFriendList($scope.me.id)
+                .then(function(s){
+                  // initialize the AccountManager
+                  var accounts = s.data.results;
+                  for(var i=0; i<accounts.length; i++){
+                    AccountManager.pushAccount(accounts[i]);
+                  }
+                }, function(e){raiseWarning(e);})
+                .then(function(s){
+                  // trigger sync complete
+                  syncDone();
+                }, function(e){raiseWarning(e);});
             }, function(e){raiseWarning(e);});
-
         }, function(e){raiseWarning(e);})
-        
-
-        .then(function(s){
-          // trigger the sync complete function
-          syncDone();
-        }, function(e){raiseWarning(e);});
     };
+
+
+
+    /*
+     * Initialize Application
+     */
+    var init = function(){
+      $scope.sync();
+    }; init();
+
+    var syncDone = function(){
+      /*
+       * Logic for when sync is done
+       */ 
+      $scope.loading = false;
+      $scope.friends = AccountManager.getAccounts();
+      $scope.threads = ThreadManager.getThreads();
+      $scope.$broadcast('scroll.refreshComplete');
+    };
+
 
 
     /*
@@ -143,25 +147,21 @@ angular.module('moo.controllers.threads', [])
       }, function(e){console.log(e);});
     };
 
-
     $scope.leave = function(thread){
       console.log("leaving thread");
       console.log(thread);
     };
 
-    /*
-     * Initialize Application
-     */
-    var init = function(){
-      $scope.sync();
-    }; init();
+
 
 
     /*
      * Helpers
      */
-
     $scope.getAccount = function(id){
+      /*
+       * Return an account from the manager
+       */
       return AccountManager.getAccount(id);
     };
 
@@ -174,18 +174,10 @@ angular.module('moo.controllers.threads', [])
       console.log(err);
     };
 
-    var syncDone = function(){
-      /*
-       * Logic for when sync is done
-       */ 
-      $scope.loading = false;
-      $scope.$broadcast('scroll.refreshComplete');
-    };
 
-
-    //
-    //
-    // View Components
+    /*
+     * View Components
+     */
     // Account modal
     $ionicModal.fromTemplateUrl('js/accounts/templates/profile.modal.html', {
       scope: $scope,
@@ -220,6 +212,9 @@ angular.module('moo.controllers.threads', [])
       $scope.AccountModal.remove();
     });
 }])
+
+
+
 
 
 
