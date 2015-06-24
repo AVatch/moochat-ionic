@@ -33,6 +33,22 @@ angular.module('moo.services.notes', [])
   var nextPageURL;
   var prevPageURL;
 
+  var formatDate = function(t){
+    /*
+     * Format the time stamp to be readable
+     */ 
+    var d = new Date(t.time_updated);
+    var now = new Date();
+
+    var diff = now.getTime() - d.getTime();
+    var day = 1000*60*60*24;
+    if(diff > day){
+      return d.toLocaleDateString();
+    }else{
+      return d.toLocaleTimeString();
+    }
+  };
+
   var setNextPageURL = function(url){
     /*
      * Set the url to the next page url
@@ -66,7 +82,8 @@ angular.module('moo.services.notes', [])
     /*
      * Add a new note object
      */ 
-    
+    // process note
+    n.formattedDate = formatDate(n);
     // add it to the notes
     notes[n.id] = n;
   };

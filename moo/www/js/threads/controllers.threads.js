@@ -49,8 +49,8 @@ angular.module('moo.controllers.threads', [])
             
             .then(function(s){
               // initialize the ThreadManager
-              ThreadManager.setNextPageURL = s.data.next;
-              ThreadManager.setPrevPageURL = s.data.previous;
+              ThreadManager.setNextPageURL(s.data.next);
+              ThreadManager.setPrevPageURL(s.data.previous);
               var threads = s.data.results;
               for(var i=0; i<threads.length; i++){
                 ThreadManager.pushThread(s.data.results[i]);
@@ -271,17 +271,14 @@ angular.module('moo.controllers.threads', [])
           // get the notes in the thread
           Thread.getNotes(s.id)
             .then(function(s){
-              $scope.notesCount = s.data.count;
-              $scope.notesNextPage = s.data.next;
-              $scope.notesPreviousPage = s.data.previous;
-              $scope.notes = s.data.results.reverse();
+              
+              NoteManager.setNextPageURL(s.data.next);
+              NoteManager.setPrevPageURL(s.data.previous);
 
               var notes = s.data.results.reverse();
               for(var i=0; i<notes.length; i++){
                 NoteManager.pushNote(notes[i]);
               }
-
-              console.log(NoteManager.getNotes());
 
 
             }, function(e){raiseWarning(e);});
@@ -406,6 +403,7 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
+      $scope.notes = NoteManager.getNotes();
       $scope.loading = false;
       $timeout(function(){$ionicScrollDelegate.scrollBottom(true);}, 500);
     };
