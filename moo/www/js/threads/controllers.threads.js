@@ -442,6 +442,10 @@ angular.module('moo.controllers.threads', [])
     });
     
     $scope.openGifSearch = function($event) {
+      if($scope.msg){
+        $scope.q = $scope.msg;
+        $scope.searchGifs($scope.q);
+      }
       $scope.popover.show($event);
     };
     $scope.closeGifSearch = function() {
