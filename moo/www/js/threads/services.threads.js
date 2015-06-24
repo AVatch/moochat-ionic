@@ -57,6 +57,7 @@ angular.module('moo.services.threads', [])
   function($timeout, Account, Thread){
   
   var threads = {};
+  var numThreads = 0;
   var nextPageURL;
   var prevPageURL;
 
@@ -89,7 +90,7 @@ angular.module('moo.services.threads', [])
      * Set the url to the prev page url
      */ 
     prevPageURL = url;
-  };
+  };  
 
   var getMoreThreads = function(){
     /*
@@ -141,7 +142,6 @@ angular.module('moo.services.threads', [])
     /*
      * Poll threads
      */
-     console.log("polling");
      Account.getThreadList(Account.getMe().id)
       .then(function(s){console.log("polled");});
 

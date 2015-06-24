@@ -25,46 +25,54 @@ angular.module('moo.controllers.threads', [])
      * Sync
      */
     var sync = function(){
-      Account.me()
-        .then(function(s){
-          // get the user profile
-          $scope.me = s.data;
-          return $scope.me;
-        }, function(e){raiseWarning(e);})
-        .then(function(s){
-          // cache the user profile
-          Account.cacheMe(s);
-          return s;
-        }, function(e){raiseWarning(e);})
-        .then(function(s){
-          // get the user threads
-          Account.getThreadList($scope.me.id)
-            .then(function(s){
-              // initialize the ThreadManager
-              ThreadManager.setNextPageURL(s.data.next);
-              ThreadManager.setPrevPageURL(s.data.previous);
-              var threads = s.data.results;
-              for(var i=0; i<threads.length; i++){
-                ThreadManager.pushThread(s.data.results[i]);
-              }
-            }, function(e){raiseWarning(e);})
-            .then(function(s){
-              Account.getFriendList($scope.me.id)
-                .then(function(s){
-                  // initialize the AccountManager
-                  var accounts = s.data.results;
-                  for(var i=0; i<accounts.length; i++){
-                    AccountManager.pushAccount(accounts[i]);
-                  }
-                }, function(e){raiseWarning(e);})
-                .then(function(s){
-                  // trigger sync complete
-                  syncDone();
-                }, function(e){raiseWarning(e);});
-            }, function(e){raiseWarning(e);});
-        }, function(e){raiseWarning(e);})
+      return Account.me()
+              .then(function(s){
+                // get the user profile
+                $scope.me = s.data;
+                return $scope.me;
+              }, function(e){raiseWarning(e);})
+              .then(function(s){
+                // cache the user profile
+                Account.cacheMe(s);
+                return s;
+              }, function(e){raiseWarning(e);})
+              .then(function(s){
+                // get the user threads
+                Account.getThreadList($scope.me.id)
+                  .then(function(s){
+                    // initialize the ThreadManager
+                    ThreadManager.setNextPageURL(s.data.next);
+                    ThreadManager.setPrevPageURL(s.data.previous);
+                    var threads = s.data.results;
+                    for(var i=0; i<threads.length; i++){
+                      ThreadManager.pushThread(s.data.results[i]);
+                    }
+                  }, function(e){raiseWarning(e);})
+                  .then(function(s){
+                    Account.getFriendList($scope.me.id)
+                      .then(function(s){
+                        // initialize the AccountManager
+                        var accounts = s.data.results;
+                        for(var i=0; i<accounts.length; i++){
+                          AccountManager.pushAccount(accounts[i]);
+                        }
+                      }, function(e){raiseWarning(e);})
+                      .then(function(s){
+                        // trigger sync complete
+                        syncDone();
+                      }, function(e){raiseWarning(e);});
+                  }, function(e){raiseWarning(e);});
+              }, function(e){raiseWarning(e);})
     };
-    $scope.sync = function(){ sync(); };
+    $scope.sync = function(){ 
+        $timeout.cancel() 
+        sync()
+          .then(
+            function(){
+              $scope.$broadcast('scroll.refreshComplete');
+            }, function(e){}
+          );
+    };
 
 
 
@@ -73,7 +81,7 @@ angular.module('moo.controllers.threads', [])
      */
     var init = function(){
       sync();
-      ThreadManager.pollThreads();
+      // ThreadManager.pollThreads();
     }; init();
 
     var syncDone = function(){
@@ -94,7 +102,8 @@ angular.module('moo.controllers.threads', [])
 
       // issue signals that sync is done
       $scope.loading = false;
-      $scope.$broadcast('scroll.refreshComplete');
+
+      $timeout(function(){sync();}, 5000);
     };
 
 
