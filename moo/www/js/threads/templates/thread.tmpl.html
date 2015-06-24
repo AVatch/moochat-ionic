@@ -35,7 +35,8 @@
                             <p>{{note.content}}</p>
                         </div>
                         <div ng-if="note.is_gif" class="note-gif"
-                            style="background-image: url({{note.content}});
+                            style=" background-color: {{note.backgroundColor}};
+                                    background-image: url({{note.content}});
                                     background-repeat: no-repeat;
                                     background-position: 50% 50%;
                                     background-size: cover;
@@ -58,7 +59,7 @@
     
                         <!-- if msg is gif -->
                         <div ng-if="note.is_gif" class="note-gif"
-                            style=" background-color: #4627a2;
+                            style=" background-color: {{note.backgroundColor}};
                                     background-repeat: no-repeat;
                                     background-position: 50% 50%;
                                     background-size: cover;
@@ -69,7 +70,7 @@
                         </div>  
                     </div>
                 </div>
-                
+
                 <div class="col col-10">
                     <div class="threads avatar note-sender"
                          ng-style="{{getAccount(note.author.id).avatarColor}}"

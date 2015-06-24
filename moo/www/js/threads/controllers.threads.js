@@ -277,6 +277,8 @@ angular.module('moo.controllers.threads', [])
                 NoteManager.pushNote(notes[i]);
               }
 
+              $scope.notes = NoteManager.getNotes();
+              console.log($scope.notes);
 
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(s);})
@@ -444,7 +446,6 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
-      $scope.notes = NoteManager.getNotes();
 
       $scope.loading = false;
       $timeout(function(){$ionicScrollDelegate.scrollBottom(true);}, 500);
