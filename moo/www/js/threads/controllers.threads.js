@@ -240,6 +240,8 @@ angular.module('moo.controllers.threads', [])
     $scope.noteSending = false;
     $scope.me = {};
     $scope.thread = {};
+    $scope.q = "";
+    $scope.msg = "";
 
     /*
      * Sync
@@ -321,6 +323,9 @@ angular.module('moo.controllers.threads', [])
       /*
        * Create a text note
        */
+      if(!msg){
+        return;
+      }
       // clear the input
       $scope.msg = "";
       // update the note
@@ -334,6 +339,7 @@ angular.module('moo.controllers.threads', [])
       $ionicScrollDelegate.scrollBottom(true);
       // sync with server
       Note.createNote(note).then(function(s){
+        console.log(s);
         if(s.status==201){
           var note = s.data;
           NoteManager.pushNote(note);
@@ -387,6 +393,9 @@ angular.module('moo.controllers.threads', [])
     $scope.getAccount = function(id){
       return AccountManager.getAccount(id);
     };
+    $scope.getRandomColor = function(){
+      return NoteManager.randomColor();
+    }
 
     $scope.dateFormatter = function(d){
       /*

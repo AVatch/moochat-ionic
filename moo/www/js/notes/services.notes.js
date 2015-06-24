@@ -50,6 +50,18 @@ angular.module('moo.services.notes', [])
     }
   };
 
+  var randomColor = function(){
+      /*
+       * Pick a random color
+       *  @returns style object
+       */ 
+      var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588", 
+      "#35d7dc", "#48babb", "#4627a2", "#4f616c", "#dc7a6d", 
+      "#da4368", "#fcc569"];
+      var color = colors[Math.floor(Math.random()*colors.length)];
+      return {'background-color': color};
+    };
+
   var setNextPageURL = function(url){
     /*
      * Set the url to the next page url
@@ -124,6 +136,7 @@ angular.module('moo.services.notes', [])
     pushNote: pushNote, 
     getNote: getNote,
     removeNote: removeNote, 
-    clearNotes: clearNotes
+    clearNotes: clearNotes,
+    randomColor: randomColor
   };
 }]);

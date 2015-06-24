@@ -51,20 +51,25 @@
             <div ng-if="getAccount(note.author.id).me" class="row">
                 <div class="col" style="padding-right:17px;">
                     <div class="note-content">
+                        <!-- if msg is text -->
                         <div ng-if="!note.is_gif" class="note-text item-text-wrap" style="float:right;">
                             <p>{{note.content}}</p>
                         </div>
+    
+                        <!-- if msg is gif -->
                         <div ng-if="note.is_gif" class="note-gif"
-                            style="background-image: url({{note.content}});
+                            style=" background-color: #4627a2;
                                     background-repeat: no-repeat;
                                     background-position: 50% 50%;
                                     background-size: cover;
+                                    background-image: url({{note.content}});
                                     width:190px;
                                     height:190px;
                                     float:right;">
                         </div>  
                     </div>
                 </div>
+                
                 <div class="col col-10">
                     <div class="threads avatar note-sender"
                          ng-style="{{getAccount(note.author.id).avatarColor}}"
