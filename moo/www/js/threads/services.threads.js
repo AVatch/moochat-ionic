@@ -53,7 +53,8 @@ angular.module('moo.services.threads', [])
     };
 }])
 
-.factory('ThreadManager', ['Thread', function(Thread){
+.factory('ThreadManager', ['$timeout', 'Account', 'Thread', 
+  function($timeout, Account, Thread){
   
   var threads = {};
   var nextPageURL;
@@ -136,6 +137,17 @@ angular.module('moo.services.threads', [])
     threads = {};
   };
 
+  var pollThreads = function(){
+    /*
+     * Poll threads
+     */
+     console.log("polling");
+     Account.getThreadList(Account.getMe().id)
+      .then(function(s){console.log("polled");});
+
+    $timeout(function(){pollThreads()}, 5000);
+  }
+
   return {
     setNextPageURL: setNextPageURL,
     setPrevPageURL: setPrevPageURL,
@@ -144,6 +156,7 @@ angular.module('moo.services.threads', [])
     pushThread: pushThread,
     getThread: getThread,
     removeThread: removeThread,
-    clearThreads: clearThreads
+    clearThreads: clearThreads,
+    pollThreads: pollThreads
   };
 }]);

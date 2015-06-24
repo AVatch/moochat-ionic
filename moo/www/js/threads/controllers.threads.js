@@ -72,9 +72,8 @@ angular.module('moo.controllers.threads', [])
      * Initialize Application
      */
     var init = function(){
-      console.log('poll');
-      $scope.sync();
-      
+      sync();
+      ThreadManager.pollThreads();
     }; init();
 
     var syncDone = function(){
@@ -82,7 +81,7 @@ angular.module('moo.controllers.threads', [])
        * Logic for when sync is done
        */ 
       console.log("Sync is done");
-      
+
       // update the scope
       var friends = AccountManager.getAccounts();
       if($scope.friends.length!=friends.length){
