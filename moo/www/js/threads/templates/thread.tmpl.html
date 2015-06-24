@@ -76,6 +76,18 @@
 
             
         </ion-item>
+
+        <!-- sending spinner -->
+        <ion-item ng-if="noteSending" class="note" style="padding:0px">
+            <div class="row">
+                <div class="col col-80"></div>
+                <div class="col">
+                    <ion-spinner class="loading-spinner"icon="spiral"></ion-spinner>
+                </div>
+            </div>
+        </ion-item>
+        <!-- /sending spinner -->
+
     </ion-list>
     <span style="width:100%; height: 43px; display:block;"></span>
 </ion-content>

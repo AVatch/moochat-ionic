@@ -95,6 +95,7 @@ angular.module('moo.services.accounts', [])
 .factory('AccountManager', ['Account', function(Account){
   
     var accounts = {};
+    var processedMe = {};
 
     var isMe = function(a){
       /*
@@ -177,7 +178,7 @@ angular.module('moo.services.accounts', [])
 
     var clearAccounts = function(){
       accounts = {};
-    }
+    };
 
 
     return{

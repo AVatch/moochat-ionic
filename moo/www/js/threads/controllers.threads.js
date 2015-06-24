@@ -237,12 +237,9 @@ angular.module('moo.controllers.threads', [])
      */
     $scope.loading = true;
     $scope.warning = false;
+    $scope.noteSending = false;
     $scope.me = {};
     $scope.thread = {};
-    $scope.notesCount = 0;
-    $scope.notesNextPage = "";
-    $scope.notesPreviousPage = "";
-    $scope.notes = [];
 
     /*
      * Sync
@@ -324,19 +321,26 @@ angular.module('moo.controllers.threads', [])
       /*
        * Create a text note
        */
-      // var note = {};
-      // note.content = msg;
-      // note.is_gif = false;
-      // note.thread = $scope.thread.id;
-
-      // Note.createNote(note).then(function(s){
-      //   if(s.status==201){
-      //     s.data.author.background = $scope.me.background;
-      //     $scope.notes.push(s.data);
-      //     $scope.msg = "";
-      //     $ionicScrollDelegate.scrollBottom(true);  
-      //   }        
-      // }, function(e){console.log(e);});
+      // clear the input
+      $scope.msg = "";
+      // update the note
+      var note = {};
+      note.content = msg;
+      note.is_gif = false;
+      note.thread = $scope.thread.id;
+      // start loading
+      $scope.noteSending = true;
+      // scroll down
+      $ionicScrollDelegate.scrollBottom(true);
+      // sync with server
+      Note.createNote(note).then(function(s){
+        if(s.status==201){
+          var note = s.data;
+          NoteManager.pushNote(note);
+          // finish loading
+          $scope.noteSending = false;
+        }        
+      }, function(e){console.log(e);});
     };
 
     $scope.sendGif = function(msg){
