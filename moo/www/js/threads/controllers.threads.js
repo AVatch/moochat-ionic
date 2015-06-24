@@ -310,23 +310,35 @@ angular.module('moo.controllers.threads', [])
         });
     };
 
+    $scope.getMore = function(){
+      NoteManager.getMoreNotes().then(function(s){
+        var notes = s.data.results.reverse();
+        NoteManager.setNextPageURL(s.data.next);
+        NoteManager.setPrevPageURL(s.data.previous);
+        for(var i=0; i<notes.length; i++){
+          NoteManager.pushNote(notes[i]);
+        }
+          $scope.notes = NoteManager.getNotes();
+      }, function(e){});
+    };
+
     $scope.createNote = function(msg){
       /*
        * Create a text note
        */
-      var note = {};
-      note.content = msg;
-      note.is_gif = false;
-      note.thread = $scope.thread.id;
+      // var note = {};
+      // note.content = msg;
+      // note.is_gif = false;
+      // note.thread = $scope.thread.id;
 
-      Note.createNote(note).then(function(s){
-        if(s.status==201){
-          s.data.author.background = $scope.me.background;
-          $scope.notes.push(s.data);
-          $scope.msg = "";
-          $ionicScrollDelegate.scrollBottom(true);  
-        }        
-      }, function(e){console.log(e);});
+      // Note.createNote(note).then(function(s){
+      //   if(s.status==201){
+      //     s.data.author.background = $scope.me.background;
+      //     $scope.notes.push(s.data);
+      //     $scope.msg = "";
+      //     $ionicScrollDelegate.scrollBottom(true);  
+      //   }        
+      // }, function(e){console.log(e);});
     };
 
     $scope.sendGif = function(msg){
@@ -404,6 +416,7 @@ angular.module('moo.controllers.threads', [])
        * Logic for when sync is done
        */ 
       $scope.notes = NoteManager.getNotes();
+
       $scope.loading = false;
       $timeout(function(){$ionicScrollDelegate.scrollBottom(true);}, 500);
     };

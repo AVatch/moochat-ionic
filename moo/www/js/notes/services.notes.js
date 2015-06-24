@@ -27,7 +27,8 @@ angular.module('moo.services.notes', [])
     };
 }])
 
-.factory('NoteManager', ['Note', function(Noet){
+.factory('NoteManager', ['$http', 'Authentication', 'Note', 
+  function($http, Authentication, Note){
   
   var notes = {};
   var nextPageURL;
@@ -64,17 +65,22 @@ angular.module('moo.services.notes', [])
   };
 
   var getMoreNotes = function(){
-    /*
-     * Pull the next page of notes and update
-     * the notes and page pointers
-     */ 
-
+    var token = Authentication.getToken();
+    var response = $http({
+                      url: nextPageURL,
+                      method: 'GET',
+                      headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Token ' + token.token },
+                      contentType: "application/json; charset=UTF-8",
+                    });
+    return response;
   };
 
   var getNotes = function(){
     /*
      * Return all the cached notes
-     */ 
+     */
     return notes;
   };
 

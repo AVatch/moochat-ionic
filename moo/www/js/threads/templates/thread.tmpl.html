@@ -12,6 +12,11 @@
     </div>
 
     <ion-list ng-if="!loading">
+        
+        <!-- <ion-infinite-scroll ng-if="notes.length!=0" on-infinite="getMore()"></ion-infinite-scroll> -->
+
+        <button class="button button-positive" ng-click="getMore()">MORE</button>
+
         <ion-item class="note" style="padding:0px"
                   ng-repeat="note in notes">
 
