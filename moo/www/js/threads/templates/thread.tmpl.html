@@ -97,6 +97,6 @@
 
 <div class="bar bar-footer">
     <button ng-click="openGifSearch($event)" class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-photos-outline">GIF </button>
-    <input class="text-input" type="text" placeholder="Moo" ng-model="msg"></input>
+    <input class="text-input" type="text" placeholder="Moo" ng-model="msg" ng-enter="createNote(msg)"></input>
     <button ng-click="createNote(msg)" class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-arrow-right">GIF </button>
 </div>
