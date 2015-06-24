@@ -60,7 +60,6 @@ angular.module('moo.controllers.threads', [])
               for(var i=0; i<accounts.length; i++){
                 AccountManager.pushAccount(accounts[i]);
               }
-              console.log(AccountManager.getAccounts());
               $scope.friends = AccountManager.getAccounts();
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(e);})
@@ -111,12 +110,13 @@ angular.module('moo.controllers.threads', [])
        * Start a new thread
        */
       var recipients = [];
-      for(var i=0; i<$scope.friends.length; i++){
-        if($scope.friends[i].sendTo){
-          recipients.push($scope.friends[i].id);
+      var accounts = AccountManager.getAccounts();
+      for(var id in accounts){
+        if(accounts[id].sendTo){
+          recipients.push(id);
         }
       }
-
+      
       if(recipients.length == 0){
         console.log("not enough recipients");
         return;
