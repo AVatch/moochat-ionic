@@ -87,7 +87,6 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
-      console.log("Sync is done");
 
       // update the scope
       var friends = AccountManager.getAccounts();
@@ -102,7 +101,7 @@ angular.module('moo.controllers.threads', [])
       // issue signals that sync is done
       $scope.loading = false;
 
-      $timeout(function(){sync();}, 5000);
+      $timeout(function(){sync();}, 10000);
     };
 
 
