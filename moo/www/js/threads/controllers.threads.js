@@ -55,6 +55,9 @@ angular.module('moo.controllers.threads', [])
               for(var i=0; i<threads.length; i++){
                 ThreadManager.pushThread(s.data.results[i]);
               }
+
+              console.log(ThreadManager.getThreads());
+
             }, function(e){raiseWarning(e);});
             return s;
         }, function(e){raiseWarning(e);})
