@@ -255,6 +255,7 @@ angular.module('moo.controllers.threads', [])
       
       // clear accounts
       AccountManager.clearAccounts();
+      NoteManager.clearNotes();
       
       Thread.getThread($stateParams.pk)
         
