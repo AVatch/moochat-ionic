@@ -152,6 +152,11 @@ angular.module('moo.services.accounts', [])
        * Add an account to the array
        */
 
+      if(accounts[a.id]){
+        console.log("in the accounts");
+        return;
+      }
+
       // process account object
       a.me = isMe(a);
       applyColor(a);

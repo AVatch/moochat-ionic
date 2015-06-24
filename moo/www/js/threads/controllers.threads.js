@@ -24,7 +24,7 @@ angular.module('moo.controllers.threads', [])
     /*
      * Sync
      */
-    $scope.sync = function(){
+    var sync = function(){
       Account.me()
         .then(function(s){
           // get the user profile
@@ -64,6 +64,7 @@ angular.module('moo.controllers.threads', [])
             }, function(e){raiseWarning(e);});
         }, function(e){raiseWarning(e);})
     };
+    $scope.sync = function(){ sync(); };
 
 
 
@@ -71,16 +72,29 @@ angular.module('moo.controllers.threads', [])
      * Initialize Application
      */
     var init = function(){
+      console.log('poll');
       $scope.sync();
+      
     }; init();
 
     var syncDone = function(){
       /*
        * Logic for when sync is done
        */ 
+      console.log("Sync is done");
+      
+      // update the scope
+      var friends = AccountManager.getAccounts();
+      if($scope.friends.length!=friends.length){
+        $scope.friends = friends;
+      }
+      var threads = ThreadManager.getThreads();
+      if($scope.threads.length!=threads.length){
+        $scope.threads = threads;
+      }
+
+      // issue signals that sync is done
       $scope.loading = false;
-      $scope.friends = AccountManager.getAccounts();
-      $scope.threads = ThreadManager.getThreads();
       $scope.$broadcast('scroll.refreshComplete');
     };
 
