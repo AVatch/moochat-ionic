@@ -6,9 +6,10 @@
 angular.module('moo.controllers.threads', [])
 
 .controller('ThreadsController', ['$scope', '$state', '$timeout', 
-  '$ionicModal', '$ionicSlideBoxDelegate', 'Account', 'AccountManager', 'Thread',
+  '$ionicModal', '$ionicSlideBoxDelegate', 'Account', 'AccountManager',
+  'Thread', 'ThreadManager',
   function($scope, $state, $timeout, $ionicModal, $ionicSlideBoxDelegate, 
-    Account, AccountManager, Thread){
+    Account, AccountManager, Thread, ThreadManager){
     
     /*
      * Initialize Variables
@@ -28,43 +29,54 @@ angular.module('moo.controllers.threads', [])
      */
     $scope.sync = function(){
       Account.me()
-        // pull latest me object
+        
         .then(function(s){
+          // get the user profile
           $scope.me = s.data;
           return $scope.me;
         }, function(e){raiseWarning(e);})
-        // cache it
+        
         .then(function(s){
+          // cache the user profile
           Account.cacheMe(s);
           return s;
         }, function(e){raiseWarning(e);})
-        // pull account threads
+        
+        
         .then(function(s){
+          // get the user threads
           Account.getThreadList(s.id)
+            
             .then(function(s){
-              // update threads
-              $scope.threadsCount = s.data.count;
-              $scope.threadsNextPage = s.data.next;
-              $scope.threadsPreviousPage = s.data.previous;
-              $scope.threads = s.data.results;
-
+              // initialize the ThreadManager
+              ThreadManager.setNextPageURL = s.data.next;
+              ThreadManager.setPrevPageURL = s.data.previous;
+              var threads = s.data.results;
+              for(var i=0; i<threads.length; i++){
+                ThreadManager.pushThread(s.data.results[i]);
+              }
             }, function(e){raiseWarning(e);});
             return s;
         }, function(e){raiseWarning(e);})
-        // pull account friends
+        
+
         .then(function(s){
+          // get the user's friend list
           Account.getFriendList(s.id)
+            
             .then(function(s){
-              // process the accounts with the AccountManager
+              // initialize the AccountManager
               var accounts = s.data.results;
               for(var i=0; i<accounts.length; i++){
                 AccountManager.pushAccount(accounts[i]);
               }
-              $scope.friends = AccountManager.getAccounts();
             }, function(e){raiseWarning(e);});
+
         }, function(e){raiseWarning(e);})
-        // sync done
+        
+
         .then(function(s){
+          // trigger the sync complete function
           syncDone();
         }, function(e){raiseWarning(e);});
     };
@@ -147,21 +159,6 @@ angular.module('moo.controllers.threads', [])
       return AccountManager.getAccount(id);
     };
 
-    $scope.dateFormatter = function(d){
-      /*
-       * Format the time stamp to be readable
-       */ 
-      var d = new Date(d);
-      var now = new Date();
-
-      var diff = now.getTime() - d.getTime();
-      var day = 1000*60*60*24;
-      if(diff > day){
-        return d.toLocaleDateString();
-      }else{
-        return d.toLocaleTimeString();
-      }      
-    };
 
     var raiseWarning = function(err){
       /*
@@ -175,6 +172,9 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
+      $scope.friends = AccountManager.getAccounts();
+      $scope.threads = ThreadManager.getThreads();
+
       $scope.loading = false;
       $scope.$broadcast('scroll.refreshComplete');
     };

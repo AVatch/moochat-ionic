@@ -53,9 +53,12 @@ angular.module('moo.services.threads', [])
     };
 }])
 
-.factory('ThreadManager', ['', function(){
+.factory('ThreadManager', ['Thread', function(Thread){
   
   var threads = {};
+  var nextPageURL;
+  var prevPageURL;
+
 
   var formatDate = function(t){
     /*
@@ -73,11 +76,39 @@ angular.module('moo.services.threads', [])
     }
   };
 
+  var setNextPageURL = function(url){
+    /*
+     * Set the url to the next page url
+     */ 
+    nextPageURL = url;
+  };
+
+  var setPrevPageURL = function(url){
+    /*
+     * Set the url to the prev page url
+     */ 
+    prevPageURL = url;
+  };
+
+  var getMoreThreads = function(){
+    /*
+     * Pull the next page of threads and update
+     * the threads and page pointers
+     */ 
+
+  };
+
   var getThreads = function(){
+    /*
+     * Return all the cached threads
+     */ 
     return threads;
   };
 
   var pushThread = function(t){
+    /*
+     * Add a new thread object
+     */ 
     // process thread
     t.formattedDate = formatDate(t);
     // add it to the threads
@@ -85,18 +116,30 @@ angular.module('moo.services.threads', [])
   };
 
   var getThread = function(id){
+    /*
+     * Get a thread
+     */ 
     return threads[id];
   };
 
   var removeThread = function(id){
+    /*
+     * Remove a thread
+     */ 
     delete threads[id];
   };
 
   var clearThreads = function(){
+    /*
+     * Clear all threads
+     */ 
     threads = {};
   };
 
   return {
+    setNextPageURL: setNextPageURL,
+    setPrevPageURL: setPrevPageURL,
+    getMoreThreads: getMoreThreads,
     getThreads: getThreads,
     pushThread: pushThread,
     getThread: getThread,
