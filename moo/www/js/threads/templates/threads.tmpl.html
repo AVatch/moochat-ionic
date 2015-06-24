@@ -17,6 +17,15 @@
     <div class="row" style="padding:0px;">
         <ion-spinner class="loading-spinner" ng-if="loading" icon="spiral"></ion-spinner>
     </div>
+
+    <!-- empty thread list msg -->
+    <div class="row" ng-if="!loading" ng-if="threads.length==0">
+        <div class="col" style="text-align:center; padding-top:150px;">
+            <span style="color: #c2c2c2; font-size:200%;">
+                There are no threads
+            </span>  
+        </div>
+    </div>
     
     <!-- list of threads -->
     <ion-list ng-if="!loading">

@@ -17,9 +17,6 @@ angular.module('moo.controllers.threads', [])
     $scope.loading = true;
     $scope.warning = false;
     $scope.me = {};
-    $scope.threadsCount = 0;
-    $scope.threadsNextPage = "";
-    $scope.threadsPreviousPage = "";
     $scope.threads = [];
     $scope.friendsResults = [];
     $scope.friends = [];
