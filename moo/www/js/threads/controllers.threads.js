@@ -65,13 +65,12 @@ angular.module('moo.controllers.threads', [])
               }, function(e){raiseWarning(e);})
     };
     $scope.sync = function(){ 
-        $timeout.cancel() 
-        sync()
-          .then(
-            function(){
-              $scope.$broadcast('scroll.refreshComplete');
-            }, function(e){}
-          );
+      // cancel the polling on manual refresh
+      $timeout.cancel() 
+      sync()
+        .then(function(s){
+            $scope.$broadcast('scroll.refreshComplete');
+          }, function(e){});
     };
 
 
