@@ -55,8 +55,7 @@ angular.module('moo.controllers.threads', [])
               for(var i=0; i<threads.length; i++){
                 ThreadManager.pushThread(s.data.results[i]);
               }
-
-              console.log(ThreadManager.getThreads());
+              $scope.threads = ThreadManager.getThreads();
 
             }, function(e){raiseWarning(e);});
             return s;
@@ -73,6 +72,7 @@ angular.module('moo.controllers.threads', [])
               for(var i=0; i<accounts.length; i++){
                 AccountManager.pushAccount(accounts[i]);
               }
+              $scope.friends = AccountManager.getAccounts();
             }, function(e){raiseWarning(e);});
 
         }, function(e){raiseWarning(e);})
@@ -181,9 +181,6 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
-      $scope.friends = AccountManager.getAccounts();
-      $scope.threads = ThreadManager.getThreads();
-
       $scope.loading = false;
       $scope.$broadcast('scroll.refreshComplete');
     };
