@@ -59,7 +59,7 @@ angular.module('moo.services.notes', [])
       "#35d7dc", "#48babb", "#4627a2", "#4f616c", "#dc7a6d", 
       "#da4368", "#fcc569"];
       var color = colors[Math.floor(Math.random()*colors.length)];
-      return {'background-color': color};
+      return color;
     };
 
   var setNextPageURL = function(url){

@@ -299,7 +299,16 @@ angular.module('moo.controllers.threads', [])
       q = {"query": q};
       Gif.searchGif(q)
         .then(function(s){
-          $scope.results = s.data.results;
+          
+          var results = s.data.results;
+
+          for(var i=0; i<results.length; i++){
+            var color = NoteManager.randomColor();
+            results[i].backgroundColor = color;
+          }
+          
+          $scope.results = results;
+          console.log($scope.results);
           updateWidth($scope.results);
         }, function(e){console.log(e);})
         .finally(function(){
@@ -393,7 +402,7 @@ angular.module('moo.controllers.threads', [])
     $scope.getAccount = function(id){
       return AccountManager.getAccount(id);
     };
-    $scope.getRandomColor = function(){
+    $scope.getRandomColor = function(id){
       return NoteManager.randomColor();
     }
 

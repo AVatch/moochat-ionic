@@ -25,8 +25,7 @@
         <div ng-repeat="gif in results"
              ng-click="sendGif(gif.url)"
              class="animated bounceIn"
-                     style="
-                            background-color:red;
+                     style="background-color: {{gif.backgroundColor}};
                             background-image: url({{gif.url}});
                             background-repeat: no-repeat;
                             background-position: 50% 50%;
