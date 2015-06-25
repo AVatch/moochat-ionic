@@ -5,15 +5,16 @@
 */
 angular.module('moo.controllers.threads', [])
 
-.controller('ThreadsController', ['$scope', '$state', '$timeout', 
+.controller('ThreadsController', ['$scope', '$rootScope', '$state', '$timeout', 
   '$ionicModal', '$ionicSlideBoxDelegate', 'Account', 'AccountManager',
   'Thread', 'ThreadManager',
-  function($scope, $state, $timeout, $ionicModal, $ionicSlideBoxDelegate, 
+  function($scope, $rootScope, $state, $timeout, $ionicModal, $ionicSlideBoxDelegate, 
     Account, AccountManager, Thread, ThreadManager){
     
     /*
      * Initialize Variables
      */
+    var poll;
     $scope.loading = true;
     $scope.warning = false;
     $scope.me = {};
@@ -87,7 +88,7 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
-
+       console.log("threadS sync done");
       // update the scope
       var friends = AccountManager.getAccounts();
       if($scope.friends.length!=friends.length){
@@ -101,9 +102,13 @@ angular.module('moo.controllers.threads', [])
       // issue signals that sync is done
       $scope.loading = false;
 
-      $timeout(function(){sync();}, 10000);
+      poll = $timeout(function(){sync();}, 10000);
     };
 
+    $rootScope.$on('$stateChangeStart', 
+    function(event, toState, toParams, fromState, fromParams){ 
+      $timeout.cancel(poll);
+    });
 
 
     /*
@@ -238,16 +243,17 @@ angular.module('moo.controllers.threads', [])
 
 
 
-.controller('ThreadController', ['$scope', '$ionicPopover', '$window', 
+.controller('ThreadController', ['$scope', '$rootScope', '$ionicPopover', '$window', 
   '$stateParams', '$timeout', '$ionicModal', '$ionicScrollDelegate',
   'Account', 'AccountManager', 'Thread', 'Note', 'NoteManager', 'Gif',
-  function($scope, $ionicPopover, $window, $stateParams, $timeout, $ionicModal,
+  function($scope, $rootScope, $ionicPopover, $window, $stateParams, $timeout, $ionicModal,
     $ionicScrollDelegate, Account, AccountManager, Thread, Note, NoteManager, Gif){
     
     /*
      * Initialize Variables
      */
     var scroll = true;
+    var poll;
     $scope.loading = true;
     $scope.warning = false;
     $scope.noteSending = false;
@@ -418,7 +424,7 @@ angular.module('moo.controllers.threads', [])
       $scope.notes = NoteManager.getNotes();
       $scope.loading = false;
       if(scroll){ $ionicScrollDelegate.scrollBottom(true); scroll=false; }
-      $timeout(function(){sync();}, 5000);
+      poll = $timeout(function(){sync();}, 5000);
     };
 
     /*
@@ -432,25 +438,9 @@ angular.module('moo.controllers.threads', [])
       return NoteManager.randomColor();
     }
 
-    $scope.dateFormatter = function(d){
-      /*
-       * Format the time stamp to be readable
-       */ 
-      var d = new Date(d);
-      var now = new Date();
-
-      var diff = now.getTime() - d.getTime();
-      var day = 1000*60*60*24;
-      if(diff > day){
-        return d.toLocaleDateString();
-      }else{
-        return d.toLocaleTimeString();
-      }      
-    };
-
     var searchPaneWidth = 370;
     var updateWidth = function(arr){
-      searchPaneWidth = (arr.length / 2) * 120;
+      searchPaneWidth = (arr.length / 2) * 100;
       searchPaneWidth = searchPaneWidth + 'px';
     };
 
@@ -472,6 +462,11 @@ angular.module('moo.controllers.threads', [])
        */ 
       $window.history.back();
     }; 
+
+    $rootScope.$on('$stateChangeStart', 
+    function(event, toState, toParams, fromState, fromParams){ 
+      $timeout.cancel(poll);
+    });
 
     //
     //
