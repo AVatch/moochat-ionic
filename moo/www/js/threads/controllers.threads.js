@@ -247,6 +247,7 @@ angular.module('moo.controllers.threads', [])
     /*
      * Initialize Variables
      */
+    var scroll = true;
     $scope.loading = true;
     $scope.warning = false;
     $scope.noteSending = false;
@@ -255,49 +256,47 @@ angular.module('moo.controllers.threads', [])
     $scope.q = "";
     $scope.msg = "";
 
+    // clear accounts
+    AccountManager.clearAccounts();
+    NoteManager.clearNotes();
+
     /*
      * Sync
      */
     var sync = function(){
-      $scope.me = Account.getMe();
-      
-      // clear accounts
-      AccountManager.clearAccounts();
-      NoteManager.clearNotes();
-      
-      Thread.getThread($stateParams.pk)
-        
-        .then(function(s){
-          // get the thread object
-          $scope.thread = s.data;
-          for(var i=0; i<$scope.thread.participants.length; i++){
-            AccountManager.pushAccount($scope.thread.participants[i]);
-          }
-          return $scope.thread;
-        }, function(e){raiseWarning(e);})
-        
-        .then(function(s){
-          // get the notes in the thread
-          Thread.getNotes(s.id)
-            .then(function(s){
-              
-              NoteManager.setNextPageURL(s.data.next);
-              NoteManager.setPrevPageURL(s.data.previous);
-
-              var notes = s.data.results.reverse();
-              for(var i=0; i<notes.length; i++){
-                NoteManager.pushNote(notes[i]);
-              }
-
-              $scope.notes = NoteManager.getNotes();
-              console.log($scope.notes);
-
-            }, function(e){raiseWarning(e);});
-        }, function(e){raiseWarning(s);})
-        // sync done
-        .then(function(s){
-          syncDone();
-        }, function(e){raiseWarning(e);});
+      return Account.me()
+              .then(function(s){
+                $scope.me = s.data;
+                return $scope.me;
+              }, function(e){raiseWarning(e);})
+              .then(function(s){
+                Thread.getThread($stateParams.pk)
+                  .then(function(s){
+                    // get the thread object
+                    var thread = s.data;
+                    for(var i=0; i<thread.participants.length; i++){
+                      AccountManager.pushAccount(thread.participants[i]);
+                    }
+                    $scope.thread = thread
+                    return thread;
+                  }, function(e){raiseWarning(e);})
+                  .then(function(s){
+                    // get the notes in the thread
+                    Thread.getNotes(s.id)
+                      .then(function(s){
+                        NoteManager.setNextPageURL(s.data.next);
+                        NoteManager.setPrevPageURL(s.data.previous);
+                        var notes = s.data.results.reverse();
+                        for(var i=0; i<notes.length; i++){
+                          NoteManager.pushNote(notes[i]);
+                        }
+                      }, function(e){raiseWarning(e);})
+                      .then(function(s){
+                        // finish sync
+                        syncDone();
+                      }, function(e){raiseWarning(e);});
+                  }, function(e){raiseWarning(s);});
+              }, function(e){raiseWarning(e);});
     };
 
     /*
@@ -406,8 +405,21 @@ angular.module('moo.controllers.threads', [])
      */
 
     var init = function(){
-      sync();
+      sync()
+        .then(function(s){
+        }, function(e){raiseWarning(e);});
     }; init();
+
+    var syncDone = function(){
+      /*
+       * Logic for when sync is done
+       */ 
+      console.log("thread sync done");
+      $scope.notes = NoteManager.getNotes();
+      $scope.loading = false;
+      if(scroll){ $ionicScrollDelegate.scrollBottom(true); scroll=false;}
+      $timeout(function(){sync();}, 5000);
+    };
 
     /*
      * Helpers
@@ -452,15 +464,6 @@ angular.module('moo.controllers.threads', [])
        */ 
       $scope.warning = true;
       console.log(err);
-    };
-
-    var syncDone = function(){
-      /*
-       * Logic for when sync is done
-       */ 
-
-      $scope.loading = false;
-      $timeout(function(){$ionicScrollDelegate.scrollBottom(true);}, 500);
     };
 
     $scope.back = function(){

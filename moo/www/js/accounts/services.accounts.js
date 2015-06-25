@@ -153,7 +153,6 @@ angular.module('moo.services.accounts', [])
        */
 
       if(accounts[a.id]){
-        console.log("in the accounts");
         return;
       }
 
