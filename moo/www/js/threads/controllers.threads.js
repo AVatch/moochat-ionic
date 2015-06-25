@@ -295,6 +295,11 @@ angular.module('moo.controllers.threads', [])
                         var notes = s.data.results.reverse();
                         for(var i=0; i<notes.length; i++){
                           NoteManager.pushNote(notes[i]);
+                          if(i==notes.length-1){
+                            if(NoteManager.areThereNewElements(notes[i].id)){
+                              scroll = true;
+                            }
+                          }
                         }
                       }, function(e){raiseWarning(e);})
                       .then(function(s){

@@ -33,6 +33,7 @@ angular.module('moo.services.notes', [])
   var notes = {};
   var nextPageURL;
   var prevPageURL;
+  var lastElementID = -1;
 
   var formatDate = function(t){
     /*
@@ -74,6 +75,22 @@ angular.module('moo.services.notes', [])
      * Set the url to the prev page url
      */ 
     prevPageURL = url;
+  };
+
+  var areThereNewElements = function(id){
+    /*
+     * determine if there are new elements
+     */ 
+    if(lastElementID==-1){
+      lastElementID = id;
+      return true;
+    }else if(id==lastElementID){
+      return false;
+    }else{
+      lastElementID = id;
+      return true;
+    }
+    
   };
 
   var getMoreNotes = function(){
@@ -138,6 +155,7 @@ angular.module('moo.services.notes', [])
     getNote: getNote,
     removeNote: removeNote, 
     clearNotes: clearNotes,
-    randomColor: randomColor
+    randomColor: randomColor,
+    areThereNewElements: areThereNewElements
   };
 }]);
