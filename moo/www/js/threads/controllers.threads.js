@@ -417,7 +417,7 @@ angular.module('moo.controllers.threads', [])
       console.log("thread sync done");
       $scope.notes = NoteManager.getNotes();
       $scope.loading = false;
-      if(scroll){ $ionicScrollDelegate.scrollBottom(true); scroll=false;}
+      if(scroll){ $ionicScrollDelegate.scrollBottom(true); scroll=false; }
       $timeout(function(){sync();}, 5000);
     };
 
