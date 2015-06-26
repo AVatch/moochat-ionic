@@ -7,8 +7,9 @@
             <!-- select friends to message -->
             <ion-header-bar>
                 <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-close-empty"></button>
-                <h1 class="title">Moo at Someone</h1>
-                <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button>
+                <h1 class="title">Moo At..</h1>
+                <!-- <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button> -->
+                <button ng-click="nextSlide()" class="button button-icon icon ion-ios-personadd-outline"></button>
             </ion-header-bar>
 
             <ion-content>
@@ -28,7 +29,11 @@
                         {{friend.username}}
                     </ion-checkbox>
                 </ion-list>
-                
+
+
+                <button ng-click="nextSlide()" class="button button-block button-positive">
+                  Moo
+                </button>
             </ion-content>
         </ion-slide>
 

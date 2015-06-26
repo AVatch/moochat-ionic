@@ -132,6 +132,10 @@ angular.module('moo.controllers.threads', [])
         });
     };
 
+    $scope.nextSlide = function() {
+      $ionicSlideBoxDelegate.next();
+    }
+
     $scope.addFriend = function(account){
       /*
        * Add a friend       
