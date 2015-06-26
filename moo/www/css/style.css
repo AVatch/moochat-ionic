@@ -5,6 +5,13 @@
     color: #bbbbbb;
 }
 
+.note-timeStamp{
+    position: absolute;
+    bottom: -5px;
+    font-size: 60%;
+    color: #bbbbbb;
+}
+
 .loading-spinner{
     display: block;
     margin-left: auto;

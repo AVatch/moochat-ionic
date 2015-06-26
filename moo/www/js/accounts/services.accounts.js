@@ -92,7 +92,7 @@ angular.module('moo.services.accounts', [])
     };
 }])
 
-.factory('AccountManager', ['Account', function(Account){
+.factory('AccountManager', ['Account', 'COLORS', function(Account, COLORS){
   
     var accounts = {};
     var processedMe = {};
@@ -118,9 +118,7 @@ angular.module('moo.services.accounts', [])
        * Pick a random color for avators
        *  @returns style object
        */ 
-      var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588", 
-      "#35d7dc", "#48babb", "#4627a2", "#4f616c", "#dc7a6d", 
-      "#da4368", "#fcc569"];
+      var colors = COLORS;
       var color = colors[Math.floor(Math.random()*colors.length)];
       return {'background-color': color};
     };

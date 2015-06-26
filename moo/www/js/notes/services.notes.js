@@ -27,8 +27,8 @@ angular.module('moo.services.notes', [])
     };
 }])
 
-.factory('NoteManager', ['$http', 'Authentication', 'Note', 
-  function($http, Authentication, Note){
+.factory('NoteManager', ['$http', 'Authentication', 'Note', 'COLORS',
+  function($http, Authentication, Note, COLORS){
   
   var notes = {};
   var nextPageURL;
@@ -56,9 +56,7 @@ angular.module('moo.services.notes', [])
        * Pick a random color
        *  @returns style object
        */ 
-      var colors = ["#39B38A", "#2374B7", "#D3473D", "#F8E588", 
-      "#35d7dc", "#48babb", "#4627a2", "#4f616c", "#dc7a6d", 
-      "#da4368", "#fcc569"];
+      var colors = COLORS;
       var color = colors[Math.floor(Math.random()*colors.length)];
       return color;
     };
