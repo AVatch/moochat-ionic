@@ -249,9 +249,9 @@ angular.module('moo.controllers.threads', [])
 
 .controller('ThreadController', ['$scope', '$rootScope', '$ionicPopover', '$window', 
   '$stateParams', '$timeout', '$ionicModal', '$ionicScrollDelegate',
-  'Account', 'AccountManager', 'Thread', 'Note', 'NoteManager', 'Gif',
+  'Account', 'AccountManager', 'Thread', 'Note', 'NoteManager', 'Gif', 'COLORS',
   function($scope, $rootScope, $ionicPopover, $window, $stateParams, $timeout, $ionicModal,
-    $ionicScrollDelegate, Account, AccountManager, Thread, Note, NoteManager, Gif){
+    $ionicScrollDelegate, Account, AccountManager, Thread, Note, NoteManager, Gif, COLORS){
     
     /*
      * Initialize Variables
@@ -421,12 +421,12 @@ angular.module('moo.controllers.threads', [])
     };
 
     $scope.like = function($event, note){
-      console.log($event);
-      console.log();
       var x = ($event.gesture.center.pageX - 25).toString();
       var y = ($event.gesture.center.pageY - 55).toString()
       var content = angular.element( document.querySelector( '#threadContentContainer' ) );
-      content.append('<div class="heart animated bounceOut" style="position:fixed; left:'+x+'px; top:'+y+'px;"></div>');
+      var heart = '<div id="heart" class="heart animated bounceOut" style="position:fixed; left:'+x+'px; top:'+y+'px;"></div>';
+      content.append(heart);
+
     };
 
     /*
