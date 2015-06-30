@@ -143,7 +143,9 @@ angular.module('moo.controllers.threads', [])
       Account.friendAccount(account.id)
         .then(function(s){
           if(s.status==200){
-            $scope.friends.push(s.data);
+            
+            AccountManager.pushAccount(s.data)
+
             $ionicSlideBoxDelegate.previous();
             $scope.friendsResults = [];
           }

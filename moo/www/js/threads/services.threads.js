@@ -113,6 +113,9 @@ angular.module('moo.services.threads', [])
      */ 
     // process thread
     t.formattedDate = formatDate(t);
+    t.time_created = new Date(t.time_created);
+    t.time_updated = new Date(t.time_updated);
+    console.log(t);
     // add it to the threads
     threads[t.id] = t;
   };

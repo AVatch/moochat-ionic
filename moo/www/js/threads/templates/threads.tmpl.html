@@ -29,7 +29,7 @@
     
     <!-- list of threads -->
     <ion-list ng-if="!loading">
-        <ion-item ng-repeat="thread in threads"
+        <ion-item ng-repeat="thread in threads | orderBy:'time_created'"
                   ui-sref='thread({pk: thread.id})'>
             
             <div class="row">
