@@ -37,7 +37,9 @@
                             <p>{{note.content}}</p>
                         </div>
                         <div ng-if="note.is_gif" class="note-gif"
-                            style=" background-color: {{note.backgroundColor}};
+                            on-double-tap="like($event, note)"
+                            style=" background-color: {{note.
+                            backgroundColor}};
                                     background-image: url({{note.content}});
                                     background-repeat: no-repeat;
                                     background-position: 50% 50%;
