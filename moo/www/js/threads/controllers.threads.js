@@ -421,8 +421,23 @@ angular.module('moo.controllers.threads', [])
     };
 
     $scope.like = function($event, note){
-      var x = ($event.gesture.center.pageX - 25).toString();
-      var y = ($event.gesture.center.pageY - 55).toString()
+      /*
+       * Like a gif
+       */
+      var amplitude = 10;
+      var x_noise = Math.random()*amplitude;
+      var y_noise = Math.random()*amplitude;
+
+      if(Math.random()*10<5.0){
+        x_noise=x_noise*-1;
+      }
+      if(Math.random()*10<5.0){
+        y_noise=y_noise*-1;
+      }
+
+
+      var x = ($event.gesture.center.pageX - 25 + x_noise).toString();
+      var y = ($event.gesture.center.pageY - 55 + y_noise).toString()
       var content = angular.element( document.querySelector( '#threadContentContainer' ) );
       var heart = '<div id="heart" class="heart animated bounceOut" style="position:fixed; left:'+x+'px; top:'+y+'px;"></div>';
       content.append(heart);
