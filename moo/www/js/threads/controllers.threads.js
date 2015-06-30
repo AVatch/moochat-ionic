@@ -421,8 +421,12 @@ angular.module('moo.controllers.threads', [])
     };
 
     $scope.like = function($event, note){
+      console.log($event);
+      console.log();
+      var x = ($event.gesture.center.pageX - 25).toString();
+      var y = ($event.gesture.center.pageY - 55).toString()
       var content = angular.element( document.querySelector( '#threadContentContainer' ) );
-      content.append('<div class="heart animated bounceOut" style="position:fixed; left:'+$event.gesture.center.pageX+'px; top:'+$event.gesture.center.pageY+'px;"></div>');
+      content.append('<div class="heart animated bounceOut" style="position:fixed; left:'+x+'px; top:'+y+'px;"></div>');
     };
 
     /*
