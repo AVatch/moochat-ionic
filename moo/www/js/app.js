@@ -57,7 +57,6 @@ angular.module('moo', ['ionic',
         $state.go('authentication');
      }
    });
-
 })
 
 // Setup localstorage

@@ -344,7 +344,11 @@ angular.module('moo.controllers.threads', [])
         });
     };
 
+    
     $scope.getMore = function(){
+      /*
+       * Load more notes by paginating
+       */
       NoteManager.getMoreNotes().then(function(s){
         var notes = s.data.results.reverse();
         NoteManager.setNextPageURL(s.data.next);
@@ -352,7 +356,8 @@ angular.module('moo.controllers.threads', [])
         for(var i=0; i<notes.length; i++){
           NoteManager.pushNote(notes[i]);
         }
-          $scope.notes = NoteManager.getNotes();
+        $scope.notes = NoteManager.getNotes();
+        $scope.$broadcast('scroll.refreshComplete');
       }, function(e){});
     };
 
@@ -432,6 +437,7 @@ angular.module('moo.controllers.threads', [])
       console.log("thread sync done");
       $scope.notes = NoteManager.getNotes();
       $scope.loading = false;
+
       if(scroll){ $ionicScrollDelegate.scrollBottom(true); scroll=false; }
       poll = $timeout(function(){sync();}, 5000);
     };
