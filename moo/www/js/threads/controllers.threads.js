@@ -418,7 +418,12 @@ angular.module('moo.controllers.threads', [])
           $ionicScrollDelegate.scrollBottom(true);
         }        
       }, function(e){console.log(e);});
-    }
+    };
+
+    $scope.like = function($event, note){
+      var content = angular.element( document.querySelector( '#threadContentContainer' ) );
+      content.append('<div class="heart animated bounceOut" style="position:fixed; left:'+$event.gesture.center.pageX+'px; top:'+$event.gesture.center.pageY+'px;"></div>');
+    };
 
     /*
      * Initialize Application

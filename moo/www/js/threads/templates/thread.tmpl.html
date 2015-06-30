@@ -1,10 +1,10 @@
-<ion-header-bar class="bar-stable">
-    <button ng-click="back()" class="button button-icon icon ion-ios-arrow-left"></button>
+<ion-header-bar class="bar-royal">
+    <button ng-click="back()" class="button button-icon icon ion-ios-arrow-left button-royal"></button>
     <h1 class="title"></h1>
     <button ng-click="openModal()" class="button button-clear button-icon icon ion-ios-more-outline"></button>
 </ion-header-bar>
 
-<ion-content>
+<ion-content id="threadContentContainer">
 
     <!-- loading spinner -->
     <div class="row">
@@ -61,6 +61,7 @@
     
                         <!-- if msg is gif -->
                         <div ng-if="note.is_gif" class="note-gif"
+                            on-double-tap="like($event, note)"
                             style=" background-color: {{note.backgroundColor}};
                                     background-repeat: no-repeat;
                                     background-position: 50% 50%;
@@ -69,7 +70,7 @@
                                     width:190px;
                                     height:190px;
                                     float:right;">
-                        <span class="note-timeStamp">{{note.formattedDate}}</span>
+                            <span class="note-timeStamp">{{note.formattedDate}}</span>
                         </div>  
 
                     </div>
@@ -102,11 +103,14 @@
     </ion-list>
     <!-- bottom space -->
     <span style="width:100%; height: 43px; display:block;"></span>
-    <!-- /bottom space -->
+    <!-- /bottom space -->    
+
 </ion-content>
 
+<!-- <div class="heart animated bounceIn" style="position:fixed; left:225px; top:300px;"></div> -->
+
 <div class="bar bar-footer">
-    <button ng-click="openGifSearch($event)" class="button button-clear button-positive" style="width:50px;">GIF</button>
+    <button ng-click="openGifSearch($event)" class="button button-clear button-royal" style="width:50px;">GIF</button>
     <input class="text-input" type="text" placeholder="Send a Message" ng-model="msg" ng-enter="createNote(msg)"></input>
     <button ng-click="createNote(msg)" class="button button-clear button-icon icon ion-ios-arrow-left ion-ios-arrow-right"></button>
 </div>
