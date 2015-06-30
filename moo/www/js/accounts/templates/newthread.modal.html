@@ -25,7 +25,7 @@
 
                 <!-- list of friends -->
                 <ion-list>
-                    <ion-checkbox ng-repeat="friend in friends" ng-model="friend.sendTo">
+                    <ion-checkbox ng-repeat="friend in friends" ng-if="!friend.me" ng-model="friend.sendTo">
                         {{friend.username}}
                     </ion-checkbox>
                 </ion-list>

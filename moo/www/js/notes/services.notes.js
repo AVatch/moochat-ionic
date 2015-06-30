@@ -118,6 +118,7 @@ angular.module('moo.services.notes', [])
     // process note
     n.formattedDate = formatDate(n);
     n.backgroundColor = randomColor();
+
     // add it to the notes
     notes[n.id] = n;
   };
