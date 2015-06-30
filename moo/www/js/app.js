@@ -33,10 +33,6 @@ angular.module('moo', ['ionic',
 .run(function($ionicPlatform, $cordovaStatusbar, $rootScope, 
   $state, $urlRouter, $ionicAnalytics, Authentication, Account) {
 
-  // set the status bar color
-  $cordovaStatusBar.style(1)
-  $cordovaStatusbar.styleHex('#FF0000')
-
   $ionicPlatform.ready(function() {
     $ionicAnalytics.register();
     
@@ -46,7 +42,8 @@ angular.module('moo', ['ionic',
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if(window.StatusBar) {
-      StatusBar.styleDefault();
+      // StatusBar.styleDefault();
+      StatusBar.backgroundColorByHexString('#9C27B0');
     }
   });
   
