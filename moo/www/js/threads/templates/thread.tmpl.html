@@ -13,14 +13,11 @@
 
     <ion-list ng-if="!loading">
         
+        <!-- paginate more content -->
         <ion-refresher
             on-refresh="getMore()"
             icon="ripple">
         </ion-refresher>
-
-        <!-- <ion-infinite-scroll ng-if="notes.length!=0" on-infinite="getMore()" immediate-check="false"></ion-infinite-scroll> -->
-
-        <!-- <button class="button button-positive" ng-click="getMore()">MORE</button> -->
 
         <!-- Messege if user is reciever -->
         <ion-item class="note" style="padding:0px"
