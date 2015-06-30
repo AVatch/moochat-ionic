@@ -442,6 +442,11 @@ angular.module('moo.controllers.threads', [])
       var heart = '<div id="heart" class="heart animated bounceOut" style="position:fixed; left:'+x+'px; top:'+y+'px;"></div>';
       content.append(heart);
 
+      // post to server to like the gif
+      // as long as it is no longer liked
+      // remove hearts from dom as soon as promise is done
+      // add long press to dislike
+
     };
 
     /*
