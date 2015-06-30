@@ -3,6 +3,7 @@
 angular.module('moo', ['ionic', 
                        'ionic.service.core', 
                        'ionic.service.analytics',
+                       'ngCordova',
                        'LocalStorageModule',
 
                        'moo.controllers.accounts',
@@ -29,7 +30,12 @@ angular.module('moo', ['ionic',
 
 // Setup Initialization Logic
 
-.run(function($ionicPlatform, $rootScope, $state, $urlRouter, $ionicAnalytics, Authentication, Account) {
+.run(function($ionicPlatform, $cordovaStatusbar, $rootScope, 
+  $state, $urlRouter, $ionicAnalytics, Authentication, Account) {
+
+  // set the status bar color
+  $cordovaStatusBar.style(1)
+  $cordovaStatusbar.styleHex('#FF0000')
 
   $ionicPlatform.ready(function() {
     $ionicAnalytics.register();
