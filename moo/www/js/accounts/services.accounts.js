@@ -120,14 +120,14 @@ angular.module('moo.services.accounts', [])
        */ 
       var colors = COLORS;
       var color = colors[Math.floor(Math.random()*colors.length)];
-      return {'background-color': color};
+      return color;
     };
 
     var applyColor = function(a){
       /*
        * Assigns a random color to a user
        */
-      a.avatarColor = randomColor();
+      a.color = randomColor();
     };
 
     var applyInitials = function(a){

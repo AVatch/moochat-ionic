@@ -25,10 +25,9 @@
 
             <div ng-if="!getAccount(note.author.id).me" class="row">
                 <div class="col col-10">
-                    <div class="threads avatar note-sender"
-                         ng-style="{{getAccount(note.author.id).avatarColor}}">
-                         <span>{{getAccount(note.author.id).initials}}</span>
-                    </div>
+                    <avatar account="note.author"
+                            style="margin-right: 5px;">
+                    </avatar>
                 </div>
 
                 <div class="col" style="padding-left:17px;">
@@ -68,7 +67,7 @@
                         </div>
     
                         <!-- if msg is gif -->
-                        <div ng-if="note.is_gif" class="note-gif"
+                        <!-- <div ng-if="note.is_gif" class="note-gif"
                             on-double-tap="like($event, note)"
                             style=" background-color: {{note.backgroundColor}};
                                     background-repeat: no-repeat;
@@ -83,17 +82,16 @@
                             
                             <span class="note-timeStamp">{{note.formattedDate}}</span>
 
-                        </div>  
+                        </div>   -->
+                        <gif ng-if="note.is_gif" content="note.content"></gif>
 
                     </div>
                 </div>
 
                 <div class="col col-10">
-                    <div class="threads avatar note-sender"
-                         ng-style="{{getAccount(note.author.id).avatarColor}}"
-                         style="float:right;">
-                         <span>{{getAccount(note.author.id).initials}}</span>
-                    </div>
+                    <avatar account="note.author"
+                            style="margin-right: 5px;">
+                    </avatar>
                 </div>
             </div>
             <!-- /Messege if user is author -->

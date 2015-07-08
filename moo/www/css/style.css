@@ -1,16 +1,39 @@
-.timeStamp{
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    color: #bbbbbb;
+/* Define Pallete Colours */
+.color01{
+  background-color: #e8207a;
+}
+.color02{
+  background-color: #f2f2f2;
+}
+.color03{
+  background-color: #dddddd;
+}
+.color04{
+  background-color: #22b4b7;
+}
+.color05{
+  background-color: #6a6a6a;
 }
 
-.note-timeStamp{
-    position: absolute;
-    bottom: 0px;
-    font-size: 60%;
-    color: #bbbbbb;
+
+.bar-stable{
+  background-color: #e8207a !important; 
 }
+.bar.bar-stable .title{
+  color: white;
+}
+.bar-stable .button{
+  color: white;
+}
+.bar-stable .button:hover{
+  color: white;
+}
+.bar-stable .button.button-clear{
+  color: white;
+}
+
+
+
 
 .loading-spinner{
     display: block;
@@ -24,8 +47,29 @@
 }
 
 
-.bar-stable{
-    background-color: white !important;
+
+
+
+
+
+
+
+
+
+
+
+.timeStamp{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    color: #bbbbbb;
+}
+
+.note-timeStamp{
+    position: absolute;
+    bottom: 0px;
+    font-size: 60%;
+    color: #bbbbbb;
 }
 
 

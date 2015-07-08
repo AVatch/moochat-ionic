@@ -6,6 +6,8 @@ angular.module('moo', ['ionic',
                        'ngCordova',
                        'LocalStorageModule',
 
+                       'moo.directives.components',
+
                        'moo.controllers.accounts',
                        'moo.services.accounts',
                        'moo.directives.accounts',
@@ -15,9 +17,11 @@ angular.module('moo', ['ionic',
 
                        'moo.controllers.gifs',
                        'moo.services.gifs',
+                       'moo.directives.gifs',
 
                        'moo.controllers.notes',
                        'moo.services.notes',
+                       'moo.directives.notes',
                        
                        'moo.controllers.threads',
                        'moo.services.threads'])

@@ -37,4 +37,51 @@ angular.module('moo.services.gifs', [])
       searchGif: searchGif,
       randomGif: randomGif
     };
+}])
+
+.factory('GifManager', ['Gif', 'COLORS', function(Gif, COLORS){
+  
+    var gifs = {};
+
+    var randomColor = function(){      
+      var colors = COLORS;
+      var color = colors[Math.floor(Math.random()*colors.length)];
+      return color;
+    };
+
+    var applyColor = function(g){
+      g.color = randomColor();
+    };
+
+    var pushGif = function(g){
+      if(gifs[g.id]){
+        return;
+      }
+      applyColor(g);
+      gifs[g.id] = g;
+
+    };
+
+    var getGifs = function(){
+      return gifs;
+    };
+
+    var getGif = function(id){
+      return gifs[id];
+    };
+
+    var removeGif = function(id){
+       delete gifs[id];
+    };
+
+    var clearGifs = function(){
+      gifs = {};
+    };
+
+    return{
+      getGifs: getGifs,
+      pushGif: pushGif,
+      getGif: getGif,
+      clearGifs: clearGifs
+    };
 }]);

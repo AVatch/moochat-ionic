@@ -36,22 +36,19 @@
     
   <!-- list of threads -->
   <ion-list ng-if="!loading">
-    <!-- thread object -->
+    <!-- thread-list-item -->
     <ion-item ng-repeat="thread in threads"
               ui-sref='thread({pk: thread.id})'>
-            
+      <!-- thread-list-item body -->
       <div class="row">
         <avatar ng-repeat="account in thread.participants" 
                 ng-if="account.id!=me.id" 
                 account="account" 
                 style="margin-right: 5px;">
         </avatar>
-        <!-- <time-stamp time="thread."></time-stamp> -->
-        <!-- <div class="timeStamp">
-          {{thread.formattedDate}}
-        </div> -->
+        <time-stamp time="thread.time_updated"></time-stamp>
       </div>
-
+      <!-- thread-list-item actions -->
       <ion-option-button class="button button-assertive"
                          ng-click="leave(thread)">
         Leave

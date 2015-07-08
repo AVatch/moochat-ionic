@@ -13,9 +13,11 @@ angular.module('moo.directives.accounts', [])
     restrict: 'E',
     templateUrl: 'js/accounts/templates/avatar.directive.html',
     controller: function($scope, $element, $attrs, $transclude) {
-
-      $scope.account = AccountManager.getAccount($scope.account.id);
-
+      
+      $scope.$watch("account",function(newValue, OldValue, scope){
+        $scope.account = AccountManager.getAccount($scope.account.id);
+      });
+      
     }
   };
 }]);
