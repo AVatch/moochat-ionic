@@ -251,9 +251,9 @@ angular.module('moo.controllers.threads', [])
 
 .controller('ThreadController', ['$scope', '$rootScope', '$ionicPopover', '$window', 
   '$stateParams', '$timeout', '$ionicModal', '$ionicScrollDelegate',
-  'Account', 'AccountManager', 'Thread', 'Note', 'NoteManager', 'Gif', 'COLORS',
+  'Account', 'AccountManager', 'Thread', 'Note', 'NoteManager', 'Gif', 'GifManager', 'COLORS',
   function($scope, $rootScope, $ionicPopover, $window, $stateParams, $timeout, $ionicModal,
-    $ionicScrollDelegate, Account, AccountManager, Thread, Note, NoteManager, Gif, COLORS){
+    $ionicScrollDelegate, Account, AccountManager, Thread, Note, NoteManager, Gif, GifManager, COLORS){
     
     /*
      * Initialize Variables
@@ -301,6 +301,7 @@ angular.module('moo.controllers.threads', [])
                         var notes = s.data.results.reverse();
                         for(var i=0; i<notes.length; i++){
                           NoteManager.pushNote(notes[i]);
+                          
                           if(i==notes.length-1){
                             if(NoteManager.areThereNewElements(notes[i].id)){
                               scroll = true;
