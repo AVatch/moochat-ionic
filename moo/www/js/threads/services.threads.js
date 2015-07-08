@@ -115,7 +115,6 @@ angular.module('moo.services.threads', [])
     t.formattedDate = formatDate(t);
     t.time_created = new Date(t.time_created);
     t.time_updated = new Date(t.time_updated);
-    console.log(t);
     // add it to the threads
     threads[t.id] = t;
   };
@@ -146,10 +145,10 @@ angular.module('moo.services.threads', [])
      * Poll threads
      */
      Account.getThreadList(Account.getMe().id)
-      .then(function(s){console.log("polled");});
+      .then(function(s){});
 
     $timeout(function(){pollThreads()}, 5000);
-  }
+  };
 
   return {
     setNextPageURL: setNextPageURL,

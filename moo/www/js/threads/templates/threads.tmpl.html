@@ -1,55 +1,63 @@
 <ion-header-bar class="bar-stable">
-    <button ng-click="openAccountModal()" class="button button-icon icon ion-ios-circle-outline"></button>
-    <h1 class="title">moochat</h1>
-    <button ng-click="openNewThreadModal()" class="button button-icon icon ion-ios-compose-outline"></button>    
+  <!-- left button(s) -->
+  <button class="button button-icon icon ion-ios-circle-outline"
+          ng-click="openAccountModal()" >
+  </button>
+  <!-- center -->
+  <h1 class="title">
+    moochat
+  </h1>
+  <!-- right button(s) -->
+  <button class="button button-icon icon ion-ios-compose-outline"
+          ng-click="openNewThreadModal()">
+  </button>
 </ion-header-bar>
 
 <ion-content>
+  <!-- refresh threads -->
+  <ion-refresher  pulling-text="Pull to refresh..."
+                  on-refresh="sync()"
+                  icon="ripple">
+  </ion-refresher>
     
-    <!-- refresh threads -->
-    <ion-refresher
-        pulling-text="Pull to refresh..."
-        on-refresh="sync()"
-        icon="ripple">
-    </ion-refresher>
-    
-    <!-- loading spinner -->
-    <div class="row" style="padding:0px;">
-        <ion-spinner class="loading-spinner" ng-if="loading" icon="spiral"></ion-spinner>
-    </div>
+  <!-- loading spinner -->
+  <div class="row" style="padding:0px;">
+    <ion-spinner class="loading-spinner" ng-if="loading" icon="spiral"></ion-spinner>
+  </div>
 
-    <!-- empty thread list msg -->
-    <div class="row" ng-if="!loading && threads.length==0">
-        <div class="col" style="text-align:center; padding-top:150px;">
-            <span style="color: #c2c2c2; font-size:200%;">
-                There are no threads
-            </span>  
-        </div>
+  <!-- empty thread list msg -->
+  <div class="row" ng-if="!loading && threads.length==0">
+    <div class="col" style="text-align:center; padding-top:150px;">
+      <span style="color: #c2c2c2; font-size:200%;">
+        There are no threads
+      </span>  
     </div>
+  </div>
     
-    <!-- list of threads -->
-    <ion-list ng-if="!loading">
-        <ion-item ng-repeat="thread in threads | orderBy:'time_created'"
-                  ui-sref='thread({pk: thread.id})'>
+  <!-- list of threads -->
+  <ion-list ng-if="!loading">
+    <!-- thread object -->
+    <ion-item ng-repeat="thread in threads"
+              ui-sref='thread({pk: thread.id})'>
             
-            <div class="row">
-                <div class="threads avatar"
-                     ng-repeat="user in thread.participants"
-                     ng-if="user.id!=me.id"
-                     ng-style="{{getAccount(user.id).avatarColor}}">
-                     <span>{{getAccount(user.id).initials}}</span>
-                </div>
-                <div class="timeStamp">
-                    {{thread.formattedDate}}
-                </div>
-            </div>
+      <div class="row">
+        <avatar ng-repeat="account in thread.participants" 
+                ng-if="account.id!=me.id" 
+                account="account" 
+                style="margin-right: 5px;">
+        </avatar>
+        <!-- <time-stamp time="thread."></time-stamp> -->
+        <!-- <div class="timeStamp">
+          {{thread.formattedDate}}
+        </div> -->
+      </div>
 
-            <ion-option-button class="button button-assertive"
-                       ng-click="leave(thread)">
-                Leave
-            </ion-option-button>
+      <ion-option-button class="button button-assertive"
+                         ng-click="leave(thread)">
+        Leave
+      </ion-option-button>
 
-        </ion-item>
-    </ion-list>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

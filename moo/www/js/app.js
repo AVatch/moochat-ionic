@@ -8,12 +8,17 @@ angular.module('moo', ['ionic',
 
                        'moo.controllers.accounts',
                        'moo.services.accounts',
+                       'moo.directives.accounts',
+
                        'moo.controllers.authentication',
                        'moo.services.authentication',
+
                        'moo.controllers.gifs',
                        'moo.services.gifs',
+
                        'moo.controllers.notes',
                        'moo.services.notes',
+                       
                        'moo.controllers.threads',
                        'moo.services.threads'])
 
