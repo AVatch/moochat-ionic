@@ -5,13 +5,13 @@
 */
 angular.module('moo.services.accounts', [])
 
-.factory('Account', ['$http', 'Authentication', 'localStorageService', 'DOMAIN',
-  function($http, Authentication, localStorageService, DOMAIN){
+.factory('Account', ['$http', 'Authentication', 'localStorageService', 'DOMAIN', 'VERSION',
+  function($http, Authentication, localStorageService, DOMAIN, VERSION){
     
     var me = function(){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/me/',
+                        url: DOMAIN + '/api/'+VERSION+'/me/',
                         method: 'GET',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ angular.module('moo.services.accounts', [])
     var getFriendList = function(pk){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/accounts/' + pk + '/friends/',
+                        url: DOMAIN + '/api/'+VERSION+'/accounts/' + pk + '/friends/',
                         method: 'GET',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ angular.module('moo.services.accounts', [])
     var getThreadList = function(pk){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/accounts/' + pk + '/threads/',
+                        url: DOMAIN + '/api/'+VERSION+'/accounts/' + pk + '/threads/',
                         method: 'GET',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ angular.module('moo.services.accounts', [])
     var friendAccount = function(pk){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/accounts/' + pk + '/add/friend/',
+                        url: DOMAIN + '/api/'+VERSION+'/accounts/' + pk + '/add/friend/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ angular.module('moo.services.accounts', [])
     var searchAccount = function(q){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/accounts/search/',
+                        url: DOMAIN + '/api/'+VERSION+'/accounts/search/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',

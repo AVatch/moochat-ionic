@@ -5,8 +5,8 @@
 */
 angular.module('moo.controllers.authentication', [])
 
-.controller('AuthenticationController', ['$scope', '$state', '$ionicModal', '$ionicUser', 'Authentication', 'Gif',
-  function($scope, $state, $ionicModal, $ionicUser, Authentication, Gif){
+.controller('AuthenticationController', ['$scope', '$state', '$ionicModal', '$ionicSlideBoxDelegate', '$ionicUser', 'Authentication', 'Gif',
+  function($scope, $state, $ionicModal, $ionicSlideBoxDelegate, $ionicUser, Authentication, Gif){
     
     $scope.loading = false;
 
@@ -46,9 +46,12 @@ angular.module('moo.controllers.authentication', [])
       }
     }, function(e){console.log(e);});
 
-  
-  // Handle Authentication
-        
+    $scope.nextPage = function(){
+      console.log('fhih');
+      $ionicSlideBoxDelegate.next();
+    };
+
+    // Handle Authentication
     $scope.login = function(user){
       $scope.loading = true;
       Authentication.authenticateUser(user).then(function(s){
@@ -67,8 +70,10 @@ angular.module('moo.controllers.authentication', [])
         }else if(s.status == 400){
           console.log("Bad Credentials");
           $scope.authError = true;
+          $scope.loading = false;
         }else{
           console.log("Unkown Error");
+          $scope.loading = false;
         }
       }, function(e){console.log(e);$scope.authError = true;});
     };
@@ -80,6 +85,7 @@ angular.module('moo.controllers.authentication', [])
         user.is_admin = false;
         user.is_manager = false;
         user.friends = [];
+        user.liked_gifs = [];
         user.phonenumber = "";
         
         Authentication.registerUser(user).then(function(s){
@@ -95,7 +101,4 @@ angular.module('moo.controllers.authentication', [])
         $scope.authError = true;
       };  
     };
-      
-      
-
 }]);

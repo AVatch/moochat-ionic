@@ -5,12 +5,12 @@
 */
 angular.module('moo.services.authentication', [])
 
-.factory('Authentication', ['$http', 'localStorageService','DOMAIN',
-  function($http, localStorageService, DOMAIN){
+.factory('Authentication', ['$http', 'localStorageService','DOMAIN', 'VERSION',
+  function($http, localStorageService, DOMAIN, VERSION){
   
     var authenticateUser = function(credentials){
       var response = $http({
-        url: DOMAIN + '/api/v1/api-token-auth/',
+        url: DOMAIN + '/api/'+VERSION+'/api-token-auth/',
         method: 'POST',
         contentType: "application/json; charset=UTF-8",
         data: credentials
@@ -20,7 +20,7 @@ angular.module('moo.services.authentication', [])
 
     var registerUser = function(user){
       var response = $http({
-        url: DOMAIN + '/api/v1/accounts/create/',
+        url: DOMAIN + '/api/'+VERSION+'/accounts/create/',
         method: 'POST',
         contentType: "application/json; charset=UTF-8",
         data: user
@@ -36,11 +36,17 @@ angular.module('moo.services.authentication', [])
       return localStorageService.set('token', token);
     };
 
+    var logout = function(){
+      localStorageService.remove('token');
+      localStorageService.remove('me');
+    };
+
     return{
       authenticateUser: authenticateUser,
       registerUser: registerUser,
 
       getToken: getToken,
-      cacheToken: cacheToken
+      cacheToken: cacheToken,
+      logout: logout
     };
 }]);

@@ -26,14 +26,14 @@
   </div>
 
   <!-- empty thread list msg -->
-  <div class="row" ng-if="!loading && threads.length==0">
+  <div class="row" ng-if="!loading && threads=={}">
     <div class="col" style="text-align:center; padding-top:150px;">
       <span style="color: #c2c2c2; font-size:200%;">
         There are no threads
       </span>  
     </div>
   </div>
-    
+
   <!-- list of threads -->
   <ion-list ng-if="!loading">
     <!-- thread-list-item -->

@@ -37,6 +37,8 @@ angular.module('moo', ['ionic',
                      '#FFEB3B', '#FFC107', '#FF9800', '#FF5722',
                      '#795548', '#9E9E9E', '#607D8B'])
 
+.constant('VERSION', 'v1')
+
 // Setup Initialization Logic
 
 .run(function($ionicPlatform, $cordovaStatusbar, $rootScope, 

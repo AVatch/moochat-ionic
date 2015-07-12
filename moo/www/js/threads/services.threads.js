@@ -5,13 +5,13 @@
 */
 angular.module('moo.services.threads', [])
 
-.factory('Thread', ['$http', 'Authentication', 'DOMAIN',
-  function($http, Authentication, DOMAIN){
+.factory('Thread', ['$http', 'Authentication', 'DOMAIN', 'VERSION',
+  function($http, Authentication, DOMAIN, VERSION){
     
     var startThread = function(thread){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/threads/create/',
+                        url: DOMAIN + '/api/'+VERSION+'/threads/create/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ angular.module('moo.services.threads', [])
     var getThread = function(pk){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/threads/' + pk + '/',
+                        url: DOMAIN + '/api/'+VERSION+'/threads/' + pk + '/',
                         method: 'GET',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ angular.module('moo.services.threads', [])
     var getNotes = function(pk){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/threads/' + pk + '/notes/',
+                        url: DOMAIN + '/api/'+VERSION+'/threads/' + pk + '/notes/',
                         method: 'GET',
                         headers: { 
                           'Content-Type': 'application/json',

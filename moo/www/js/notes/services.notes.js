@@ -5,13 +5,13 @@
 */
 angular.module('moo.services.notes', [])
 
-.factory('Note', ['$http', 'Authentication', 'DOMAIN',
-  function($http, Authentication, DOMAIN){
+.factory('Note', ['$http', 'Authentication', 'DOMAIN', 'VERSION',
+  function($http, Authentication, DOMAIN, VERSION){
     
     var createNote = function(note){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/notes/',
+                        url: DOMAIN + '/api/'+VERSION+'/notes/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',

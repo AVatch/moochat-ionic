@@ -5,13 +5,13 @@
 */
 angular.module('moo.services.gifs', [])
 
-.factory('Gif', ['$http', 'Authentication', 'DOMAIN',
-  function($http, Authentication, DOMAIN){
+.factory('Gif', ['$http', 'Authentication', 'DOMAIN', 'VERSION',
+  function($http, Authentication, DOMAIN, VERSION){
     
     var searchGif = function(q){
       var token = Authentication.getToken();
       var response = $http({
-                        url: DOMAIN + '/api/v1/gif/search/',
+                        url: DOMAIN + '/api/'+VERSION+'/gif/search/',
                         method: 'POST',
                         headers: { 
                           'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ angular.module('moo.services.gifs', [])
     
     var randomGif = function(){
       var response = $http({
-                        url: DOMAIN + '/api/v1/gif/random/',
+                        url: DOMAIN + '/api/'+VERSION+'/gif/random/',
                         method: 'GET',
                         headers: { 
                           'Content-Type': 'application/json'},

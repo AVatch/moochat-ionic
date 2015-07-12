@@ -6,10 +6,10 @@
 angular.module('moo.controllers.threads', [])
 
 .controller('ThreadsController', ['$scope', '$rootScope', '$state', '$timeout', 
-  '$ionicModal', '$ionicSlideBoxDelegate', 'Account', 'AccountManager',
+  '$ionicModal', '$ionicSlideBoxDelegate', 'Authentication', 'Account', 'AccountManager',
   'Thread', 'ThreadManager',
   function($scope, $rootScope, $state, $timeout, $ionicModal, $ionicSlideBoxDelegate, 
-    Account, AccountManager, Thread, ThreadManager){
+    Authentication, Account, AccountManager, Thread, ThreadManager){
     
     /*
      * Initialize Variables
@@ -94,9 +94,11 @@ angular.module('moo.controllers.threads', [])
       if($scope.friends.length!=friends.length){
         $scope.friends = friends;
       }
+
       var threads = ThreadManager.getThreads();
       if($scope.threads.length!=threads.length){
         $scope.threads = threads;
+        console.log($scope.threads)
       }
 
       // issue signals that sync is done
@@ -119,11 +121,12 @@ angular.module('moo.controllers.threads', [])
        * Search for accounts
        * only by username for now
        */ 
-      q = {"query": q}
+      q = {"username": q}
       Account.searchAccount(q)
         .then(function(s){
           if(s.status==200){
-            $scope.friendsResults = [s.data];
+          
+            $scope.friendsResults = s.data;
           }
         }, function(e){
           if(e.status==404){
@@ -204,6 +207,12 @@ angular.module('moo.controllers.threads', [])
       $scope.warning = true;
       console.log(err);
     };
+
+
+    $scope.logout = function(){
+      Authentication.logout();
+      $state.go('authentication');
+    }
 
 
     /*
@@ -301,7 +310,6 @@ angular.module('moo.controllers.threads', [])
                         var notes = s.data.results.reverse();
                         for(var i=0; i<notes.length; i++){
                           NoteManager.pushNote(notes[i]);
-                          
                           if(i==notes.length-1){
                             if(NoteManager.areThereNewElements(notes[i].id)){
                               scroll = true;
@@ -375,8 +383,8 @@ angular.module('moo.controllers.threads', [])
       $scope.msg = "";
       // update the note
       var note = {};
+      note.gif = null;
       note.content = msg;
-      note.is_gif = false;
       note.thread = $scope.thread.id;
       // start loading
       $scope.noteSending = true;
