@@ -560,4 +560,9 @@ angular.module('moo.controllers.threads', [])
       $scope.modal.hide();
     };  
 
+    // listeners
+    window.addEventListener('native.keyboardshow', function(){
+      console.log("HIHIHI");
+    });
+
 }]);
