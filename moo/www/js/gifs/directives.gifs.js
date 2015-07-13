@@ -8,7 +8,9 @@ angular.module('moo.directives.gifs', [])
 .directive('gif', ['GifManager', function(GifManager){
   return {
     scope: {
-      gif: '='
+      gif: '=',
+      width: '=',
+      height: '='
     },
     restrict: 'E',
     templateUrl: 'js/gifs/templates/gif.directive.html',
@@ -21,8 +23,16 @@ angular.module('moo.directives.gifs', [])
       };
 
       $scope.$watch("gif",function(newValue, OldValue, scope){
-        $scope.gif.backgroundColor = randomColor();
+        $scope.gif["backgroundColor"] = randomColor();
         $scope.gif = newValue;
+      });
+
+      $scope.$watch("width",function(newValue, OldValue, scope){
+        $scope.width = newValue;
+      });
+
+      $scope.$watch("height",function(newValue, OldValue, scope){
+        $scope.height = newValue;
       });
     }
   };

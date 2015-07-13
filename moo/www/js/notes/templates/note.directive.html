@@ -1,1 +1,26 @@
-<p>HI</p>
+<ion-item style="border:0px;">
+  
+  <avatar account="note.author"
+          style="float:{{direction}};
+                 {{margin}}:5px;">
+  </avatar>
+
+  <div ng-if="note.content" 
+       class="note-text item-text-wrap"
+       style="float:{{direction}};
+              border: 1px #22b4b7 solid;
+              border-radius:15px;
+              padding:5px;">
+      <p>{{note.content}}</p>
+  </div>
+  
+  <gif ng-if="note.gif"
+       gif="note.gif"
+       on-double-tap="like($event, note)"
+       width="190"
+       height="190"
+       class="gif-container"
+       style="float:{{direction}};">
+  </gif>
+
+</ion-item>

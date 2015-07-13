@@ -4,7 +4,7 @@
     <button ng-click="openModal()" class="button button-clear button-icon icon ion-ios-more-outline"></button>
 </ion-header-bar>
 
-<ion-content id="threadContentContainer">
+<ion-content>
 
     <!-- loading spinner -->
     <div class="row">
@@ -14,93 +14,15 @@
     <ion-list ng-if="!loading">
         
         <!-- paginate more content -->
-        <ion-refresher
-            on-refresh="getMore()"
-            icon="ripple">
+        <ion-refresher on-refresh="getMore()"
+                       icon="ripple">
         </ion-refresher>
 
         <!-- Messege if user is reciever -->
-        <ion-item class="note" style="padding:0px"
-                  ng-repeat="note in notes">
-
-            <div ng-if="!getAccount(note.author.id).me" class="row">
-                <div class="col col-10">
-                    <avatar account="note.author"
-                            style="margin-right: 5px;">
-                    </avatar>
-                </div>
-
-                <div class="col" style="padding-left:17px;">
-                    <div class="note-content" style="display:inline;">
-                        <div ng-if="!note.is_gif" class="note-text item-text-wrap">
-                            <p>{{note.content}}</p>
-                        </div>
-                        <div ng-if="note.is_gif" class="note-gif"
-                            on-double-tap="like($event, note)"
-                            style=" background-color: {{note.
-                            backgroundColor}};
-                                    background-image: url({{note.content}});
-                                    background-repeat: no-repeat;
-                                    background-position: 50% 50%;
-                                    background-size: cover;
-                                    width:190px;
-                                    height:190px;
-
-                                    margin-bottom:7px;">
-
-                            <span class="note-timeStamp"
-                            style="left:190px;">{{note.formattedDate}}</span>
-
-                        </div>  
-                    </div>
-                </div>
-            </div>
-            <!-- /Messege if user is reciever -->
-
-            <!-- Messege if user is author -->
-            <div ng-if="getAccount(note.author.id).me" class="row">
-                <div class="col" style="padding-right:17px;">
-                    <div class="note-content">
-                        <!-- if msg is text -->
-                        <div ng-if="!note.is_gif" class="note-text item-text-wrap" style="float:right;">
-                            <p>{{note.content}}</p>
-                        </div>
-    
-                        <!-- if msg is gif -->
-                        <!-- <div ng-if="note.is_gif" class="note-gif"
-                            on-double-tap="like($event, note)"
-                            style=" background-color: {{note.backgroundColor}};
-                                    background-repeat: no-repeat;
-                                    background-position: 50% 50%;
-                                    background-size: cover;
-                                    background-image: url({{note.content}});
-                                    width:190px;
-                                    height:190px;
-                                    float:right;
-
-                                    margin-bottom:7px;">
-                            
-                            <span class="note-timeStamp">{{note.formattedDate}}</span>
-
-                        </div>   -->
-                        <gif ng-if="note.is_gif" content="note.content"></gif>
-
-                    </div>
-                </div>
-
-                <div class="col col-10">
-                    <avatar account="note.author"
-                            style="margin-right: 5px;">
-                    </avatar>
-                </div>
-            </div>
-            <!-- /Messege if user is author -->
-
-            
-        </ion-item>
+        <note ng-repeat="note in notes" note="note"></note>
 
         <!-- sending spinner -->
-        <ion-item ng-if="noteSending" class="note" style="padding:0px">
+        <ion-item ng-if="noteSending" class="note" style="padding:0px; border:0px;">
             <div class="row">
                 <div class="col col-80"></div>
                 <div class="col">

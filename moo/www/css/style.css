@@ -33,10 +33,6 @@
 }
 
 
-
-
-
-
 .loading-spinner{
     display: block;
     margin-left: auto;
@@ -49,46 +45,21 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-.timeStamp{
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    color: #bbbbbb;
-}
-
-.note-timeStamp{
-    position: absolute;
-    bottom: 0px;
-    font-size: 60%;
-    color: #bbbbbb;
+.gif-container .gif{
+  border-radius: 10px;
 }
 
 
-
-.avatar{
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    text-align: center;
-    padding-top: 10px;
-    color: white;
+.pull-right{
+  float: right;  
 }
-
-.threads.avatar{
-  margin-right: 5px;
+.pull-left{
   float: left;
 }
+
+
+
+
 
 .pill{
   padding: 5px;
@@ -109,22 +80,6 @@
 }
 
 
-
-
-.note{
-  border: 0px;
-}
-.note-gif{   
-  border-radius: 10px;
-  width: 50%;
-}
-
-
-
-.authored .avatar{
-    float: right;
-    margin-left: 15px;
-}
 
 
 

@@ -392,28 +392,34 @@ angular.module('moo.controllers.threads', [])
       }, function(e){console.log(e);});
     };
 
-    $scope.sendGif = function(msg){
+    $scope.sendGif = function(gif){
       /*
        * Create a gif note
        */
       // clear the popover and input
       $scope.closeGifSearch();
+      
       $scope.q = "";
       $scope.msg = "";
-      // update the note
-      var gif = {};
-      gif.content = msg;
-      gif.is_gif = true;
-      gif.thread = $scope.thread.id;
+      
+      var note = {}
+      note.gif = {"url": gif.url,
+                  "webp": gif.webp,
+                  "mp4": gif.mp4};
+      note.content = "";
+      note.thread = $scope.thread.id;
       // start loading
       $scope.noteSending = true;
       // scroll down
       $ionicScrollDelegate.scrollBottom(true);
       
-      Note.createNote(gif).then(function(s){
+      Note.createNote(note).then(function(s){
         if(s.status==201){
           var note = s.data;
           NoteManager.pushNote(note);
+
+          console.log(note);
+
           // finish loading
           $scope.noteSending = false;
           $ionicScrollDelegate.scrollBottom(true);

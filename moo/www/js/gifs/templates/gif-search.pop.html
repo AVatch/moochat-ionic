@@ -27,9 +27,10 @@
           <!-- results -->
           <gif ng-if="!searchingForGifs"
                ng-repeat="gif in gifResults" 
-               gif="gif" 
-               ng-click="sendGif(gif.url)"
-               style="width:100px; height:100px;">
+               gif="gif"
+               width="100px"
+               height="100px"
+               ng-click="sendGif(gif)">
           </gif>
         </div>
 
