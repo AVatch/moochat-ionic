@@ -1,36 +1,37 @@
 <ion-item style="border:0px;">
   
-  <avatar account="note.author"
-          style="float:{{direction}};
-                 {{margin}}:5px;">
-  </avatar>
+    <avatar account="note.author"
+            style="float:{{direction}};
+                   {{margin}}:5px;">
+    </avatar>
 
-  <div ng-if="note.content" 
-       class="note-text item-text-wrap"
-       style="float:{{direction}};
-              border: 1px #22b4b7 solid;
-              border-radius:15px;
-              padding:7px;">
-      <p>{{note.content}}</p>
-  </div>
+    <div ng-if="note.content" 
+         class="note-text item-text-wrap"
+         style="float:{{direction}};
+                border: 1px #22b4b7 solid;
+                border-radius:15px;
+                padding:7px;
+                max-width: 80%;">
+        <p>{{note.content}}</p>
+    </div>
+    
+    <gif ng-if="note.gif"
+         gif="note.gif"
+         on-double-tap="like($event, note)"
+         width="190"
+         height="190"
+         class="gif-container"
+         style="float:{{direction}};">
+    </gif>
+
+    <time-stamp ng-if="me"
+                time="note.time_created"
+                style="position: absolute; right:60px; bottom:0px;">
+    </time-stamp>
+
+    <time-stamp ng-if="!me"
+                time="note.time_created"
+                style="position: absolute; left:60px; bottom:0px;">
+    </time-stamp>
   
-  <gif ng-if="note.gif"
-       gif="note.gif"
-       on-double-tap="like($event, note)"
-       width="190"
-       height="190"
-       class="gif-container"
-       style="float:{{direction}};">
-  </gif>
-
-  <time-stamp ng-if="me"
-              time="note.time_created"
-              style="position: absolute; right:60px; bottom:0px;">
-  </time-stamp>
-
-  <time-stamp ng-if="!me"
-              time="note.time_created"
-              style="position: absolute; left:60px; bottom:0px;">
-  </time-stamp>
-
 </ion-item>
