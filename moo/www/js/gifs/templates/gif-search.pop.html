@@ -3,7 +3,7 @@
         
           <label class="item-input-wrapper">
             <i class="icon ion-ios-search placeholder-icon"></i>
-            <input type="search" placeholder="Search" ng-model="q" ng-enter="searchGifs(q)">
+            <input type="search" placeholder="Search" ng-model="msg" ng-enter="searchGifs(msg)">
           </label>
           <button class="button button-clear" ng-click="closeGifSearch($event)">
             Cancel
@@ -13,29 +13,26 @@
 
     </ion-header-bar>
     
-    <ion-content direction="x">
+    <ion-content direction="x" style="height:200px;">
         
         <div class="gif-results-wrapper" ng-style="getWidth()">
-        <!-- loading spinner -->
-        <div class="row">
-            <ion-spinner class="loading-spinner" style="margin-top:25%;" ng-if="searchingForGifs" icon="spiral"></ion-spinner>
+          <!-- loading spinner -->
+          <div class="row">
+            <ion-spinner ng-if="searchingForGifs"
+                         class="loading-spinner" 
+                         style="margin-top:25%;" 
+                         icon="spiral">
+            </ion-spinner>
+          </div>
+          <!-- results -->
+          <gif ng-if="!searchingForGifs"
+               ng-repeat="gif in gifResults" 
+               gif="gif" 
+               ng-click="sendGif(gif.url)"
+               style="width:100px; height:100px;">
+          </gif>
         </div>
 
-        <!-- results -->
-        <div ng-repeat="gif in results"
-             ng-click="sendGif(gif.url)"
-             class="animated bounceIn"
-                     style="background-color: {{gif.backgroundColor}};
-                            background-image: url({{gif.url}});
-                            background-repeat: no-repeat;
-                            background-position: 50% 50%;
-                            background-size: cover;
-                            
-                            width:100px;
-                            height:100px;
-                            
-                            float: left;"></div>
-        </div>
     </ion-content>
 
 </ion-popover-view>

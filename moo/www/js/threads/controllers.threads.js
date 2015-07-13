@@ -81,7 +81,6 @@ angular.module('moo.controllers.threads', [])
      */
     var init = function(){
       sync();
-      // ThreadManager.pollThreads();
     }; init();
 
     var syncDone = function(){
@@ -98,6 +97,7 @@ angular.module('moo.controllers.threads', [])
       var threads = ThreadManager.getThreads();
       if($scope.threads.length!=threads.length){
         $scope.threads = threads;
+
         console.log($scope.threads)
       }
 
@@ -338,21 +338,11 @@ angular.module('moo.controllers.threads', [])
       q = {"query": q};
       Gif.searchGif(q)
         .then(function(s){
-          
-          var results = s.data.results;
-
-          for(var i=0; i<results.length; i++){
-            var color = NoteManager.randomColor();
-            results[i].backgroundColor = color;
-          }
-          
-          $scope.results = results;
-          console.log($scope.results);
-          updateWidth($scope.results);
-        }, function(e){console.log(e);})
-        .finally(function(){
+          var gifResults = s.data.results;
+          $scope.gifResults = gifResults;
+          updateWidth($scope.gifResults);
           $scope.searchingForGifs = false;
-        });
+        }, function(e){console.log(e);});
     };
 
     
@@ -452,12 +442,6 @@ angular.module('moo.controllers.threads', [])
       var content = angular.element( document.querySelector( '#threadContentContainer' ) );
       var heart = '<div id="heart" class="heart animated bounceOut" style="position:fixed; left:'+x+'px; top:'+y+'px;"></div>';
       content.append(heart);
-
-      // post to server to like the gif
-      // as long as it is no longer liked
-      // remove hearts from dom as soon as promise is done
-      // add long press to dislike
-
     };
 
     /*

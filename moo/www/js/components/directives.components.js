@@ -25,9 +25,9 @@ angular.module('moo.directives.components', [])
           return d.toLocaleTimeString();
         }
       };
-      
+
       $scope.$watch("time",function(newValue, OldValue, scope){
-        $scope.time = formatDate($scope.time);
+        $scope.prettyTime = formatDate($scope.time);
       });
 
     }
