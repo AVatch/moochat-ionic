@@ -23,8 +23,14 @@
        style="float:{{direction}};">
   </gif>
 
-  <time-stamp time="note.time_created"
-              style="float:{{direction}};">
+  <time-stamp ng-if="me"
+              time="note.time_created"
+              style="position: absolute; right:60px; bottom:0px;">
+  </time-stamp>
+
+  <time-stamp ng-if="!me"
+              time="note.time_created"
+              style="position: absolute; left:60px; bottom:0px;">
   </time-stamp>
 
 </ion-item>
