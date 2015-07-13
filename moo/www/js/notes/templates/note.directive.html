@@ -33,5 +33,13 @@
                 time="note.time_created"
                 style="position: absolute; left:60px; bottom:0px;">
     </time-stamp>
+
+    <div ng-if="liked"
+         class="heart animated bounceOut" 
+         style="z-index:9000; 
+                position:fixed; 
+                left:{{x}}px; 
+                top:{{y}}px;">
+    </div>
   
 </ion-item>

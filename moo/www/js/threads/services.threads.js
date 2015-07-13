@@ -109,8 +109,6 @@ angular.module('moo.services.threads', [])
 
     threads.push(t);
     threads.sort(compareTime);
-
-    console.log(threads);
   };
 
   var getThread = function(id){

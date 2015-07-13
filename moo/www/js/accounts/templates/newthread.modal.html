@@ -1,15 +1,23 @@
 <ion-modal-view>
 
     <!-- NEED TO FIX THIS HARD CODED HIEGHT-->
-    <ion-slide-box style="height:667px;">
+    <ion-slide-box style="height:667px;" show-pager="false">
         
         <ion-slide>
             <!-- select friends to message -->
-            <ion-header-bar>
-                <button ng-click="closeNewThreadModal()" class="button button-icon icon ion-ios-close-empty"></button>
-                <h1 class="title">Moo At..</h1>
-                <!-- <button ng-click="startNewThread()" class="button button-icon icon ion-ios-arrow-right"></button> -->
-                <button ng-click="nextSlide()" class="button button-icon icon ion-ios-personadd-outline"></button>
+            <ion-header-bar style="background-color: #22b4b7;">
+                <button ng-click="closeNewThreadModal()" 
+                        class="button button-icon icon ion-ios-close-empty"
+                        style="color:white;"></button>
+                <h1 class="title"
+                    style="color:white;">Moo At..</h1>
+                
+                <div class="buttons">
+                    <!-- <button ng-click="syncContacts()" class="button button-icon icon ion-ios-loop"></button> -->
+                    <button ng-click="nextSlide()" 
+                            class="button button-icon icon ion-ios-plus-empty"
+                            style="color:white;"></button>
+                </div>
             </ion-header-bar>
 
             <ion-content>
@@ -18,24 +26,32 @@
                     <span class="pill animated bounceIn"
                           ng-repeat="user in friends" 
                           ng-if="user.sendTo"
-                          style="margin-top:3px; margin-bottom:3px;">
+                          style="margin-top:5px; margin-bottom:5px; background-color: #e8207a;">
                           {{user.username}}
                     </span>
                 </div>
 
                 <!-- list of friends -->
                 <ion-list>
-                    <ion-checkbox ng-repeat="friend in friends" ng-if="!friend.me" ng-model="friend.sendTo">
+                    <ion-checkbox ng-repeat="friend in friends" 
+                                  ng-if="!friend.me" 
+                                  ng-model="friend.sendTo">
                         {{friend.username}}
                     </ion-checkbox>
                 </ion-list>
 
-
-                <button ng-click="startNewThread()" class="button button-block button-outline button-dark">
-                  Moo
-                </button>
             </ion-content>
+
+            <div class="padding" style="position:absolute; bottom:5px; width:100%;">
+                    <button ng-click="startNewThread()" 
+                            class="button button-block button-outline button-dark"
+                            style="border-color: #e8207a; color: #e8207a;">
+                      Moo
+                    </button>
+                </div>
         </ion-slide>
+
+
 
         <ion-slide>
             <!-- add a friend -->
@@ -44,7 +60,7 @@
                     <i class="icon ion-ios-search placeholder-icon"></i>
                     <input type="search" placeholder="Find a Friend" ng-model="query">
                 </label>
-                <button class="button button-clear" ng-click="searchAccounts(query)">
+                <button class="button button-clear" ng-click="searchAccounts(query)" style="color: #22b4b7;">
                     Search
                 </button>
             </ion-header-bar>
@@ -52,18 +68,15 @@
             <ion-content>
                 <ion-list ng-if="friendsResults.length!=0">
                     <ion-item ng-repeat="result in friendsResults">
-                        <div class="row">
-                            <div class="col col-75">
-                                {{result.username}}      
-                            </div>
-                            <div class="col">
-                                <button 
-                                    ng-click="addFriend(result)"
-                                    style="float:right;" 
-                                    class="button button-icon icon ion-ios-plus-outline">
-                                </button>
-                            </div>
-                        </div>
+                        
+                        <span>{{result.first_name}} {{result.last_name}}</span>
+                        <span>{{result.username}}</span>
+                        <button 
+                            ng-click="addFriend(result)"
+                            style="float:right;" 
+                            class="button button-icon icon ion-ios-plus-outline">
+                        </button>
+                            
                     </ion-item>
                 </ion-list>
 

@@ -12,8 +12,20 @@ angular.module('moo.directives.notes', [])
     },
     restrict: 'E',
     templateUrl: 'js/notes/templates/note.directive.html',
-    controller: function($scope, $element, $attrs, $transclude) {
+    controller: function($scope, $element, $attrs, $transclude, $timeout) {
       var me = Account.getMe();
+
+      $scope.like = function($event, note){
+        
+        $scope.x = $event.gesture.center.pageX;
+        $scope.y = $event.gesture.center.pageY;
+        
+        $scope.liked = true;
+        $timeout(function(){
+          $scope.liked = false;
+        }, 500);
+
+      };
 
       $scope.$watch("note",function(newValue, OldValue, scope){
         if(me.id==$scope.note.author.id){

@@ -6,10 +6,10 @@
 angular.module('moo.controllers.threads', [])
 
 .controller('ThreadsController', ['$scope', '$rootScope', '$state', '$timeout', 
-  '$ionicModal', '$ionicSlideBoxDelegate', 'Authentication', 'Account', 'AccountManager',
-  'Thread', 'ThreadManager',
+  '$ionicModal', '$ionicSlideBoxDelegate', '$cordovaContacts', 'Authentication', 
+  'Account', 'AccountManager', 'Thread', 'ThreadManager',
   function($scope, $rootScope, $state, $timeout, $ionicModal, $ionicSlideBoxDelegate, 
-    Authentication, Account, AccountManager, Thread, ThreadManager){
+    $cordovaContacts, Authentication, Account, AccountManager, Thread, ThreadManager){
     
     /*
      * Initialize Variables
@@ -248,6 +248,22 @@ angular.module('moo.controllers.threads', [])
       $scope.NewThreadModal.remove();
       $scope.AccountModal.remove();
     });
+
+
+
+    // get contacts
+    $scope.syncContacts = function(){
+      $cordovaContacts.find({filter: ''})
+        .then(function(s){
+          console.log(s);
+          $scope.contacts = s;
+        },function(e){
+          console.log(e);
+        }
+      );
+    };
+
+
 }])
 
 
@@ -395,7 +411,6 @@ angular.module('moo.controllers.threads', [])
        * Create a gif note
        */
       // clear the popover and input
-      console.log(gif);
       $scope.closeGifSearch();
       
       $scope.q = "";
@@ -416,37 +431,11 @@ angular.module('moo.controllers.threads', [])
         if(s.status==201){
           var note = s.data;
           NoteManager.pushNote(note);
-
-          console.log(note);
-
           // finish loading
           $scope.noteSending = false;
           $ionicScrollDelegate.scrollBottom(true);
         }        
       }, function(e){console.log(e);});
-    };
-
-    $scope.like = function($event, note){
-      /*
-       * Like a gif
-       */
-      var amplitude = 10;
-      var x_noise = Math.random()*amplitude;
-      var y_noise = Math.random()*amplitude;
-
-      if(Math.random()*10<5.0){
-        x_noise=x_noise*-1;
-      }
-      if(Math.random()*10<5.0){
-        y_noise=y_noise*-1;
-      }
-
-
-      var x = ($event.gesture.center.pageX - 25 + x_noise).toString();
-      var y = ($event.gesture.center.pageY - 55 + y_noise).toString()
-      var content = angular.element( document.querySelector( '#threadContentContainer' ) );
-      var heart = '<div id="heart" class="heart animated bounceOut" style="position:fixed; left:'+x+'px; top:'+y+'px;"></div>';
-      content.append(heart);
     };
 
     /*
@@ -565,4 +554,14 @@ angular.module('moo.controllers.threads', [])
       console.log("HIHIHI");
     });
 
-}]);
+}])
+
+.controller('NewThreadController', ['$scope', 
+  function($scope){
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+    console.log("hi");
+
+
+}])

@@ -15,7 +15,14 @@ angular.module('moo.directives.accounts', [])
     controller: function($scope, $element, $attrs, $transclude) {
       
       $scope.$watch("account",function(newValue, OldValue, scope){
-        $scope.account = AccountManager.getAccount($scope.account.id);
+        try{
+          AccountManager.pushAccount($scope.account);
+          $scope.account = AccountManager.getAccount($scope.account.id);  
+        }catch(e){
+          console.log(e);
+        }
+
+        
       });
       
     }
