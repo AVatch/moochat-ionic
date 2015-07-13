@@ -307,7 +307,7 @@ angular.module('moo.controllers.threads', [])
                       .then(function(s){
                         NoteManager.setNextPageURL(s.data.next);
                         NoteManager.setPrevPageURL(s.data.previous);
-                        var notes = s.data.results.reverse();
+                        var notes = s.data.results;
                         for(var i=0; i<notes.length; i++){
                           NoteManager.pushNote(notes[i]);
                           if(i==notes.length-1){
@@ -351,7 +351,8 @@ angular.module('moo.controllers.threads', [])
        * Load more notes by paginating
        */
       NoteManager.getMoreNotes().then(function(s){
-        var notes = s.data.results.reverse();
+
+        var notes = s.data.results;
         NoteManager.setNextPageURL(s.data.next);
         NoteManager.setPrevPageURL(s.data.previous);
         for(var i=0; i<notes.length; i++){
