@@ -27,39 +27,23 @@ angular.module('moo.services.notes', [])
     };
 }])
 
-.factory('NoteManager', ['$http', 'Authentication', 'Note', 'COLORS',
-  function($http, Authentication, Note, COLORS){
+.factory('NoteManager', ['$http', 'Authentication', 'Note',
+  function($http, Authentication, Note){
   
-  var notes = {};
+  var notes = [];
   var nextPageURL;
   var prevPageURL;
   var lastElementID = -1;
 
-  var formatDate = function(t){
-    /*
-     * Format the time stamp to be readable
-     */ 
-    var d = new Date(t.time_updated);
-    var now = new Date();
-
-    var diff = now.getTime() - d.getTime();
-    var day = 1000*60*60*24;
-    if(diff > day){
-      return d.toLocaleDateString();
-    }else{
-      return d.toLocaleTimeString();
-    }
-  };
-
-  var randomColor = function(){
-      /*
-       * Pick a random color
-       *  @returns style object
-       */ 
-      var colors = COLORS;
-      var color = colors[Math.floor(Math.random()*colors.length)];
-      return color;
-    };
+  function compareTime(a,b) {
+    var a = new Date(a.time_created);
+    var b = new Date(b.time_created)
+    if (a < b)
+      return -1;
+    if (a > b)
+      return 1;
+    return 0;
+  }
 
   var setNextPageURL = function(url){
     /*
@@ -112,36 +96,33 @@ angular.module('moo.services.notes', [])
   };
 
   var pushNote = function(n){
-    /*
-     * Add a new note object
-     */ 
-    // process note
-    n.formattedDate = formatDate(n);
-    n.backgroundColor = randomColor();
-
-    // add it to the notes
-    notes[n.id] = n;
+    for(var i=0; i<notes.length; i++){
+      if(notes[i].id==n.id){
+        return false;
+      }
+    }
+    
+    notes.push(n);
+    notes.sort(compareTime);
   };
 
   var getNote = function(id){
     /*
      * Get a note
      */ 
-    return notes[id];
-  };
-
-  var removeNote = function(id){
-    /*
-     * Remove a note
-     */ 
-    delete notes[id];
+    for(var i=0; i<notes.length; i++){
+      if(notes[i].id==id){
+        return notes[i];
+      }
+    }
+    return null;
   };
 
   var clearNotes = function(){
     /*
      * Clear all notes
      */ 
-    notes = {};
+    notes = [];
   };  
 
 
@@ -152,9 +133,7 @@ angular.module('moo.services.notes', [])
     getNotes: getNotes, 
     pushNote: pushNote, 
     getNote: getNote,
-    removeNote: removeNote, 
     clearNotes: clearNotes,
-    randomColor: randomColor,
     areThereNewElements: areThereNewElements
   };
 }]);

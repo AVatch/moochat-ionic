@@ -464,7 +464,6 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
-      console.log("thread sync done");
       $scope.notes = NoteManager.getNotes();
       $scope.loading = false;
 
