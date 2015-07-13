@@ -87,7 +87,6 @@ angular.module('moo.controllers.threads', [])
       /*
        * Logic for when sync is done
        */ 
-       console.log("threadS sync done");
       // update the scope
       var friends = AccountManager.getAccounts();
       if($scope.friends.length!=friends.length){
@@ -97,8 +96,6 @@ angular.module('moo.controllers.threads', [])
       var threads = ThreadManager.getThreads();
       if($scope.threads.length!=threads.length){
         $scope.threads = threads;
-
-        console.log($scope.threads)
       }
 
       // issue signals that sync is done
@@ -398,6 +395,7 @@ angular.module('moo.controllers.threads', [])
        * Create a gif note
        */
       // clear the popover and input
+      console.log(gif);
       $scope.closeGifSearch();
       
       $scope.q = "";

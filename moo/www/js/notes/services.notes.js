@@ -43,26 +43,17 @@ angular.module('moo.services.notes', [])
     if (a > b)
       return 1;
     return 0;
-  }
+  };
 
   var setNextPageURL = function(url){
-    /*
-     * Set the url to the next page url
-     */ 
     nextPageURL = url;
   };
 
   var setPrevPageURL = function(url){
-    /*
-     * Set the url to the prev page url
-     */ 
     prevPageURL = url;
   };
 
   var areThereNewElements = function(id){
-    /*
-     * determine if there are new elements
-     */ 
     if(lastElementID==-1){
       lastElementID = id;
       return true;
@@ -72,7 +63,6 @@ angular.module('moo.services.notes', [])
       lastElementID = id;
       return true;
     }
-    
   };
 
   var getMoreNotes = function(){
@@ -88,10 +78,7 @@ angular.module('moo.services.notes', [])
     return response;
   };
 
-  var getNotes = function(){
-    /*
-     * Return all the cached notes
-     */
+  var getNotes = function(){    
     return notes;
   };
 
@@ -107,9 +94,6 @@ angular.module('moo.services.notes', [])
   };
 
   var getNote = function(id){
-    /*
-     * Get a note
-     */ 
     for(var i=0; i<notes.length; i++){
       if(notes[i].id==id){
         return notes[i];

@@ -56,11 +56,21 @@ angular.module('moo.services.threads', [])
 .factory('ThreadManager', ['$timeout', 'Account', 'Thread', 
   function($timeout, Account, Thread){
   
-  var threads = {};
+  var threads = [];
   var numThreads = 0;
   var nextPageURL;
   var prevPageURL;
+  var lastElementID = -1;
 
+  function compareTime(a,b) {
+    var a = new Date(a.time_updated);
+    var b = new Date(b.time_updated)
+    if (a < b)
+      return 1;
+    if (a > b)
+      return -1;
+    return 0;
+  };
 
   var setNextPageURL = function(url){
     nextPageURL = url;
@@ -70,20 +80,55 @@ angular.module('moo.services.threads', [])
     prevPageURL = url;
   };
 
+  var areThereNewElements = function(id){
+    if(lastElementID==-1){
+      lastElementID = id;
+      return true;
+    }else if(id==lastElementID){
+      return false;
+    }else{
+      lastElementID = id;
+      return true;
+    }
+  };
+
+  var getMoreThreads = function(){
+
+  }
+
   var getThreads = function(){
     return threads;
   };
 
   var pushThread = function(t){
-    threads[t.id] = t;
+    for(var i=0; i<threads.length; i++){
+      if(threads[i].id==t.id){
+        return false;
+      }
+    }
+
+    threads.push(t);
+    threads.sort(compareTime);
+
+    console.log(threads);
   };
 
   var getThread = function(id){
-    return threads[id];
+    for(var i=0; i<threads.length; i++){
+      if(threads[i].id==id){
+        return threads[i];
+      }
+    }
+    return null;
   };
 
   var removeThread = function(id){
-    delete threads[id];
+    for(var i=0; i<threads.length; i++){
+      if(threads[i].id==id){
+        return threads.splice(i, 1);;
+      }
+    }
+    return null;
   };
 
   var clearThreads = function(){

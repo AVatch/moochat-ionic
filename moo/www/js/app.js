@@ -53,8 +53,7 @@ angular.module('moo', ['ionic',
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if(window.StatusBar) {
-      // StatusBar.styleDefault();
-      StatusBar.backgroundColorByHexString('#9C27B0');
+      StatusBar.styleLightContent();
     }
   });
   

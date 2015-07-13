@@ -25,13 +25,15 @@
             </ion-spinner>
           </div>
           <!-- results -->
+          
           <gif ng-if="!searchingForGifs"
-               ng-repeat="gif in gifResults" 
+               ng-repeat="gif in gifResults"
                gif="gif"
                width="100"
                height="100"
                ng-click="sendGif(gif)">
           </gif>
+          
         </div>
 
     </ion-content>
