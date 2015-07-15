@@ -45,6 +45,7 @@ angular.module('moo.controllers.threads', [])
                     ThreadManager.setNextPageURL(s.data.next);
                     ThreadManager.setPrevPageURL(s.data.previous);
                     var threads = s.data.results;
+                    console.log(threads);
                     for(var i=0; i<threads.length; i++){
                       ThreadManager.pushThread(s.data.results[i]);
                     }
@@ -97,6 +98,8 @@ angular.module('moo.controllers.threads', [])
       if($scope.threads.length!=threads.length){
         $scope.threads = threads;
       }
+
+      // console.log($scope.threads);
 
       // issue signals that sync is done
       $scope.loading = false;
@@ -178,9 +181,11 @@ angular.module('moo.controllers.threads', [])
       }, function(e){console.log(e);});
     };
 
-    $scope.leave = function(thread){
-      console.log("leaving thread");
-      console.log(thread);
+    $scope.leaveThread = function(thread){
+      Thread.leaveThread(thread.id)
+        .then(function(s){
+          ThreadManager.removeThread(thread.id);
+        }, function(e){console.log(e);});
     };
 
 

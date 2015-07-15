@@ -22,6 +22,34 @@ angular.module('moo.services.threads', [])
       return response;
     };
 
+    var joinThread = function(id){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/'+VERSION+'/threads/' + id + '/join/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        contentType: "application/json; charset=UTF-8",
+                        data: ''
+                      });
+      return response;
+    };
+
+    var leaveThread = function(id){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/'+VERSION+'/threads/' + id + '/leave/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        contentType: "application/json; charset=UTF-8",
+                        data: ''
+                      });
+      return response;
+    };
+
     var getThread = function(pk){
       var token = Authentication.getToken();
       var response = $http({
@@ -49,9 +77,14 @@ angular.module('moo.services.threads', [])
     return{
       startThread: startThread,
       getThread: getThread,
-      getNotes: getNotes
+      getNotes: getNotes,
+      joinThread: joinThread,
+      leaveThread: leaveThread
     };
 }])
+
+
+
 
 .factory('ThreadManager', ['$timeout', 'Account', 'Thread', 
   function($timeout, Account, Thread){
