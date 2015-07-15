@@ -36,9 +36,9 @@
 
     <div ng-if="liked"
          class="heart animated bounceOut" 
-         style="z-index:9000;
-                right:50px; 
-                top:0px;">
+         style="position: absolute;
+                {{horizontal}}:{{horizontalVal}}px; 
+                top:{{top}}px;">
     </div>
   
 </ion-item>

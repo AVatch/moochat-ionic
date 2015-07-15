@@ -5,7 +5,7 @@
 */
 angular.module('moo.directives.notes', [])
 
-.directive('note', ['Account', function(Account){
+.directive('note', ['Account', 'Gif', function(Account, Gif){
   return {
     scope: {
       note: '='
@@ -19,7 +19,18 @@ angular.module('moo.directives.notes', [])
         
         $scope.x = $event.gesture.center.pageX;
         $scope.y = $event.gesture.center.pageY;
-        
+
+        var amplitude = 25;
+        var noise = Math.random()*amplitude;
+        $scope.noise = Math.random()<1.0 ? noise*1 : noise*-1;
+
+        $scope.top = 90;
+        $scope.horizontal = me.id==$scope.note.author.id ? "right" : "left";
+        $scope.horizontalVal = me.id==$scope.note.author.id ? 100 : 125;
+
+
+        Gif.likeGif(note.gif.id);
+
         $scope.liked = true;
         $timeout(function(){
           $scope.liked = false;

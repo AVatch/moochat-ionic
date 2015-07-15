@@ -33,11 +33,44 @@ angular.module('moo.services.gifs', [])
       return response;
     };
 
+    var likeGif = function(id){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/'+VERSION+'/gifs/'+id+'/like/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        contentType: "application/json; charset=UTF-8",
+                        data: ''
+                      });
+      return response;
+    };
+
+    var unlikeGif = function(id){
+      var token = Authentication.getToken();
+      var response = $http({
+                        url: DOMAIN + '/api/'+VERSION+'/gifs/'+id+'/unlike/',
+                        method: 'POST',
+                        headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': 'Token ' + token.token },
+                        contentType: "application/json; charset=UTF-8",
+                        data: ''
+                      });
+      return response;
+    };
+
     return{
       searchGif: searchGif,
-      randomGif: randomGif
+      randomGif: randomGif,
+
+      likeGif: likeGif,
+      unlikeGif: unlikeGif
     };
 }])
+
+
 
 .factory('GifManager', ['Gif', 'COLORS', function(Gif, COLORS){
   
