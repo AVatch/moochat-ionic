@@ -42,7 +42,7 @@
       <!-- thread-list-item body -->
       <div class="row">
         <avatar ng-repeat="account in thread.participants" 
-                ng-if="account.id!=me.id" 
+                ng-if="(thread.participants.length==1 || account.id!=me.id)" 
                 account="account" 
                 style="margin-right: 5px;">
         </avatar>
